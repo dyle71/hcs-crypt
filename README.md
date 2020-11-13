@@ -116,7 +116,7 @@ in the build folder.
 
 ---
 
-Oliver Maurhart, <oliver.maurhart@headcode.space>
-(C)opyright 2020 headcode.space
+Oliver Maurhart, <oliver.maurhart@headcode.space>  
+(C)opyright 2020 headcode.space  
 [https://headcode.space](https://www.headcode.space)
 
