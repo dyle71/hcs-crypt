@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# This file is the main CMakeLists of easycrypt of headcode.space
+# This file is the main CMakeLists of crypt of headcode.space
 #
 # The 'LICENSE.txt' file in the project root holds the software license.
 # Copyright (C) 2020 headcode.space

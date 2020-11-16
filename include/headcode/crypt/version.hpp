@@ -1,13 +1,13 @@
 /*
- * This file is part of the headcode.space easycrypt.
+ * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
  * Copyright (C) 2020 headcode.space
  * https://www.headcode.space, <info@headcode.space>
  */
 
-#ifndef HEADCODE_SPACE_EASYCRYPT_VERSION_HPP
-#define HEADCODE_SPACE_EASYCRYPT_VERSION_HPP
+#ifndef HEADCODE_SPACE_CRYPT_VERSION_HPP
+#define HEADCODE_SPACE_CRYPT_VERSION_HPP
 
 #include <cstdint>
 #include <string>
@@ -22,21 +22,21 @@
  * @brief   Version check for 1.0.0
  * @return  A value, representing the version.
  */
-inline std::uint32_t GetHCSEasycryptVersion_0_0_1() {
+inline std::uint32_t GetHCSCryptVersion_0_0_1() {
     return MAKE_VERSION(0, 0, 1);
 }
 
 /**
- * @brief   The headcode easycrypt namespace
+ * @brief   The headcode crypt namespace
  */
-namespace headcode::easycrypt {
+namespace headcode::crypt {
 
 /**
- * @brief   Returns the current version of the headcode-easycrypt.
+ * @brief   Returns the current version of the headcode-crypt.
  * @return  A value, representing the current version.
  */
 inline std::uint32_t GetCurrentVersion() {
-    return GetHCSEasycryptVersion_0_0_1();
+    return GetHCSCryptVersion_0_0_1();
 }
 
 /**

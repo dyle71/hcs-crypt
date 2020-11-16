@@ -15,13 +15,13 @@ installable package artefacts. All builder Dockerfiles are labeled `Dockerfile.b
 
 1. Create a Docker builder for a chosen platform (e.g. Debian 10 - "Buster") in the current folder:
 ```bash
-$ docker build --tag headcode-easycrypt:debian-buster --file Dockerfile.build.debian-buster .
+$ docker build --tag hcs-crypt:debian-buster --file Dockerfile.build.debian-buster .
 ```
 
 
 2. Launch a builder
 ```bash
-$ docker run -it -d --rm --name headcode-easycrypt_debian-buster headcode-easycrypt:debian-buster
+$ docker run -it -d --rm --name hcs-crypt_debian-buster hcs-crypt:debian-buster
 ```
 This will run have the Docker builder run in the background.
 
@@ -32,9 +32,9 @@ This will run have the Docker builder run in the background.
 3.1 Create and test a Debug version and a source tarball:
 
 ```bash
-$ docker exec -it headcode-easycrypt_debian-buster git clone https://gitlab.com/headcode.space/easycrypt.git . 
+$ docker exec -it hcs-crypt_debian-buster git clone https://gitlab.com/headcode.space/crypt.git . 
 ...
-$ docker exec -it headcode-easycrypt_debian-buster /bin/bash
+$ docker exec -it hcs-crypt_debian-buster /bin/bash
 root@45bbb4fd3758:/build# mkdir build &> /dev/null
 root@45bbb4fd3758:/build# cd build
 root@45bbb4fd3758:/build# cmake -D CMAKE_BUILD_TYPE="Debug" ..
@@ -47,9 +47,9 @@ If successful this will create a tarball (`.tar.gz`) inside the build folder.
 
 3.2 Create and package Release version:
 ```bash
-$ docker exec -it headcode-easycrypt_debian-buster git clone https://gitlab.com/headcode.space/easycrypt.git . 
+$ docker exec -it hcs-crypt_debian-buster git clone https://gitlab.com/headcode.space/crypt.git . 
 ...
-$ docker exec -it headcode-easycrypt_debian-buster /bin/bash
+$ docker exec -it hcs-crypt_debian-buster /bin/bash
 root@45bbb4fd3758:/build# mkdir build &> /dev/null
 root@45bbb4fd3758:/build# cd build
 root@45bbb4fd3758:/build# cmake -D CMAKE_BUILD_TYPE="Release" -D CPACK_GENERATOR="DEB" ..
@@ -68,7 +68,7 @@ root@45bbb4fd3758:/build# cmake -D CMAKE_BUILD_TYPE="Release" -D CPACK_GENERATOR
 
 The Builder container will remain running in the background until stopped, e.g.:
 ```bash
-$ docker stop headcode-easycrypt_debian-buster 
+$ docker stop hcs-crypt_debian-buster 
 ```
 
 

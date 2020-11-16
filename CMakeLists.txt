@@ -1,12 +1,12 @@
 # ------------------------------------------------------------
-# This file is the main CMakeLists of easycrypt of headcode.space
+# This file is the main CMakeLists of crypt of headcode.space
 #
 # The 'LICENSE.txt' file in the project root holds the software license.
 # Copyright (C) 2020 headcode.space
 # https://www.headcode.space, <info@headcode.space>
 # ------------------------------------------------------------
 
-project(easycrypt C CXX)
+project(crypt C CXX)
 cmake_minimum_required(VERSION 3.10.2)
 
 cmake_policy(SET CMP0057 NEW)
@@ -177,7 +177,7 @@ set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES api-doc)
 add_custom_target(doc)
 add_dependencies(doc doxygen)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/html
-        DESTINATION share/doc/headcode-easycrypt-${VERSION_MAJOR}.${VERSION_MINOR}
+        DESTINATION share/doc/hcs-crypt-${VERSION_MAJOR}.${VERSION_MINOR}
         COMPONENT documentation
 )
 
@@ -192,12 +192,12 @@ add_subdirectory(test)
 # ------------------------------------------------------------
 # Installing stuff
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/headcode/easycrypt DESTINATION include/headcode COMPONENT header)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/headcode/crypt DESTINATION include/headcode COMPONENT header)
 
 
 # ---- CPack global definitions ----
 
-set(CPACK_PACKAGE_NAME "headcode-easycrypt")
+set(CPACK_PACKAGE_NAME "headcode-crypt")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})

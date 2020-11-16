@@ -7,4 +7,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
-[Unreleased]: https://gitlab.com/headcode.space/easycrypt/-/tree/develop
+[Unreleased]: https://gitlab.com/headcode.space/crypt/-/tree/develop
