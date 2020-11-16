@@ -1,4 +1,4 @@
-# easycrypt
+# crypt
 
 This C++17 library strives to be a very small and easy to use crypto library.
 
@@ -19,7 +19,7 @@ This C++17 library strives to be a very small and easy to use crypto library.
 │   └── rpm-package.cmake       Building instructions for RPM packages.
 ├── include                     Public header files. Add the path to this folder to your C++ search path.
 │   └── headcode                
-│       └── easycrypt           Include this: <headcode/easycrypt/easycrypt.hpp>
+│       └── crypt               Include this: <headcode/crypt/crypt.hpp>
 ├── test                        Tests.
 │   ├── benchmark               Benchmark tests.
 │   ├── integration             Integration tests.
@@ -58,7 +58,7 @@ $ git clone --recurse-submodules
 
 #### Native build
 
-easycrypt is a [cmake](https://cmake.org) project with out-of-source builds in
+crypt is a [cmake](https://cmake.org) project with out-of-source builds in
 a dedicated folder, usually labeled "build".
 
 ```bash
