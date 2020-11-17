@@ -32,6 +32,14 @@ public:
 
 private:
     /**
+     * @brief   Returns the description of the algorithm.
+     * @return  A string describing the algorithm.
+     */
+    std::string GetDescription_() const override {
+        return "This is not a real cypher. This only copies input to output.";
+    }
+
+    /**
      * @brief   Initialize this object instance.
      * This always returns 0.
      * @return  0 if initialize was ok, else an error.

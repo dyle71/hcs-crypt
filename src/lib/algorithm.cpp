@@ -12,6 +12,11 @@
 using namespace headcode::crypt;
 
 
+std::string Algorithm::GetDescription() const {
+    return GetDescription_();
+}
+
+
 int Algorithm::Initialize() {
 
     int res = 0;

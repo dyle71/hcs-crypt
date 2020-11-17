@@ -20,4 +20,5 @@ TEST(Hash_NoHash, creation) {
 
     EXPECT_STREQ(algo->GetName().c_str(), "nohash");
     EXPECT_EQ(algo->GetFamily(), Family::HASH);
+    EXPECT_FALSE(algo->GetDescription().empty());
 }

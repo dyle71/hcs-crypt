@@ -64,6 +64,12 @@ public:
     Algorithm & operator=(Algorithm &&) = default;
 
     /**
+     * @brief   Gets the algorithm description.
+     * @return  A string describing the algorithm.
+     * */
+    std::string GetDescription() const;
+
+    /**
      * @brief   Returns the algorithm family.
      * @return  The family this algorithm belongs to.
      */
@@ -97,6 +103,12 @@ public:
     }
 
 private:
+    /**
+     * @brief   Returns the description of the algorithm.
+     * @return  A string describing the algorithm.
+     */
+    virtual std::string GetDescription_() const = 0;
+
     /**
      * @brief   Initialize this object instance.
      * The concrete implementation of the algorithm may report any error value.

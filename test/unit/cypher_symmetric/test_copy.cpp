@@ -20,4 +20,5 @@ TEST(CryptSymmetric_Copy, creation) {
 
     EXPECT_STREQ(algo->GetName().c_str(), "copy");
     EXPECT_EQ(algo->GetFamily(), Family::CYPHER_SYMMETRIC);
+    EXPECT_FALSE(algo->GetDescription().empty());
 }
