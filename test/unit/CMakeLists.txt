@@ -11,9 +11,15 @@ link_directories("${GTEST_LIBRARY_PATH};${GMOCK_LIBRARY_PATH}")
 set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
 
 set(UNIT_TEST_SRC
+
+    test_factory.cpp
     test_version.cpp
+
+    cypher_symmetric/test_copy.cpp
+
+    hash/test_nohash.cpp
 )
 
 add_executable(unit-tests ${UNIT_TEST_SRC})
-target_link_libraries(unit-tests gtest gtest_main gmock gmock_main ${CMAKE_REQUIRED_LIBRARIES})
+target_link_libraries(unit-tests hcs-crypt gtest gtest_main gmock gmock_main ${CMAKE_REQUIRED_LIBRARIES})
 gtest_add_tests(unit-tests "" AUTO)

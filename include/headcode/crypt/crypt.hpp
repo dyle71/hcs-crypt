@@ -10,6 +10,9 @@
 #define HEADCODE_SPACE_CRYPT_CRYPT_HPP
 
 
+#include "algorithm.hpp"
+#include "family.hpp"
+#include "factory.hpp"
 #include "version.hpp"
 
 

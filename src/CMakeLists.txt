@@ -6,4 +6,6 @@
 # https://www.headcode.space, <info@headcode.space>
 # ------------------------------------------------------------
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
 add_subdirectory(lib)
