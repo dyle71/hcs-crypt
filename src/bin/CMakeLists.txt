@@ -8,5 +8,11 @@
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_subdirectory(lib)
-add_subdirectory(bin)
+set(CRYPT_SRC
+    cli.cpp
+    main.cpp
+)
+
+add_executable(crypt ${CRYPT_SRC})
+target_link_libraries(crypt "hcs-crypt;${CMAKE_REQUIRED_LIBRARIES}")
+install(TARGETS crypt RUNTIME DESTINATION bin)
