@@ -11,6 +11,7 @@ set(CRYPT_SRC
 
     algorithm.cpp
     factory.cpp
+    register.cpp
 
     cypher_symmetric/copy.cpp
 

@@ -13,19 +13,9 @@
 
 #include <headcode/crypt/factory.hpp>
 
-#include "cypher_symmetric/copy.hpp"
-#include "hash/nohash.hpp"
+#include "register.hpp"
 
 using namespace headcode::crypt;
-
-
-/**
- * @brief   Let the known algorithms register.
- */
-static void RegisterKnownAlgorithms() {
-    Copy::Register();
-    NoHash::Register();
-}
 
 
 /**
