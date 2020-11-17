@@ -19,7 +19,6 @@ namespace headcode::crypt {
 class Copy : public Algorithm {
 
 public:
-
     /**
      * @brief   Constructor.
      */

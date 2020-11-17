@@ -13,7 +13,19 @@
 
 #include <headcode/crypt/factory.hpp>
 
+#include "cypher_symmetric/copy.hpp"
+#include "hash/nohash.hpp"
+
 using namespace headcode::crypt;
+
+
+/**
+ * @brief   Let the known algorithms register.
+ */
+static void RegisterKnownAlgorithms() {
+    Copy::Register();
+    NoHash::Register();
+}
 
 
 /**
@@ -21,7 +33,6 @@ using namespace headcode::crypt;
  */
 static class AlgorithmRegistry {
 public:
-
     /**
      * @brief   Prevent race conditions.
      */
@@ -31,6 +42,13 @@ public:
      * @brief   All known algorithm producers.
      */
     std::map<std::string, std::tuple<Family, std::shared_ptr<Factory::Producer>>> producer_registry_;
+
+    /**
+     * @brief   Constructor.
+     */
+    AlgorithmRegistry() {
+        RegisterKnownAlgorithms();
+    }
 
 } factory_instance_;
 
@@ -70,5 +88,5 @@ std::set<std::string> Factory::GetAlgorithmNames(Family family) {
 
 void Factory::Register(std::string const & name, Family family, std::shared_ptr<Factory::Producer> producer) {
     std::lock_guard<std::mutex> lock(factory_instance_.mutex_);
-    factory_instance_.producer_registry_[name] = std::make_tuple(family, producer);
+    factory_instance_.producer_registry_[name] = std::make_tuple(family, std::move(producer));
 }

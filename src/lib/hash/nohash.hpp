@@ -18,7 +18,6 @@ namespace headcode::crypt {
 class NoHash : public Algorithm {
 
 public:
-
     /**
      * @brief   Constructor.
      */
