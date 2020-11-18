@@ -59,9 +59,9 @@ TEST(Hash_NoHash, empty) {
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "nohash");
     EXPECT_EQ(algo->Initialize(), 0);
 
-    std::vector<std::byte> cypher;
-    ASSERT_EQ(algo->Finalize(cypher), 0);
-    EXPECT_EQ(cypher.size(), 0ul);
+    std::vector<std::byte> hash;
+    ASSERT_EQ(algo->Finalize(hash), 0);
+    EXPECT_EQ(hash.size(), 0ul);
 }
 
 
