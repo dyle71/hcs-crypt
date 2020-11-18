@@ -9,7 +9,9 @@
 #ifndef HEADCODE_SPACE_CRYPT_ALGORITHM_HPP
 #define HEADCODE_SPACE_CRYPT_ALGORITHM_HPP
 
+#include <cstddef>
 #include <string>
+#include <vector>
 #include <utility>
 
 #include "family.hpp"
@@ -64,6 +66,27 @@ public:
     Algorithm & operator=(Algorithm &&) = default;
 
     /**
+     * @brief   Adds data to the algorithm
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     * @param   data        the data to add.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Add(std::vector<std::byte> const & data);
+
+    /**
+     * @brief   Adds data to the algorithm
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     * @param   data        the data to add.
+     * @param   size        size of the data to add.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Add(char const * data, std::uint64_t size);
+
+    /**
      * @brief   Gets the algorithm description.
      * @return  A string describing the algorithm.
      * */
@@ -103,6 +126,17 @@ public:
     }
 
 private:
+    /**
+     * @brief   Adds data to the algorithm
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     * @param   data        the data to add.
+     * @param   size        size of the data to add.
+     * @return  0 if initialize was ok, else an error.
+     */
+    virtual int Add_(char const * data, std::uint64_t size) = 0;
+
     /**
      * @brief   Returns the description of the algorithm.
      * @return  A string describing the algorithm.

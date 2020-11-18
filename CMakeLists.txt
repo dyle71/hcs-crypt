@@ -161,6 +161,24 @@ find_package(GTest REQUIRED)
 
 
 # ------------------------------------------------------------
+# headcode/mem as submodule hcs-mem
+#
+# Download https://gitlab.com/headcode.space/memtool.git as
+#
+#   $ git submodule add https://gitlab.com/headcode.space/memtool.git 3rd/hcs-mem
+
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/hcs-mem/CMakeLists.txt")
+    message(FATAL_ERROR "The git submodule for hcs-mem has not been downloaded!")
+endif ()
+
+execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/3rd/hcs-mem"
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/3rd/hcs-mem/include)
+
+
+# ------------------------------------------------------------
 # Doxygen
 
 find_package(Doxygen)
