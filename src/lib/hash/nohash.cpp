@@ -2,7 +2,7 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Nohashright (C) 2020 headcode.space
+ * Copyright (C) 2020 headcode.space
  * https://www.headcode.space, <info@headcode.space>
  */
 
@@ -10,8 +10,23 @@
 
 #include "nohash.hpp"
 
-
 using namespace headcode::crypt;
+
+
+/**
+ * @brief   The NOHASH algorithm description.
+ * @return  The description of this algorithm.
+ */
+static Algorithm::Description const & GetDescription() {
+    static Algorithm::Description description = {
+            "nohash",                                          // name
+            Family::HASH,                                      // family
+            {false, 0},                                        // initial key
+            {false, 0},                                        // final key
+            "NOHASH: not a real hash, always return 0."        // description
+    };
+    return description;
+}
 
 
 /**
@@ -29,11 +44,28 @@ public:
 };
 
 
-int NoHash::Initialize_() {
+int NoHash::Add_(char const * , std::uint64_t ) {
+    return 0;
+}
+
+
+int NoHash::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
+    result.clear();
+    return 0;
+}
+
+
+Algorithm::Description const & NoHash::GetDescription_() const {
+    return ::GetDescription();
+}
+
+
+int NoHash::Initialize_(char const * , std::uint64_t ) {
     return 0;
 }
 
 
 void NoHash::Register() {
-    Factory::Register("nohash", Family::HASH, std::make_shared<NoHashProducer>());
+    auto description = ::GetDescription();
+    Factory::Register(description.name_, description.family_, std::make_shared<NoHashProducer>());
 }

@@ -9,22 +9,25 @@
 #ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_COPY_HPP
 #define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_COPY_HPP
 
+#include <cstddef>
+#include <vector>
+
 #include <headcode/crypt/algorithm.hpp>
-#include <headcode/crypt/factory.hpp>
 
 
 namespace headcode::crypt {
 
 
+/**
+ * @brief   The COPY "cypher". Not a real cypher; this just copies input to output.
+ */
 class Copy : public Algorithm {
+    /**
+     * @brief   All the data added so far.
+     */
+    std::vector<std::byte> data_;
 
 public:
-    /**
-     * @brief   Constructor.
-     */
-    Copy() : Algorithm{"copy", Family::CYPHER_SYMMETRIC} {
-    }
-
     /**
      * @brief   Register this class of algorithms.
      */
@@ -32,19 +35,36 @@ public:
 
 private:
     /**
-     * @brief   Returns the description of the algorithm.
-     * @return  A string describing the algorithm.
+     * @brief   Adds data to the algorithm
+     * @param   data        the data to add.
+     * @param   size        size of the data to add.
+     * @return  0 if initialize was ok, else an error.
      */
-    std::string GetDescription_() const override {
-        return "This is not a real cypher. This only copies input to output.";
-    }
+    int Add_(char const * data, std::uint64_t size) override;
+
+    /**
+     * @brief   Finalizes this object instance.
+     * @param   result      the result of the algorithm.
+     * @param   data        the finalization data (== final key) to use, if any
+     * @param   size        size of the data used for finalization.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Finalize_(std::vector<std::byte> & result, char const * data, std::uint64_t size) override;
+
+    /**
+     * @brief   Gets the algorithm description.
+     * @return  A string describing the algorithm.
+     * */
+    Description const & GetDescription_() const override;
 
     /**
      * @brief   Initialize this object instance.
      * This always returns 0.
+     * @param   data        the initial data (== initial key) to use, if any
+     * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error.
      */
-    int Initialize_() override;
+    int Initialize_(char const * data, std::uint64_t size) override;
 };
 
 

@@ -2,7 +2,7 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Nohashright (C) 2020 headcode.space
+ * Copyright (C) 2020 headcode.space
  * https://www.headcode.space, <info@headcode.space>
  */
 
@@ -15,15 +15,13 @@
 namespace headcode::crypt {
 
 
+/**
+ * @brief   The NOHASH algorithm.
+ * This is actually not a real hash, it will always an empty result.
+ */
 class NoHash : public Algorithm {
 
 public:
-    /**
-     * @brief   Constructor.
-     */
-    NoHash() : Algorithm{"nohash", Family::HASH} {
-    }
-
     /**
      * @brief   Register this class of algorithms.
      */
@@ -31,19 +29,36 @@ public:
 
 private:
     /**
-     * @brief   Returns the description of the algorithm.
-     * @return  A string describing the algorithm.
+     * @brief   Adds data to the algorithm
+     * @param   data        the data to add.
+     * @param   size        size of the data to add.
+     * @return  0 if initialize was ok, else an error.
      */
-    std::string GetDescription_() const override {
-        return "This is not a real hash. It always returns 0 as hash 'value'.";
-    }
+    int Add_(char const * data, std::uint64_t size) override;
+
+    /**
+     * @brief   Finalizes this object instance.
+     * @param   result      the result of the algorithm.
+     * @param   data        the finalization data (== final key) to use, if any
+     * @param   size        size of the data used for finalization.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Finalize_(std::vector<std::byte> & result, char const * data, std::uint64_t size) override;
+
+    /**
+     * @brief   Gets the algorithm description.
+     * @return  A string describing the algorithm.
+     * */
+    Description const & GetDescription_() const override;
 
     /**
      * @brief   Initialize this object instance.
      * This always returns 0.
+     * @param   data        the initial data (== initial key) to use, if any
+     * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error.
      */
-    int Initialize_() override;
+    int Initialize_(char const * data, std::uint64_t size) override;
 };
 
 
