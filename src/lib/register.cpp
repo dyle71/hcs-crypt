@@ -12,9 +12,6 @@
 #include "hash/nohash.hpp"
 
 
-/**
- * @brief   Let the known algorithms register.
- */
 void headcode::crypt::RegisterKnownAlgorithms() {
     Copy::Register();
     NoHash::Register();
