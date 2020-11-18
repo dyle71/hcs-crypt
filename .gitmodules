@@ -1,3 +1,6 @@
 [submodule "3rd/googletest"]
 	path = 3rd/googletest
 	url = https://github.com/google/googletest
+[submodule "3rd/hcs-mem"]
+	path = 3rd/hcs-mem
+	url = https://gitlab.com/headcode.space/memtool.git
