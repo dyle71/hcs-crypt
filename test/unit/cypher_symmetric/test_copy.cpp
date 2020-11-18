@@ -33,6 +33,22 @@ TEST(CryptSymmetric_Copy, creation) {
 }
 
 
+TEST(CryptSymmetric_Copy, simple) {
+
+    auto algo = Factory::Create("copy");
+    ASSERT_NE(algo.get(), nullptr);
+
+    auto text = std::string{"The quick brown fox jumps over the lazy dog"};
+    algo->Add(text);
+    std::vector<std::byte> cypher;
+    algo->Finalize(cypher);
+
+    auto expected = headcode::mem::MemoryToHex(text.data(), text.size());
+    auto result = headcode::mem::MemoryToHex(cypher);
+    EXPECT_STREQ(expected.c_str(), result.c_str());
+}
+
+
 TEST(CryptSymmetric_Copy, regular) {
 
     auto algo = Factory::Create("copy");

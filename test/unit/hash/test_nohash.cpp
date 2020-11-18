@@ -33,6 +33,20 @@ TEST(Hash_NoHash, creation) {
 }
 
 
+TEST(Hash_NoHash, simple) {
+
+    auto algo = Factory::Create("nohash");
+    ASSERT_NE(algo.get(), nullptr);
+
+    auto text = std::string{"The quick brown fox jumps over the lazy dog"};
+    algo->Add(text);
+    std::vector<std::byte> hash;
+    algo->Finalize(hash);
+
+    EXPECT_EQ(hash.size(), 0ul);
+}
+
+
 TEST(Hash_NoHash, regular) {
 
     auto algo = Factory::Create("nohash");
