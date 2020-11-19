@@ -43,6 +43,7 @@ This C++17 library strives to be a very small and easy to use crypto library.
 - make
 - doxygen (with graphviz)
 - [googletest](https://github.com/google/googletest) (as submodule)
+- [hcs-mem](https://gitlab.com/headcode.space/memtool.git) (as submodule)
 
 When cloning this project execute the following to clone submodules as well:
 
