@@ -23,4 +23,4 @@ target_link_libraries(hcs-crypt ${CMAKE_REQUIRED_LIBRARIES})
 set_target_properties(hcs-crypt PROPERTIES VERSION ${VERSION})
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/headcode/crypt DESTINATION include COMPONENT header)
-install(TARGETS hcs-crypt LIBRARY DESTINATION lib COMPONENT library)
+install(TARGETS hcs-crypt ARCHIVE DESTINATION lib COMPONENT library)
