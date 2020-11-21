@@ -4,3 +4,6 @@
 [submodule "3rd/hcs-mem"]
 	path = 3rd/hcs-mem
 	url = https://gitlab.com/headcode.space/memtool.git
+[submodule "3rd/hcs-benchmark"]
+	path = 3rd/hcs-benchmark
+	url = https://gitlab.com/headcode.space/benchmark.git
