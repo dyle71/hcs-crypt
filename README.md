@@ -20,9 +20,12 @@ This C++17 library strives to be a very small and easy to use crypto library.
 ├── include                     Public header files. Add the path to this folder to your C++ search path.
 │   └── headcode                
 │       └── crypt               Include this: <headcode/crypt/crypt.hpp>
+├── src                         Tests.
+│   ├── bin                     Binary "crypt" sources.
+│   └── lib                     Static libhcs-crypt.a sources.
 ├── test                        Tests.
 │   ├── benchmark               Benchmark tests.
-│   ├── integration             Integration tests.
+│   ├── shared                  Shared test data files.
 │   └── unit                    Unit tests.
 ├── tools                       Various tools for run-time or build-time.
 │   └── docker                  Docker builder image definitions: Dockerfiles for various platforms to build.
