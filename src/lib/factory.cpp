@@ -6,6 +6,7 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
+#include <atomic>
 #include <map>
 #include <memory>
 #include <mutex>
@@ -21,8 +22,13 @@ using namespace headcode::crypt;
 /**
  * @brief   Our algorithm registry.
  */
-static class AlgorithmRegistry {
+class Registry {
 public:
+    /**
+     * @brief   Initialized flag. If false, no algorithms have been loaded.
+     */
+    std::atomic<bool> initialized_ = false;
+
     /**
      * @brief   Prevent race conditions.
      */
@@ -36,19 +42,58 @@ public:
     /**
      * @brief   Constructor.
      */
-    AlgorithmRegistry() {
+    Registry() = default;
+
+    /**
+     * @brief   Copy Constructor.
+     */
+    Registry(Registry const &) = delete;
+
+    /**
+     * @brief   Move Constructor.
+     */
+    Registry(Registry &&) = delete;
+
+    /**
+     * @brief   Destructor
+     */
+    ~Registry() = default;
+
+    /**
+     * @brief   Assignment
+     * @return  this
+     */
+    Registry & operator=(Registry const &) = delete;
+
+    /**
+     * @brief   Move Assignment
+     * @return  this
+     */
+    Registry & operator=(Registry &&) = delete;
+};
+
+
+/**
+ * @brief   Returns the Registry singleton.
+ * @return  The one and only registry instance.
+ */
+static Registry & GetRegistryInstance() {
+    static Registry registry;
+    if (!registry.initialized_) {
+        registry.initialized_ = true;
         RegisterKnownAlgorithms();
     }
-
-} factory_instance_;
+    return registry;
+}
 
 
 std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 
-    std::lock_guard<std::mutex> lock(factory_instance_.mutex_);
+    auto & registry = GetRegistryInstance();
+    std::lock_guard<std::mutex> lock(registry.mutex_);
 
-    auto iter = factory_instance_.producer_registry_.find(name);
-    if (iter == factory_instance_.producer_registry_.end()) {
+    auto iter = registry.producer_registry_.find(name);
+    if (iter == registry.producer_registry_.end()) {
         return nullptr;
     }
 
@@ -63,10 +108,11 @@ std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 
 std::set<std::string> Factory::GetAlgorithmNames(Family family) {
 
-    std::lock_guard<std::mutex> lock(factory_instance_.mutex_);
+    auto & registry = GetRegistryInstance();
+    std::lock_guard<std::mutex> lock(registry.mutex_);
 
     std::set<std::string> res;
-    for (auto const & p : factory_instance_.producer_registry_) {
+    for (auto const & p : registry.producer_registry_) {
         if (std::get<0>(p.second) == family) {
             res.insert(p.first);
         }
@@ -77,6 +123,7 @@ std::set<std::string> Factory::GetAlgorithmNames(Family family) {
 
 
 void Factory::Register(std::string const & name, Family family, std::shared_ptr<Factory::Producer> producer) {
-    std::lock_guard<std::mutex> lock(factory_instance_.mutex_);
-    factory_instance_.producer_registry_[name] = std::make_tuple(family, std::move(producer));
+    auto & registry = GetRegistryInstance();
+    std::lock_guard<std::mutex> lock(registry.mutex_);
+    registry.producer_registry_[name] = std::make_tuple(family, std::move(producer));
 }
