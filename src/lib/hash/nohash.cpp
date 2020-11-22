@@ -43,7 +43,7 @@ public:
 };
 
 
-int NoHash::Add_(char const * , std::uint64_t ) {
+int NoHash::Add_(char const *, std::uint64_t) {
     return 0;
 }
 
@@ -59,7 +59,7 @@ Algorithm::Description const & NoHash::GetDescription_() const {
 }
 
 
-int NoHash::Initialize_(char const * , std::uint64_t ) {
+int NoHash::Initialize_(char const *, std::uint64_t) {
     return 0;
 }
 
