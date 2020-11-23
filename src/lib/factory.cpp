@@ -82,7 +82,8 @@ static Registry & GetRegistryInstance() {
     static Registry registry;
     if (!registry.initialized_) {
 
-        // avoid race conditions on double init calls
+        // avoid race conditions on double init calls+
+
         static std::mutex initialize_mutex;
         std::lock_guard<std::mutex> lock(initialize_mutex);
         if (!registry.initialized_) {

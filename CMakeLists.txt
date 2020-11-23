@@ -161,6 +161,44 @@ find_package(GTest REQUIRED)
 
 
 # ------------------------------------------------------------
+# libtommath
+#
+# Download https://github.com/libtom/libtommath as
+#
+#   $ git submodule add https://github.com/libtom/libtommath 3rd/libtommath
+
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/libtommath/makefile.unix")
+    message(FATAL_ERROR "The git submodule for libtommath has not been downloaded!")
+endif ()
+message(STATUS "Found libtommath")
+
+execute_process(COMMAND make -f makefile.unix libtommath.a
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/3rd/libtommath"
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/3rd/libtommath)
+
+
+# ------------------------------------------------------------
+# libtomcrypt... as real working horse =)
+#
+# Download https://github.com/libtom/libtomcrypt.git as
+#
+#   $ git submodule add https://github.com/libtom/libtomcrypt.git 3rd/libtomcrypt
+
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/makefile.unix")
+    message(FATAL_ERROR "The git submodule for libtomcrypt has not been downloaded!")
+endif ()
+message(STATUS "Found libtomcrypt")
+
+execute_process(COMMAND make -f makefile.unix libtomcrypt.a
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/3rd/libtomcrypt"
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/src/headers)
+
+
+# ------------------------------------------------------------
 # headcode/mem as submodule hcs-benchmark
 #
 # Download https://gitlab.com/headcode.space/benchmark.git as
@@ -170,10 +208,13 @@ find_package(GTest REQUIRED)
 if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/hcs-benchmark/CMakeLists.txt")
     message(FATAL_ERROR "The git submodule for hcs-benchmark has not been downloaded!")
 endif ()
+message(STATUS "Found hcs-benchmark")
 
-execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/3rd/hcs-benchmark"
-        )
+execute_process(COMMAND "${CMAKE_COMMAND}" -E make_directory ${CMAKE_BINARY_DIR}/3rd/hcs-benchmark)
+execute_process(COMMAND "${CMAKE_COMMAND}" ${CMAKE_SOURCE_DIR}/3rd/hcs-benchmark
+    #COMMAND "${CMAKE_COMMAND}" --build .
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/3rd/hcs-benchmark"
+)
 
 include_directories(${CMAKE_SOURCE_DIR}/3rd/hcs-benchmark/include)
 
@@ -188,8 +229,11 @@ include_directories(${CMAKE_SOURCE_DIR}/3rd/hcs-benchmark/include)
 if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/hcs-mem/CMakeLists.txt")
     message(FATAL_ERROR "The git submodule for hcs-mem has not been downloaded!")
 endif ()
+message(STATUS "Found hcs-mem")
 
-execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+execute_process(COMMAND "${CMAKE_COMMAND}" -E make_directory ${CMAKE_BINARY_DIR}/3rd/hcs-mem)
+execute_process(COMMAND "${CMAKE_COMMAND}" -S ${CMAKE_SOURCE_DIR}/3rd/hcs-mem
+    COMMAND "${CMAKE_COMMAND}" --build .
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/3rd/hcs-mem"
 )
 

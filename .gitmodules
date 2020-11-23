@@ -7,3 +7,9 @@
 [submodule "3rd/hcs-benchmark"]
 	path = 3rd/hcs-benchmark
 	url = https://gitlab.com/headcode.space/benchmark.git
+[submodule "3rd/libtomcrypt"]
+	path = 3rd/libtomcrypt
+	url = https://github.com/libtom/libtomcrypt.git
+[submodule "3rd/libtommath"]
+	path = 3rd/libtommath
+	url = https://github.com/libtom/libtommath.git
