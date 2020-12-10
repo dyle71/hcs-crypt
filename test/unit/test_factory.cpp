@@ -10,18 +10,17 @@
 
 #include <headcode/crypt/crypt.hpp>
 
-using namespace headcode::crypt;
-
 
 TEST(Factory, unknown_algorithm) {
-    auto algo = Factory::Create("UNKNOWN-ALGORITHM");
+    auto algo = headcode::crypt::Factory::Create("UNKNOWN-ALGORITHM");
     ASSERT_EQ(algo.get(), nullptr);
 }
 
 
 TEST(Factory, list_crypher_symmetric) {
 
-    auto known_symmetric_cyphers = Factory::GetAlgorithmNames(Family::CYPHER_SYMMETRIC);
+    auto known_symmetric_cyphers =
+            headcode::crypt::Factory::GetAlgorithmNames(headcode::crypt::Family::CYPHER_SYMMETRIC);
     EXPECT_EQ(known_symmetric_cyphers.size(), 1ul);
 
     EXPECT_NE(known_symmetric_cyphers.find("copy"), known_symmetric_cyphers.end());
@@ -30,7 +29,7 @@ TEST(Factory, list_crypher_symmetric) {
 
 TEST(Factory, list_hashes) {
 
-    auto known_hashes = Factory::GetAlgorithmNames(Family::HASH);
+    auto known_hashes = headcode::crypt::Factory::GetAlgorithmNames(headcode::crypt::Family::HASH);
     EXPECT_EQ(known_hashes.size(), 1ul);
 
     EXPECT_NE(known_hashes.find("nohash"), known_hashes.end());
@@ -38,6 +37,6 @@ TEST(Factory, list_hashes) {
 
 
 TEST(Factory, list_unknown) {
-    auto known_unknown = Factory::GetAlgorithmNames(Family::UNKNOWN);
+    auto known_unknown = headcode::crypt::Factory::GetAlgorithmNames(headcode::crypt::Family::UNKNOWN);
     EXPECT_TRUE(known_unknown.empty());
 }

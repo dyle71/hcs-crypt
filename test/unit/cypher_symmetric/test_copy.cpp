@@ -13,19 +13,17 @@
 
 #include "shared/ipsum_lorem.hpp"
 
-using namespace headcode::crypt;
-
 
 TEST(CryptSymmetric_Copy, creation) {
 
-    auto algo = Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_EQ(algo->Initialize(), 0);
 
-    Algorithm::Description const & description = algo->GetDescription();
+    headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "copy");
-    EXPECT_EQ(description.family_, Family::CYPHER_SYMMETRIC);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::CYPHER_SYMMETRIC);
     EXPECT_FALSE(description.description_.empty());
 
     EXPECT_FALSE(description.final_key_definition_.needed_);
@@ -35,7 +33,7 @@ TEST(CryptSymmetric_Copy, creation) {
 
 TEST(CryptSymmetric_Copy, simple) {
 
-    auto algo = Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
 
     auto text = std::string{"The quick brown fox jumps over the lazy dog"};
@@ -51,7 +49,7 @@ TEST(CryptSymmetric_Copy, simple) {
 
 TEST(CryptSymmetric_Copy, regular) {
 
-    auto algo = Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
     EXPECT_EQ(algo->Initialize(), 0);
@@ -73,7 +71,7 @@ TEST(CryptSymmetric_Copy, regular) {
 
 TEST(CryptSymmetric_Copy, empty) {
 
-    auto algo = Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
     EXPECT_EQ(algo->Initialize(), 0);
@@ -86,7 +84,7 @@ TEST(CryptSymmetric_Copy, empty) {
 
 TEST(CryptSymmetric_Copy, noinit) {
 
-    auto algo = Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
 

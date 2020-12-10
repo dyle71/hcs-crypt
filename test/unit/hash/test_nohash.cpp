@@ -13,19 +13,17 @@
 
 #include "shared/ipsum_lorem.hpp"
 
-using namespace headcode::crypt;
-
 
 TEST(Hash_NoHash, creation) {
 
-    auto algo = Factory::Create("nohash");
+    auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_EQ(algo->Initialize(), 0);
 
-    Algorithm::Description const & description = algo->GetDescription();
+    headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "nohash");
-    EXPECT_EQ(description.family_, Family::HASH);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
 
     EXPECT_FALSE(description.final_key_definition_.needed_);
@@ -35,7 +33,7 @@ TEST(Hash_NoHash, creation) {
 
 TEST(Hash_NoHash, simple) {
 
-    auto algo = Factory::Create("nohash");
+    auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
 
     auto text = std::string{"The quick brown fox jumps over the lazy dog"};
@@ -49,7 +47,7 @@ TEST(Hash_NoHash, simple) {
 
 TEST(Hash_NoHash, regular) {
 
-    auto algo = Factory::Create("nohash");
+    auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "nohash");
     EXPECT_EQ(algo->Initialize(), 0);
@@ -68,7 +66,7 @@ TEST(Hash_NoHash, regular) {
 
 TEST(Hash_NoHash, empty) {
 
-    auto algo = Factory::Create("nohash");
+    auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "nohash");
     EXPECT_EQ(algo->Initialize(), 0);
@@ -81,7 +79,7 @@ TEST(Hash_NoHash, empty) {
 
 TEST(Hash_NoHash, noinit) {
 
-    auto algo = Factory::Create("nohash");
+    auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "nohash");
 
