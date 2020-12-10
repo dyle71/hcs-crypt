@@ -19,7 +19,9 @@ RUN yum -y install \
     git \
     rpm-build rpmdevtools \
     doxygen \
-    unzip
+    unzip \
+    curl \
+    wget
 RUN yum clean all
 
 # install non repository packages
