@@ -13,3 +13,6 @@
 [submodule "3rd/libtommath"]
 	path = 3rd/libtommath
 	url = https://github.com/libtom/libtommath.git
+[submodule "cmake"]
+	path = cmake
+	url = https://gitlab.com/headcode.space/cmake.git
