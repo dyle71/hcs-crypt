@@ -6,7 +6,7 @@
 # https://www.headcode.space, <info@headcode.space>
 # ------------------------------------------------------------
 
-project(crypt C CXX)
+project(hcs-crypt C CXX)
 cmake_minimum_required(VERSION 3.10.2)
 
 cmake_policy(SET CMP0057 NEW)

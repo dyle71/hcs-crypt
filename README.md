@@ -15,8 +15,6 @@ This C++17 library strives to be a very small and easy to use crypto library.
 .
 ├── 3rd                         3rd party libraries needed (likely as git submodules).
 ├── cmake                       CMake additional files.
-│   ├── deb-package.cmake       Building instructions for DEB packages.
-│   └── rpm-package.cmake       Building instructions for RPM packages.
 ├── include                     Public header files. Add the path to this folder to your C++ search path.
 │   └── headcode                
 │       └── crypt               Include this: <headcode/crypt/crypt.hpp>
@@ -28,7 +26,8 @@ This C++17 library strives to be a very small and easy to use crypto library.
 │   ├── shared                  Shared test data files.
 │   └── unit                    Unit tests.
 ├── tools                       Various tools for run-time or build-time.
-│   └── docker                  Docker builder image definitions: Dockerfiles for various platforms to build.
+│   ├── docker                  Docker builder image definitions: Dockerfiles for various platforms to build.
+│   └── package                 Package related files.
 ├── Changes.md                  Changes file.
 ├── CMakeLists.txt              The overall CMakeLists.txt.
 ├── Doxyfile                    Doxgen API documentation configuration.
