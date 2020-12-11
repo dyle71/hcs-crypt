@@ -9,7 +9,6 @@
 #include <gtest/gtest.h>
 
 #include <headcode/crypt/crypt.hpp>
-#include <headcode/mem/mem.hpp>
 
 #include "shared/ipsum_lorem.hpp"
 

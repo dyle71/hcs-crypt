@@ -82,8 +82,7 @@ static Registry & GetRegistryInstance() {
     static Registry registry;
     if (!registry.initialized_) {
 
-        // avoid race conditions on double init calls+
-
+        // avoid race conditions on double init calls
         static std::mutex initialize_mutex;
         std::lock_guard<std::mutex> lock(initialize_mutex);
         if (!registry.initialized_) {
@@ -98,18 +97,22 @@ static Registry & GetRegistryInstance() {
 std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 
     auto & registry = GetRegistryInstance();
-    std::lock_guard<std::mutex> lock(registry.mutex_);
+    std::shared_ptr<Factory::Producer> producer = nullptr;
 
-    auto iter = registry.producer_registry_.find(name);
-    if (iter == registry.producer_registry_.end()) {
-        return nullptr;
+    {
+        std::lock_guard<std::mutex> lock(registry.mutex_);
+
+        auto iter = registry.producer_registry_.find(name);
+        if (iter == registry.producer_registry_.end()) {
+            return nullptr;
+        }
+
+        producer = std::get<1>(iter->second);
     }
 
-    auto producer = std::get<1>(iter->second);
     if (producer == nullptr) {
         return nullptr;
     }
-
     return (*producer)();
 }
 
@@ -117,12 +120,14 @@ std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 std::set<std::string> Factory::GetAlgorithmNames(Family family) {
 
     auto & registry = GetRegistryInstance();
-    std::lock_guard<std::mutex> lock(registry.mutex_);
 
     std::set<std::string> res;
-    for (auto const & p : registry.producer_registry_) {
-        if (std::get<0>(p.second) == family) {
-            res.insert(p.first);
+    {
+        std::lock_guard<std::mutex> lock(registry.mutex_);
+        for (auto const & p : registry.producer_registry_) {
+            if (std::get<0>(p.second) == family) {
+                res.insert(p.first);
+            }
         }
     }
 

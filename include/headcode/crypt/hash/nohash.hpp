@@ -17,7 +17,7 @@ namespace headcode::crypt {
 
 /**
  * @brief   The NOHASH algorithm.
- * This is actually not a real hash, it will always an empty result.
+ * This is actually not a real hash, it will always return an empty result.
  */
 class NoHash : public Algorithm {
 

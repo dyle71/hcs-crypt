@@ -14,7 +14,7 @@ namespace headcode::crypt {
 
 
 /**
- * @brief   The Algorithm class is the abstract class for any crypto-algorithm.
+ * @brief   Different types of algorithms we know of.
  */
 enum class Family {
     CYPHER_SYMMETRIC = 0x0000,        //!< @brief An symmetric algorithm used to encrypt and/or decrypt data.

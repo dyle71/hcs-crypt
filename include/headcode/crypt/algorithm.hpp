@@ -22,6 +22,16 @@ namespace headcode::crypt {
 
 /**
  * @brief   The Algorithm class is the abstract class for any crypto-algorithm.
+ * Hashes, encryptor and decryptor are all algorithms in this sense:
+ * - an algorithm instance is created. This may or may not use an initial key.
+ * - data is (repeatedly) added to the algorithm instance, which changes its inner state.
+ * - at last the algorithm instance is finalized, again sometimes with a final key and sometime not.
+ * If an initial and/or a final key is used depends on the algorithm itself and can be queried by
+ * inspecting the Algorithm::Description.
+ * This is a very broad definition and probably not only crypto algorithm fit this approach, since
+ * the initial and final keys themselves are basically just memory BLOBs holding anything an
+ * algorithm can interpret as initial (or final) data to process.
+ * There is one single caveat: an algorithm may be initialized only once but finalized multiple times.
  */
 class Algorithm {
 
@@ -93,7 +103,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * @param   text        the text to add.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(std::string const & text);
 
@@ -103,7 +113,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * @param   data        the data to add.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(std::vector<std::byte> const & data);
 
@@ -114,7 +124,7 @@ public:
      * be examined in the context of the algorithm.
      * @param   data        the data to add.
      * @param   size        size of the data to add.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(char const * data, std::uint64_t size);
 
@@ -126,7 +136,7 @@ public:
      * You may Finalize the object multiple times.
      * @param   result      the result of the algorithm.
      * @param   data        the final data (== final key) to use, if any
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Finalize(std::vector<std::byte> & result, std::vector<std::byte> const & data = {});
 
@@ -139,7 +149,7 @@ public:
      * @param   result      the result of the algorithm.
      * @param   data        the finalization data (== final key) to use, if any
      * @param   size        size of the data used for finalization.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t size);
 
@@ -156,7 +166,7 @@ public:
      * be examined in the context of the algorithm.
      * The object **WILL NOT** be initialzed twice.
      * @param   data        the initial data (== initial key) to use, if any
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Initialize(std::vector<std::byte> const & data = {});
 
@@ -168,7 +178,7 @@ public:
      * The object **WILL NOT** be initialzed twice.
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Initialize(char const * data, std::uint64_t size);
 
