@@ -59,6 +59,7 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
+        {"verbose", 'v', 0, 0, "Be verbose.", 0},
         {"version", 'V', 0, 0, "Show version.", 0},
         { 0, 0, 0, 0, 0, 0}
 };
@@ -79,6 +80,10 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
         case 'V':
             arguments->version_ = true;
+            break;
+
+        case 'v':
+            arguments->verbose_ = true;
             break;
 
         case ARGP_KEY_ARG:
@@ -118,7 +123,11 @@ CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
     if (!res.version_) {
         static std::set<std::string> const valid_commands = {"encrypt", "decrypt", "hash"};
         if (valid_commands.find(res.command_) == valid_commands.end()) {
-            res.error_string_ = "Unknown command.";
+            if (!res.command_.empty()) {
+                res.error_string_ = "Unknown command: " + res.command_;
+            } else {
+                res.error_string_ = "Missing command.";
+            }
         }
     }
 

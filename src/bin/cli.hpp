@@ -20,6 +20,7 @@ struct CryptoClientArguments {
     std::string error_string_;        //!< @brief Error encountered while parsing.
     std::string command_;             //!< @brief Crypto command to process.
     bool proceed_ = false;            //!< @brief Show version.
+    bool verbose_ = false;            //!< @brief Verbosity flag.
     bool version_ = false;            //!< @brief Show version.
 
     /**
