@@ -29,6 +29,8 @@ is ommited then stdin is read.\n\
 OPTIONS:\n\
 "
 
+#define LONG_ONLY_OPTION        1000
+
 
 /**
  * @brief   All essential ARGP data.
@@ -62,9 +64,9 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
-        {"list", 0, 0, 0, "List all known algorithms.", 0},        // list option: list all known algorithms
+        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},        // list option: list all known algorithms
         {"verbose", 'v', 0, 0, "Be verbose.", 0},                  // verbose mode
-        {"version", 'V', 0, 0, "Show version.", 0},                // show version and exit
+        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                // show version and exit
         {0, 0, 0, 0, 0, 0}                                         // trailing entry
 };
 
@@ -82,7 +84,11 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
     switch (key) {
 
-        case 'V':
+        case LONG_ONLY_OPTION + 'l':
+            arguments->list_algorithms_ = true;
+            break;
+
+        case LONG_ONLY_OPTION + 'v':
             arguments->version_ = true;
             break;
 
@@ -91,13 +97,6 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
             break;
 
         case ARGP_KEY_ARG:
-
-            if (state->arg_num == 0) {
-                arguments->algorithm_ = arg;
-            }
-            if (state->arg_num > 1) {
-                argp_usage(state);
-            }
             break;
 
         case ARGP_KEY_NO_ARGS:

@@ -20,6 +20,7 @@ TEST(Crypt_cli, verbose_short) {
     auto crypto_client_arguments = ParseCommandLine(2, argv);
     EXPECT_TRUE(crypto_client_arguments.verbose_);
     EXPECT_FALSE(crypto_client_arguments.IsConfigOk());
+    EXPECT_FALSE(crypto_client_arguments.list_algorithms_);
     EXPECT_FALSE(crypto_client_arguments.proceed_);
 }
 
@@ -34,19 +35,7 @@ TEST(Crypt_cli, verbose_long) {
     auto crypto_client_arguments = ParseCommandLine(2, argv);
     EXPECT_TRUE(crypto_client_arguments.verbose_);
     EXPECT_FALSE(crypto_client_arguments.IsConfigOk());
-    EXPECT_FALSE(crypto_client_arguments.proceed_);
-}
-
-
-TEST(Crypt_cli, version_short) {
-
-    char * argv_1 = strdup("crypt");
-    char * argv_2 = strdup("-V");
-    char * argv[2] = {argv_1, argv_2};
-
-    auto crypto_client_arguments = ParseCommandLine(2, argv);
-    EXPECT_TRUE(crypto_client_arguments.version_);
-    EXPECT_TRUE(crypto_client_arguments.IsConfigOk());
+    EXPECT_FALSE(crypto_client_arguments.list_algorithms_);
     EXPECT_FALSE(crypto_client_arguments.proceed_);
 }
 
@@ -61,6 +50,20 @@ TEST(Crypt_cli, version_long) {
     auto crypto_client_arguments = ParseCommandLine(2, argv);
     EXPECT_TRUE(crypto_client_arguments.version_);
     EXPECT_TRUE(crypto_client_arguments.IsConfigOk());
+    EXPECT_FALSE(crypto_client_arguments.list_algorithms_);
+    EXPECT_FALSE(crypto_client_arguments.proceed_);
+}
+
+
+TEST(Crypt_cli, list_algorithms) {
+
+    char * argv_1 = strdup("crypt");
+    char * argv_2 = strdup("--list");
+    char * argv[2] = {argv_1, argv_2};
+
+    auto crypto_client_arguments = ParseCommandLine(2, argv);
+    EXPECT_TRUE(crypto_client_arguments.IsConfigOk());
+    EXPECT_TRUE(crypto_client_arguments.list_algorithms_);
     EXPECT_FALSE(crypto_client_arguments.proceed_);
 }
 
@@ -72,5 +75,6 @@ TEST(Crypt_cli, void_command) {
 
     auto crypto_client_arguments = ParseCommandLine(1, argv);
     EXPECT_FALSE(crypto_client_arguments.IsConfigOk());
+    EXPECT_FALSE(crypto_client_arguments.list_algorithms_);
     EXPECT_FALSE(crypto_client_arguments.proceed_);
 }
