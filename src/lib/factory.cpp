@@ -117,16 +117,17 @@ std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 }
 
 
-std::set<std::string> Factory::GetAlgorithmNames(Family family) {
+std::map<std::string, Algorithm::Description> Factory::GetAlgorithmDescriptions(Family family) {
 
     auto & registry = GetRegistryInstance();
 
-    std::set<std::string> res;
+    std::map<std::string, Algorithm::Description> res;
     {
         std::lock_guard<std::mutex> lock(registry.mutex_);
         for (auto const & p : registry.producer_registry_) {
             if (std::get<0>(p.second) == family) {
-                res.insert(p.first);
+                std::shared_ptr<Factory::Producer> const & producer = std::get<1>(p.second);
+                res.emplace(p.first, producer->GetDescription());
             }
         }
     }

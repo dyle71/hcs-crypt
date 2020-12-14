@@ -155,7 +155,7 @@ public:
 
     /**
      * @brief   Gets the algorithm description.
-     * @return  A string describing the algorithm.
+     * @return  A structure describing the algorithm.
      * */
     Description const & GetDescription() const;
 

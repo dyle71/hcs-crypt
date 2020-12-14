@@ -10,8 +10,8 @@
 #define HEADCODE_SPACE_CRYPT_FACTORY_HPP
 
 
+#include <map>
 #include <memory>
-#include <set>
 #include <string>
 
 #include "algorithm.hpp"
@@ -37,6 +37,12 @@ public:
          * @return  A new algorithm instance.
          */
         virtual std::shared_ptr<Algorithm> operator()() const = 0;
+
+        /**
+         * @brief   Gets the algorithm description.
+         * @return  A structure describing the algorithm.
+         */
+        virtual Algorithm::Description const & GetDescription() const = 0;
     };
 
     /**
@@ -79,11 +85,11 @@ public:
     static std::shared_ptr<Algorithm> Create(std::string const & name);
 
     /**
-     * @brief   Gets a list of all known algorithms per family.
+     * @brief   Gets a list of all known algorithms and their descriptions per family.
      * @param   family      the algorithm family requested.
-     * @return  A list of all algorithms which can be instantiated.
+     * @return  A list of all algorithms which can be instantiated incl. their descriptions.
      */
-    static std::set<std::string> GetAlgorithmNames(Family family);
+    static std::map<std::string, Algorithm::Description> GetAlgorithmDescriptions(Family family);
 
     /**
      * @brief   Registers a producer, which can create algorithm instance of a specific name and family.

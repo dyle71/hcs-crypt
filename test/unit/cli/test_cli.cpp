@@ -63,3 +63,14 @@ TEST(Crypt_cli, version_long) {
     EXPECT_TRUE(crypto_client_arguments.IsConfigOk());
     EXPECT_FALSE(crypto_client_arguments.proceed_);
 }
+
+
+TEST(Crypt_cli, void_command) {
+
+    char * argv_1 = strdup("crypt");
+    char * argv[1] = {argv_1};
+
+    auto crypto_client_arguments = ParseCommandLine(1, argv);
+    EXPECT_FALSE(crypto_client_arguments.IsConfigOk());
+    EXPECT_FALSE(crypto_client_arguments.proceed_);
+}

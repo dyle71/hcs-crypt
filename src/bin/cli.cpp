@@ -9,16 +9,19 @@
 #include <argp.h>
 
 #include <iostream>
-#include <set>
 #include <string>
+
+#include <headcode/crypt/crypt.hpp>
 
 #include "cli.hpp"
 
-#define PROGRAM_NAME            "crypt"
+#define PROGRAM_NAME "crypt"
 
-#define PROGRAM_VERSION         PROGRAM_NAME " v" VERSION
+#define PROGRAM_VERSION PROGRAM_NAME " v" VERSION
 
-#define PROGRAM_DOCUMENTATION   PROGRAM_NAME " -- a cryptography command line client.\n\
+#define PROGRAM_DOCUMENTATION \
+    PROGRAM_NAME              \
+    " -- a cryptography command line client.\n\
 \n\
 COMMAND is one of {encrypt, decrypt, hash}. If FILE\n\
 is ommited then stdin is read.\n\
@@ -59,9 +62,10 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
-        {"verbose", 'v', 0, 0, "Be verbose.", 0},
-        {"version", 'V', 0, 0, "Show version.", 0},
-        { 0, 0, 0, 0, 0, 0}
+        {"list", 0, 0, 0, "List all known algorithms.", 0},        // list option: list all known algorithms
+        {"verbose", 'v', 0, 0, "Be verbose.", 0},                  // verbose mode
+        {"version", 'V', 0, 0, "Show version.", 0},                // show version and exit
+        {0, 0, 0, 0, 0, 0}                                         // trailing entry
 };
 
 
@@ -89,7 +93,7 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
         case ARGP_KEY_ARG:
 
             if (state->arg_num == 0) {
-                arguments->command_ = arg;
+                arguments->algorithm_ = arg;
             }
             if (state->arg_num > 1) {
                 argp_usage(state);
@@ -111,22 +115,20 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
 CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
 
-    argp argp_configuration = {options_,
-                               ParseOption,
-                               argp_data_.argp_arguments,
-                               argp_data_.argp_documentation,
-                               0, 0, 0};
+    argp argp_configuration = {
+            options_, ParseOption, argp_data_.argp_arguments, argp_data_.argp_documentation, 0, 0, 0};
 
     CryptoClientArguments res;
     argp_parse(&argp_configuration, argc, argv, 0, 0, &res);
 
-    if (!res.version_) {
-        static std::set<std::string> const valid_commands = {"encrypt", "decrypt", "hash"};
-        if (valid_commands.find(res.command_) == valid_commands.end()) {
-            if (!res.command_.empty()) {
-                res.error_string_ = "Unknown command: " + res.command_;
+    if ((!res.version_) && (!res.list_algorithms_)) {
+
+        if (!VerifyAlgorithm(res.algorithm_)) {
+            res.proceed_ = false;
+            if (res.algorithm_.empty()) {
+                res.error_string_ = "Missing algorithm. Type --list to list all known algorithms.";
             } else {
-                res.error_string_ = "Missing command.";
+                res.error_string_ = "Unknown algorithm. Type --list to list all known algorithms.";
             }
         }
     }
@@ -140,3 +142,21 @@ void ShowVersion(std::ostream & out) {
 }
 
 
+bool VerifyAlgorithm(std::string const & algorithm) {
+
+    if (algorithm.empty()) {
+        return false;
+    }
+
+    auto known_symmetric_cyphers =
+            headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::CYPHER_SYMMETRIC);
+    auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
+    for (auto const & set : {known_symmetric_cyphers, known_hashes}) {
+        auto iter = set.find(algorithm);
+        if (iter != set.end()) {
+            return true;
+        }
+    }
+
+    return false;
+}

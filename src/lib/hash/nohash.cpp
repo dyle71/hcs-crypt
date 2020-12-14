@@ -40,6 +40,14 @@ public:
     std::shared_ptr<Algorithm> operator()() const override {
         return std::make_shared<NoHash>();
     }
+
+    /**
+     * @brief   Gets the algorithm description.
+     * @return  A structure describing the algorithm.
+     */
+    Algorithm::Description const & GetDescription() const override {
+        return ::GetDescription();
+    }
 };
 
 
