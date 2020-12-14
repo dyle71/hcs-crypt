@@ -14,9 +14,11 @@
 
 #include "cli.hpp"
 
-#define PROGRAM_VERSION         "crypt v" VERSION
+#define PROGRAM_NAME            "crypt"
 
-#define PROGRAM_DOCUMENTATION   "crypt -- a cryptography command line client.\n\
+#define PROGRAM_VERSION         PROGRAM_NAME " v" VERSION
+
+#define PROGRAM_DOCUMENTATION   PROGRAM_NAME " -- a cryptography command line client.\n\
 \n\
 COMMAND is one of {encrypt, decrypt, hash}. If FILE\n\
 is ommited then stdin is read.\n\
@@ -57,17 +59,9 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
-    {"version", 'v', 0, 0, "Show version.", 0},
-    { 0, 0, 0, 0, 0, 0}
+        {"version", 'V', 0, 0, "Show version.", 0},
+        { 0, 0, 0, 0, 0, 0}
 };
-
-
-/**
- * @brief   Shows the current program version.
- */
-void ShowVersion() {
-    std::cout << PROGRAM_VERSION << std::endl;
-}
 
 
 /**
@@ -83,9 +77,8 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
     switch (key) {
 
-        case 'v':
-            ShowVersion();
-            std::exit(0);
+        case 'V':
+            arguments->version_ = true;
             break;
 
         case ARGP_KEY_ARG:
@@ -98,10 +91,9 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
             }
             break;
 
+        case ARGP_KEY_NO_ARGS:
+        case ARGP_KEY_INIT:
         case ARGP_KEY_END:
-            if (state->arg_num < 1) {
-                argp_usage(state);
-            }
             break;
 
         default:
@@ -123,11 +115,19 @@ CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
     CryptoClientArguments res;
     argp_parse(&argp_configuration, argc, argv, 0, 0, &res);
 
-    static std::set<std::string> const valid_commands = {"encrypt", "decrypt", "hash"};
-    if (valid_commands.find(res.command_) == valid_commands.end()) {
-        std::cerr << "Unknown command. Type --help for help." << std::endl;
-        std::exit(255);
+    if (!res.version_) {
+        static std::set<std::string> const valid_commands = {"encrypt", "decrypt", "hash"};
+        if (valid_commands.find(res.command_) == valid_commands.end()) {
+            res.error_string_ = "Unknown command.";
+        }
     }
 
     return res;
 }
+
+
+void ShowVersion(std::ostream & out) {
+    out << PROGRAM_VERSION << std::endl;
+}
+
+

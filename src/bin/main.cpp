@@ -6,12 +6,24 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
+#include <iostream>
+
 #include "cli.hpp"
 
 
 int main(int argc, char ** argv) {
 
     auto config = ParseCommandLine(argc, argv);
+    if (!config.IsConfigOk()) {
+        std::cerr << "Error parsing command line: " << config.error_string_ << std::endl;
+        std::cerr << "Type -h or --help for help." << std::endl;
+        return 255;
+    }
+
+    if (config.version_) {
+        ShowVersion();
+        return 0;
+    }
 
     return 0;
 }
