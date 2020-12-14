@@ -50,9 +50,10 @@ public:
          * key needed is not fixed.
          */
         struct KeyDefinition {
-            bool needed_ = false;        //!< @brief States that this key is needed.
             std::uint64_t size_;         //!< @brief Defines the size in bytes of the key (special meaning for value 0).
+            bool needed_ = false;        //!< @brief States that this key is needed.
         };
+
         std::string name_;                            //!< @brief The name of this algorithm.
         Family family_;                               //!< @brief The family of the algorithm.
         KeyDefinition initial_key_definition_;        //!< @brief The requirements of the initial key used.
