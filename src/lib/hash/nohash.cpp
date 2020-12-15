@@ -7,7 +7,9 @@
  */
 
 #include <headcode/crypt/factory.hpp>
-#include <headcode/crypt/hash/nohash.hpp>
+
+#include "nohash.hpp"
+
 
 using namespace headcode::crypt;
 

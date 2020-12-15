@@ -9,7 +9,8 @@
 #include <cstring>
 
 #include <headcode/crypt/factory.hpp>
-#include <headcode/crypt/cypher_symmetric/copy.hpp>
+
+#include "copy.hpp"
 
 using namespace headcode::crypt;
 

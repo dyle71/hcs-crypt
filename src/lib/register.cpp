@@ -8,8 +8,8 @@
 
 #include "register.hpp"
 
-#include <headcode/crypt/cypher_symmetric/copy.hpp>
-#include <headcode/crypt/hash/nohash.hpp>
+#include "cypher_symmetric/copy.hpp"
+#include "hash/nohash.hpp"
 
 
 void headcode::crypt::RegisterKnownAlgorithms() {
