@@ -18,7 +18,7 @@ namespace headcode::crypt {
  */
 enum class Family {
     CYPHER_SYMMETRIC = 0x0000,        //!< @brief An symmetric algorithm used to encrypt and/or decrypt data.
-    HASH = 0x1000,                    //!< @brief An algorithm which produces hashsums of data.
+    HASH = 0x1000,                    //!< @brief An algorithm which produces hash-sums of data.
     UNKNOWN = 0xffff                  //!< @brief An unknown or error like family.
 };
 

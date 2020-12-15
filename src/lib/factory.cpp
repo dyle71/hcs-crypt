@@ -10,7 +10,6 @@
 #include <map>
 #include <memory>
 #include <mutex>
-#include <string>
 
 #include <headcode/crypt/factory.hpp>
 
@@ -81,8 +80,8 @@ static Registry & GetRegistryInstance() {
 
     static Registry registry;
 
-    // DCLP not on instance (since due to C++11 static this is threadsafe)
-    // but on loading the registry with known algorithms.
+    // DCLP not on singleton instance (since due to C++11 static standard behavior this is thread-safe)
+    // ... but on loading the registry with all known algorithms.
     if (!registry.initialized_) {
         static std::mutex initialize_mutex;
         std::lock_guard<std::mutex> lock(initialize_mutex);
@@ -98,7 +97,7 @@ static Registry & GetRegistryInstance() {
 std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
 
     auto & registry = GetRegistryInstance();
-    std::shared_ptr<Factory::Producer> producer = nullptr;
+    std::shared_ptr<Factory::Producer> producer;
 
     {
         std::lock_guard<std::mutex> lock(registry.mutex_);

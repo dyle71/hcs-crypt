@@ -20,10 +20,10 @@ struct CryptoClientArguments {
     std::string error_string_;                  //!< @brief Error encountered while parsing.
     std::string algorithm_;                     //!< @brief Algorithm to use.
     bool list_algorithms_ = false;              //!< @brief List all known algorithms.
-    bool proceed_ = false;                      //!< @brief Show version.
+    bool proceed_ = false;                      //!< @brief Proceed and run a particular algorithm or stop.
     bool verbose_ = false;                      //!< @brief Verbosity flag.
     bool version_ = false;                      //!< @brief Show version.
-    std::list<std::string> input_files_;        //!< @brief Alle the input files (if size() == 0 ==> stdin).
+    std::list<std::string> input_files_;        //!< @brief All the input files (if size() == 0 ==> use stdin).
 
     /**
      * @brief   Checks if the given configuration is ok.

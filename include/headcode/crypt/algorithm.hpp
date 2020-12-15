@@ -22,7 +22,7 @@ namespace headcode::crypt {
 
 /**
  * @brief   The Algorithm class is the abstract class for any crypto-algorithm.
- * Hashes, encryptor and decryptor are all algorithms in this sense:
+ * Hashes, encryptor and decrypter are all algorithms in this sense:
  * - an algorithm instance is created. This may or may not use an initial key.
  * - data is (repeatedly) added to the algorithm instance, which changes its inner state.
  * - at last the algorithm instance is finalized, again sometimes with a final key and sometime not.
@@ -165,7 +165,7 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * The object **WILL NOT** be initialzed twice.
+     * The object **WILL NOT** be initialized twice.
      * @param   data        the initial data (== initial key) to use, if any
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -176,7 +176,7 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * The object **WILL NOT** be initialzed twice.
+     * The object **WILL NOT** be initialized twice.
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.

@@ -9,7 +9,6 @@
 #include <argp.h>
 
 #include <iostream>
-#include <string>
 
 #include <headcode/crypt/crypt.hpp>
 
@@ -29,7 +28,7 @@ is ommited then stdin is read.\n\
 OPTIONS:\n\
 "
 
-#define LONG_ONLY_OPTION        1000
+#define LONG_ONLY_OPTION 1000
 
 
 /**
@@ -64,10 +63,11 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
-        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},        // list option: list all known algorithms
-        {"verbose", 'v', 0, 0, "Be verbose.", 0},                  // verbose mode
-        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                // show version and exit
-        {0, 0, 0, 0, 0, 0}                                         // trailing entry
+        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},        // list option: list all known
+                                                                                        // algorithms
+        {"verbose", 'v', 0, 0, "Be verbose.", 0},                                       // verbose mode
+        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
+        {0, 0, 0, 0, 0, 0}                                                              // trailing entry
 };
 
 
@@ -150,6 +150,7 @@ bool VerifyAlgorithm(std::string const & algorithm) {
     auto known_symmetric_cyphers =
             headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::CYPHER_SYMMETRIC);
     auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
+
     for (auto const & set : {known_symmetric_cyphers, known_hashes}) {
         auto iter = set.find(algorithm);
         if (iter != set.end()) {

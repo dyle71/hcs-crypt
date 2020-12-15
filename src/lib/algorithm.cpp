@@ -43,8 +43,7 @@ int Algorithm::Finalize(std::vector<std::byte> & result, char const * data, std:
         assert(data != nullptr && "Finalizing algorithm with data is NULL/nullptr while data size is > 0.");
     }
 
-    int res = 0;
-    res = Finalize_(result, data, size);
+    int res = Finalize_(result, data, size);
     if (res == 0) {
         finalized_ = true;
     }

@@ -20,8 +20,8 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "nohash",                                          // name
             Family::HASH,                                      // family
-            {false, 0},                                        // initial key
-            {false, 0},                                        // final key
+            {0ul, false},                                      // initial key
+            {0ul, false},                                      // final key
             "NOHASH: not a real hash, always return 0."        // description
     };
     return description;

@@ -95,7 +95,7 @@ public:
      * @brief   Registers a producer, which can create algorithm instance of a specific name and family.
      * @param   name        the name of the algorithm to be registered.
      * @param   family      the family to which the algorithm belongs to.
-     * @param   producer    the Prdocer instance.
+     * @param   producer    the Producer instance.
      */
     static void Register(std::string const & name, Family family, std::shared_ptr<Factory::Producer> producer);
 };

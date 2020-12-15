@@ -6,8 +6,8 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_NOHASH_HPP
-#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_NOHASH_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMETRIC_NOHASH_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMETRIC_NOHASH_HPP
 
 #include <headcode/crypt/algorithm.hpp>
 
