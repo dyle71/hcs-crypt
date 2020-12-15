@@ -80,9 +80,10 @@ public:
 static Registry & GetRegistryInstance() {
 
     static Registry registry;
-    if (!registry.initialized_) {
 
-        // avoid race conditions on double init calls
+    // DCLP not on instance (since due to C++11 static this is threadsafe)
+    // but on loading the registry with known algorithms.
+    if (!registry.initialized_) {
         static std::mutex initialize_mutex;
         std::lock_guard<std::mutex> lock(initialize_mutex);
         if (!registry.initialized_) {
