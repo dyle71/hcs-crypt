@@ -11,13 +11,13 @@ set(CRYPT_SRC
 
     algorithm.cpp
     factory.cpp
+    family.cpp
     register.cpp
 
     cypher_symmetric/copy.cpp
-    cypher_symmetric/ltc_aes_ecb_128.cpp
 
-    hash/ltc_md5.cpp
     hash/nohash.cpp
+    hash/ltc/ltc_md5.cpp
 )
 
 add_library(hcs-crypt STATIC ${CRYPT_SRC})

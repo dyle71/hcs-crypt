@@ -164,6 +164,7 @@ execute_process(COMMAND make -f makefile.unix libtomcrypt.a
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/src/headers)
+link_libraries(${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/libtomcrypt.a)
 
 
 # ------------------------------------------------------------

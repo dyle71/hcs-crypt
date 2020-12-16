@@ -22,7 +22,7 @@ using namespace headcode::crypt;
  */
 static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
-            "nohash",                           // name
+            "ltc-md5",                          // name
             Family::HASH,                       // family
             {0ul, "Not needed.", false},        // initial key
             {0ul, "Not needed.", false},        // final key
@@ -55,26 +55,14 @@ public:
 };
 
 
-/**
- * @brief   The inner state of the LibTomCrypt MD5
- */
-class LTCMD5::State {
-public:
-
-    hash_state hash_state_;
-
-
-};
-
-
-int LTCMD5::Add_(char const *, std::uint64_t) {
-    return 0;
+int LTCMD5::Add_(char const * data, std::uint64_t size) {
+    return md5_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
 }
 
 
 int LTCMD5::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.clear();
-    return 0;
+    result.resize(md5_desc.hashsize);
+    return md5_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
 }
 
 
@@ -84,7 +72,7 @@ Algorithm::Description const & LTCMD5::GetDescription_() const {
 
 
 int LTCMD5::Initialize_(char const *, std::uint64_t) {
-    return 0;
+    return md5_init(&GetState());
 }
 
 

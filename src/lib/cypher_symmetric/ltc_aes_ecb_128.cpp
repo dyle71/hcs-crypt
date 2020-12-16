@@ -8,9 +8,9 @@
 
 #include <cstring>
 
-#include <tomcrypt.h>
-
 #include <headcode/crypt/factory.hpp>
+
+#include <tomcrypt.h>
 
 #include "ltc_aes_ecb_128.hpp"
 

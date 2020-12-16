@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "cli.hpp"
+#include "list_algorithms.hpp"
 
 
 int main(int argc, char ** argv) {
@@ -22,6 +23,11 @@ int main(int argc, char ** argv) {
 
     if (config.version_) {
         ShowVersion();
+        return 0;
+    }
+
+    if (config.list_algorithms_) {
+        ListAlgorithms(std::cout, config.verbose_);
         return 0;
     }
 

@@ -13,6 +13,7 @@ set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
 set(UNIT_TEST_SRC
 
     test_factory.cpp
+    test_family.cpp
     test_version.cpp
 
     ${CMAKE_SOURCE_DIR}/src/bin/cli.cpp

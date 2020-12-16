@@ -11,7 +11,7 @@
 
 #include <memory>
 
-#include <headcode/crypt/algorithm.hpp>
+#include "ltc_hash.hpp"
 
 
 namespace headcode::crypt {
@@ -21,10 +21,7 @@ namespace headcode::crypt {
  * @brief   The NOHASH algorithm.
  * This is actually not a real hash, it will always return an empty result.
  */
-class LTCMD5 : public Algorithm {
-
-    class State;                          //!< @brief Forward declaration of an inner state.
-    std::shared_ptr<State> state_;        //!< @brief The inner state.
+class LTCMD5 : public LTCHash {
 
 public:
     /**

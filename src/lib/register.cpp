@@ -9,10 +9,15 @@
 #include "register.hpp"
 
 #include "cypher_symmetric/copy.hpp"
+
 #include "hash/nohash.hpp"
+#include "hash/ltc/ltc_md5.hpp"
 
 
 void headcode::crypt::RegisterKnownAlgorithms() {
+
     Copy::Register();
+
     NoHash::Register();
+    LTCMD5::Register();
 }
