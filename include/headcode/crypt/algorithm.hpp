@@ -41,23 +41,26 @@ public:
      */
     struct Description {
         /**
-         * @brief   This structure defines requirements for keys used.
-         * This structure describes the requirement for key data used in the algorithms.
-         * Some algorithms need initial key values, some need final key values, some need none, some need both.
-         * The `needed_` field defines if the particular key is needed at all and the `size_` field
-         * holds the size in bytes of the key needed.
-         * NOTE: a `size_` field value of 0 with `needed_` set to true, indicates that the size of the
-         * key needed is not fixed.
+         * @brief   This structure defines requirements for input data (most likely the key) used.
+         * This structure describes the requirement for input data used in the algorithms. Some algorithms need
+         * initial key values, some need final key values, some need none, some need both. The `needed_` field
+         * defines if the particular key is needed at all and the `size_` field holds the size in bytes of the
+         * key needed. **NOTE**: a `size_` field value of 0 with `needed_` set to true, indicates that the size
+         * of the key needed is not fixed.
+         *
+         * The data in here is _most likely_ a key. But may also hold an input vector (IV) or any other
+         * data which is needed for a particular algorithm instance.
          */
-        struct KeyDefinition {
+        struct ArgumentDefinition {
             std::uint64_t size_;         //!< @brief Defines the size in bytes of the key (special meaning for value 0).
+            std::string description_;     //!< @brief A description of this input data.
             bool needed_ = false;        //!< @brief States that this key is needed.
         };
 
         std::string name_;                            //!< @brief The name of this algorithm.
         Family family_;                               //!< @brief The family of the algorithm.
-        KeyDefinition initial_key_definition_;        //!< @brief The requirements of the initial key used.
-        KeyDefinition final_key_definition_;          //!< @brief The requirements of the final key used.
+        ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
+        ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
         std::string description_;                     //!< @brief A human readable description of the algorithm.
     };
 

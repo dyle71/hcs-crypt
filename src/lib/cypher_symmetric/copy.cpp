@@ -24,8 +24,8 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "copy",                                                          // name
             Family::CYPHER_SYMMETRIC,                                        // family
-            {0ul, false},                                                    // initial key
-            {0ul, false},                                                    // final key
+            {0ul, "Not needed.", false},                                     // initial key
+            {0ul, "Not needed.", false},                                     // final key
             "COPY: not a real cypher. Simply copies input to output."        // description
     };
     return description;
@@ -41,8 +41,8 @@ public:
      * @brief   Call operator - creates the algorithm.
      * @return  A new algorithm instance.
      */
-    std::shared_ptr<Algorithm> operator()() const override {
-        return std::make_shared<Copy>();
+    std::unique_ptr<Algorithm> operator()() const override {
+        return std::make_unique<Copy>();
     }
 
     /**

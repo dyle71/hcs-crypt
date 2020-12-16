@@ -26,8 +26,8 @@ TEST(CryptSymmetric_Copy, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::CYPHER_SYMMETRIC);
     EXPECT_FALSE(description.description_.empty());
 
-    EXPECT_FALSE(description.final_key_definition_.needed_);
-    EXPECT_FALSE(description.initial_key_definition_.needed_);
+    EXPECT_FALSE(description.final_argument_.needed_);
+    EXPECT_FALSE(description.initial_argument_.needed_);
 }
 
 

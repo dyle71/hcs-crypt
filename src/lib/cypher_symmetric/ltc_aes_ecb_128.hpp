@@ -6,8 +6,11 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_HASH_NOHASH_HPP
-#define HEADCODE_SPACE_CRYPT_HASH_NOHASH_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_ECB_128_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_ECB_128_HPP
+
+#include <cstddef>
+#include <vector>
 
 #include <headcode/crypt/algorithm.hpp>
 
@@ -16,10 +19,9 @@ namespace headcode::crypt {
 
 
 /**
- * @brief   The NOHASH algorithm.
- * This is actually not a real hash, it will always return an empty result.
+ * @brief   The LibTomCrypt AES ECB 128 Bit Cypher.
  */
-class NoHash : public Algorithm {
+class LTCAESECB128 : public Algorithm {
 
 public:
     /**

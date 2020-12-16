@@ -94,7 +94,7 @@ static Registry & GetRegistryInstance() {
 }
 
 
-std::shared_ptr<Algorithm> Factory::Create(std::string const & name) {
+std::unique_ptr<Algorithm> Factory::Create(std::string const & name) {
 
     auto & registry = GetRegistryInstance();
     std::shared_ptr<Factory::Producer> producer;

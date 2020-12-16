@@ -6,8 +6,10 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_HASH_NOHASH_HPP
-#define HEADCODE_SPACE_CRYPT_HASH_NOHASH_HPP
+#ifndef HEADCODE_SPACE_CRYPT_HASH_LTC_MD5_HPP
+#define HEADCODE_SPACE_CRYPT_HASH_LTC_MD5_HPP
+
+#include <memory>
 
 #include <headcode/crypt/algorithm.hpp>
 
@@ -19,7 +21,10 @@ namespace headcode::crypt {
  * @brief   The NOHASH algorithm.
  * This is actually not a real hash, it will always return an empty result.
  */
-class NoHash : public Algorithm {
+class LTCMD5 : public Algorithm {
+
+    class State;                          //!< @brief Forward declaration of an inner state.
+    std::shared_ptr<State> state_;        //!< @brief The inner state.
 
 public:
     /**

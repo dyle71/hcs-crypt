@@ -8,23 +8,25 @@
 
 #include <headcode/crypt/factory.hpp>
 
-#include "nohash.hpp"
+#include <tomcrypt.h>
+
+#include "ltc_md5.hpp"
 
 
 using namespace headcode::crypt;
 
 
 /**
- * @brief   The NOHASH algorithm description.
+ * @brief   The LibTomCrypt MD5 algorithm description.
  * @return  The description of this algorithm.
  */
 static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
-            "nohash",                                          // name
-            Family::HASH,                                      // family
-            {0ul, "Not needed.", false},                       // initial key
-            {0ul, "Not needed.", false},                       // final key
-            "NOHASH: not a real hash, always return 0."        // description
+            "nohash",                           // name
+            Family::HASH,                       // family
+            {0ul, "Not needed.", false},        // initial key
+            {0ul, "Not needed.", false},        // final key
+            "LibTomCrypt MD5."                  // description
     };
     return description;
 }
@@ -33,14 +35,14 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class NoHashProducer : public Factory::Producer {
+class LTCMD5Producer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
      * @return  A new algorithm instance.
      */
     std::unique_ptr<Algorithm> operator()() const override {
-        return std::make_unique<NoHash>();
+        return std::make_unique<LTCMD5>();
     }
 
     /**
@@ -53,28 +55,34 @@ public:
 };
 
 
-int NoHash::Add_(char const *, std::uint64_t) {
+/**
+ * @brief   The inner state of the LibTomCrypt MD5
+ */
+class LTCMD5::State {};
+
+
+int LTCMD5::Add_(char const *, std::uint64_t) {
     return 0;
 }
 
 
-int NoHash::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
+int LTCMD5::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
     result.clear();
     return 0;
 }
 
 
-Algorithm::Description const & NoHash::GetDescription_() const {
+Algorithm::Description const & LTCMD5::GetDescription_() const {
     return ::GetDescription();
 }
 
 
-int NoHash::Initialize_(char const *, std::uint64_t) {
+int LTCMD5::Initialize_(char const *, std::uint64_t) {
     return 0;
 }
 
 
-void NoHash::Register() {
+void LTCMD5::Register() {
     auto description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<NoHashProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<LTCMD5Producer>());
 }

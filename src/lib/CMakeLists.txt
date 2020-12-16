@@ -14,7 +14,9 @@ set(CRYPT_SRC
     register.cpp
 
     cypher_symmetric/copy.cpp
+    cypher_symmetric/ltc_aes_ecb_128.cpp
 
+    hash/ltc_md5.cpp
     hash/nohash.cpp
 )
 

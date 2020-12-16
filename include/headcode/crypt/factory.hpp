@@ -36,7 +36,7 @@ public:
          * @brief   Call operator - creates the algorithm.
          * @return  A new algorithm instance.
          */
-        virtual std::shared_ptr<Algorithm> operator()() const = 0;
+        virtual std::unique_ptr<Algorithm> operator()() const = 0;
 
         /**
          * @brief   Gets the algorithm description.
@@ -82,7 +82,7 @@ public:
      * @param   name        the name of the algorithm to create.
      * @return  A shared pointer pointing to an object (which may be nullptr in case of failure).
      */
-    static std::shared_ptr<Algorithm> Create(std::string const & name);
+    static std::unique_ptr<Algorithm> Create(std::string const & name);
 
     /**
      * @brief   Gets a list of all known algorithms and their descriptions per family.
