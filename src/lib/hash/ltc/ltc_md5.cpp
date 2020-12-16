@@ -58,7 +58,13 @@ public:
 /**
  * @brief   The inner state of the LibTomCrypt MD5
  */
-class LTCMD5::State {};
+class LTCMD5::State {
+public:
+
+    hash_state hash_state_;
+
+
+};
 
 
 int LTCMD5::Add_(char const *, std::uint64_t) {
