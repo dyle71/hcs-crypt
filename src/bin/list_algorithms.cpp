@@ -13,25 +13,43 @@
 #error "Need ioctl for terminal width. Unsuppoted platform."
 #endif
 
+#include <cstring>
+
 #include <algorithm>
 #include <iomanip>
+#include <string>
+#include <tuple>
+#include <utility>
 
 #include <headcode/crypt/crypt.hpp>
 
+#include "algorithm_row.hpp"
 #include "list_algorithms.hpp"
 
 using namespace headcode::crypt;
 
 
 /**
- * @brief   Returns the width of the current terminal.
- * @return  The width of the current terminals in characters.
+ * @brief   Turns the given set of algorithm data into algorithm rows.
+ * @param   row             the final computed set of algorithm rows.
+ * @param   algorithms      the set of exsiting algortihms.
  */
-int GetTerminalWidth() {
+static void CollectAlgortihmsRows(std::map<std::string, AlgorithmRow> row, std::map<std::string, Algorithm::Description> const & algorithms) {
+    for (const auto & pair : algorithms) {
+        row.emplace(pair.first, AlgorithmRow{pair.first, pair.second});
+    }
+}
+
+
+/**
+ * @brief   Returns the width of the current terminal.
+ * @return  The width and height of the current terminals in characters.
+ */
+static std::tuple<unsigned int, unsigned int> GetTerminalSize() {
 #ifdef __linux__
-    struct winsize w;
+    struct winsize w {};
     ioctl(0, TIOCGWINSZ, &w);
-    return w.ws_col;
+    return std::make_tuple(w.ws_col, w.ws_row);
 #endif
 }
 
@@ -41,7 +59,7 @@ int GetTerminalWidth() {
  * @param   out             stream to dump to.
  * @param   algorithms      name and description mapping.
  */
-void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
+static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
 
     for (auto const & pair : algorithms) {
         out << "    " << pair.first << "\n";
@@ -54,7 +72,10 @@ void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::D
  * @param   out             stream to dump to.
  * @param   algorithms      name and description mapping.
  */
-void ListAlgorithmsVerbose(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
+static void ListAlgorithmsVerbose(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
+
+
+
 
     // all verbose column headers
     static std::string const column_header_name{"name"};
@@ -73,15 +94,13 @@ void ListAlgorithmsVerbose(std::ostream & out, std::map<std::string, Algorithm::
     }
 
     // divide the available space
-    unsigned int max_width = GetTerminalWidth();
-    auto available_width = max_width - 1;
+    auto [terminal_width, _] = GetTerminalSize();
+    auto available_width = terminal_width - 1;
 
     // output
     for (auto const & pair : algorithms) {
-        out << std::setw(column_max_width.max_name_) << pair.first
-            << " "
-            << std::setw(column_max_width.max_description_) << pair.second.description_
-            << "\n";
+        out << std::setw(column_max_width.max_name_) << pair.first << " "
+            << std::setw(column_max_width.max_description_) << pair.second.description_ << "\n";
     }
 }
 

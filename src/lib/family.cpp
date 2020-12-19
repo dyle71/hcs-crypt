@@ -12,7 +12,7 @@
 #include <headcode/crypt/family.hpp>
 
 
-std::string headcode::crypt::GetFamilyText(headcode::crypt::Family family) {
+std::string const & headcode::crypt::GetFamilyText(headcode::crypt::Family family) {
 
     static std::map<headcode::crypt::Family, std::string> const known_family_texts = {
         {headcode::crypt::Family::CYPHER_SYMMETRIC, "symmetric cyphers"},

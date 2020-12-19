@@ -27,7 +27,7 @@ enum class Family {
  * @brief   Returns a human readable text for a crypto family.
  * @return  A text describing the crypto family.
  */
-std::string GetFamilyText(Family family);
+std::string const & GetFamilyText(Family family);
 
 }
 
