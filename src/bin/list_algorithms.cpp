@@ -13,13 +13,10 @@
 #error "Need ioctl for terminal width. Unsuppoted platform."
 #endif
 
-#include <cstring>
-
 #include <algorithm>
 #include <iomanip>
 #include <string>
 #include <tuple>
-#include <utility>
 
 #include <headcode/crypt/crypt.hpp>
 
@@ -34,9 +31,11 @@ using namespace headcode::crypt;
  * @param   row             the final computed set of algorithm rows.
  * @param   algorithms      the set of exsiting algortihms.
  */
-static void CollectAlgortihmsRows(std::map<std::string, AlgorithmRow> row, std::map<std::string, Algorithm::Description> const & algorithms) {
-    for (const auto & pair : algorithms) {
-        row.emplace(pair.first, AlgorithmRow{pair.first, pair.second});
+static void CollectAlgorithmRows(std::map<std::string, AlgorithmRow> row,
+                                 std::map<std::string, Algorithm::Description> const & algorithms) {
+
+    for (const auto & [name, description] : algorithms) {
+        row.emplace(name, AlgorithmRow{name, description});
     }
 }
 
@@ -61,8 +60,8 @@ static std::tuple<unsigned int, unsigned int> GetTerminalSize() {
  */
 static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
 
-    for (auto const & pair : algorithms) {
-        out << "    " << pair.first << "\n";
+    for (auto const & [name, _] : algorithms) {
+        out << "    " << name << "\n";
     }
 }
 
@@ -72,36 +71,17 @@ static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algor
  * @param   out             stream to dump to.
  * @param   algorithms      name and description mapping.
  */
-static void ListAlgorithmsVerbose(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
+static void ListAlgorithmsVerbose(std::ostream & out,
+                                  std::map<std::string, Algorithm::Description> const & algorithms) {
 
+    std::map<std::string, AlgorithmRow> row;
+    CollectAlgorithmRows(row, algorithms);
 
-
-
-    // all verbose column headers
-    static std::string const column_header_name{"name"};
-    static std::string const column_header_description{"description"};
-
-    // collect the maximum column widths
-    struct {
-        int max_name_ = column_header_name.size();
-        int max_description_ = column_header_description.size();
-    } column_max_width;
-
-    for (auto const & pair : algorithms) {
-        column_max_width.max_name_ = std::max<int>(pair.first.size(), column_max_width.max_name_);
-        column_max_width.max_description_ =
-                std::max<int>(pair.second.description_.size(), column_max_width.max_description_);
+    std::vector<unsigned int> max_column_width{AlgorithmRow::GetColumnCount()};
+    for (unsigned int column = 0; column < max_column_width.size(); ++column) {
+        max_column_width[column] = AlgorithmRow::GetColumnHeader(static_cast<AlgorithmRow::Column>(column)).size();
     }
-
-    // divide the available space
-    auto [terminal_width, _] = GetTerminalSize();
-    auto available_width = terminal_width - 1;
-
-    // output
-    for (auto const & pair : algorithms) {
-        out << std::setw(column_max_width.max_name_) << pair.first << " "
-            << std::setw(column_max_width.max_description_) << pair.second.description_ << "\n";
-    }
+    
 }
 
 

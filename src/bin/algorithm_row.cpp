@@ -23,6 +23,15 @@ AlgorithmRow::AlgorithmRow(std::string name, headcode::crypt::Algorithm::Descrip
           finalization_description_{algorithm_description.final_argument_.description_} {
 
     if (!algorithm_description.initial_argument_.needed_) {
+        initialziation_size_ = "not needed";
+    } else if (algorithm_description.initial_argument_.size_ == 0) {
+        initialziation_size_ = "varies";
+    }
+
+    if (!algorithm_description.final_argument_.needed_) {
+        finalization_size_ = "not needed";
+    } else if (algorithm_description.final_argument_.size_ == 0) {
+        finalization_size_ = "varies";
     }
 }
 
@@ -59,5 +68,28 @@ std::string const & AlgorithmRow::GetColumn(Column column) const {
     }
 
     static std::string const unknown_column{"unknown column"};
+    return unknown_column;
+}
+
+
+std::string const & AlgorithmRow::GetColumnHeader(Column column) {
+
+    static std::map<AlgorithmRow::Column, std::string> const column_headers {
+        {AlgorithmRow::Column::NAME, "name"},
+        {AlgorithmRow::Column::ALIAS, "alias"},
+        {AlgorithmRow::Column::FAMILY, "family"},
+        {AlgorithmRow::Column::SOURCE, "source library"},
+        {AlgorithmRow::Column::DESCRIPTION, "description"},
+        {AlgorithmRow::Column::INITIALIZATION_DESCRIPTION, "init data description"},
+        {AlgorithmRow::Column::INITIALIZATION_SIZE, "init data size"},
+        {AlgorithmRow::Column::FINALIZATION_DESCRIPTION, "final data description"},
+        {AlgorithmRow::Column::FINALIZATION_SIZE, "size"}
+    };
+    static std::string const unknown_column{"unknwn column"};
+
+    auto iter = column_headers.find(column);
+    if (iter == column_headers.end()) {
+        return iter->second;
+    }
     return unknown_column;
 }

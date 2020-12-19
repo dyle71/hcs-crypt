@@ -9,7 +9,6 @@
 #ifndef HEADCODE_SPACE_CRYPT_CRYPT_ALGORITHM_ROW_HPP
 #define HEADCODE_SPACE_CRYPT_CRYPT_ALGORITHM_ROW_HPP
 
-#include <list>
 #include <string>
 
 #include <headcode/crypt/algorithm.hpp>
@@ -97,6 +96,13 @@ public:
     std::string const & GetColumn(Column column) const;
 
     /**
+     * @brief   Gets the header text of a column.
+     * @param   column      the column requested.
+     * @return  the string labeling the column.
+     */
+    static std::string const & GetColumnHeader(Column column);
+
+    /**
      * @brief   Gets the description of the algorithm.
      * @return  The description of the algorithm.
      */
@@ -142,6 +148,14 @@ public:
      */
     std::string const & GetInitialziationSize() const {
         return initialziation_size_;
+    }
+
+    /**
+     * @brief   Returns the number of known columns.
+     * @return  The amount of columns we support.
+     */
+    static unsigned int GetColumnCount() {
+        return static_cast<unsigned int>(Column::FINALIZATION_SIZE) + 1;
     }
 
     /**
