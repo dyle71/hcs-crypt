@@ -110,6 +110,11 @@ static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algor
 }
 
 
+/**
+ * @brief   Prints a repitition of '-' spanning a whole line.
+ * @param   out             the stream to print to.
+ * @param   column_width    all the known columns.
+ */
 static void PrintSpanningLine(std::ostream & out, std::vector<unsigned int> const & column_width) {
 
     unsigned int length = 0;
@@ -137,7 +142,6 @@ static void ListAlgorithmsVerbose(std::ostream & out,
     AlgorithmRow header;
     ListAlgorithmRow(out, header, max_column_width);
     PrintSpanningLine(out, max_column_width);
-
     for (auto & [_, row] : rows) {
         ListAlgorithmRow(out, row, max_column_width);
     }

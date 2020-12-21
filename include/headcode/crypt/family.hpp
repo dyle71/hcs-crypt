@@ -9,6 +9,7 @@
 #ifndef HEADCODE_SPACE_CRYPT_FAMILY_HPP
 #define HEADCODE_SPACE_CRYPT_FAMILY_HPP
 
+#include <string>
 
 namespace headcode::crypt {
 
