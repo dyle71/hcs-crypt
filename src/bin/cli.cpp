@@ -99,6 +99,11 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
             break;
 
         case ARGP_KEY_ARG:
+            if (state->arg_num == 0) {
+                arguments->algorithm_ = arg;
+            } else {
+                arguments->input_files_.emplace_back(arg);
+            }
             break;
 
         case ARGP_KEY_NO_ARGS:

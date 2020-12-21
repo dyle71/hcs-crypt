@@ -52,16 +52,16 @@ public:
          * data which is needed for a particular algorithm instance.
          */
         struct ArgumentDefinition {
-            std::uint64_t size_;         //!< @brief Defines the size in bytes of the key (special meaning for value 0).
-            std::string description_;     //!< @brief A description of this input data.
-            bool needed_ = false;        //!< @brief States that this key is needed.
+            std::uint64_t size_;        //!< @brief Defines the size in bytes of the key (special meaning for value 0).
+            std::string description_;        //!< @brief A description of this input data.
+            bool needed_ = false;            //!< @brief States that this key is needed.
         };
 
-        std::string name_;                            //!< @brief The name of this algorithm.
-        Family family_;                               //!< @brief The family of the algorithm.
+        std::string name_;                           //!< @brief The name of this algorithm.
+        Family family_;                              //!< @brief The family of the algorithm.
         ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
         ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
-        std::string description_;                     //!< @brief A human readable description of the algorithm.
+        std::string description_;                    //!< @brief A human readable description of the algorithm.
     };
 
 private:

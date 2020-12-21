@@ -25,7 +25,6 @@ class LTCHash : public Algorithm {
     hash_state state_;        //!< @brief The inner hash state.
 
 protected:
-
     /**
      * @brief   Gets the inner LTC hash state.
      * @return  The current LTC hash state.

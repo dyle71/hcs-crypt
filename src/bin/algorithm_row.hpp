@@ -30,7 +30,6 @@ class AlgorithmRow {
     std::string finalization_description_;
 
 public:
-
     /**
      * @brief   The columns we on verbose
      */
