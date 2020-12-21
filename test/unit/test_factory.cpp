@@ -30,7 +30,7 @@ TEST(Factory, list_crypher_symmetric) {
 TEST(Factory, list_hashes) {
 
     auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
-    EXPECT_EQ(known_hashes.size(), 1ul);
+    EXPECT_EQ(known_hashes.size(), 2ul);
 
     EXPECT_NE(known_hashes.find("nohash"), known_hashes.end());
 }
