@@ -63,11 +63,13 @@ struct ARGPData {
  * @brief   ARGP: options.
  */
 static struct argp_option options_[] = {
-        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},        // list option: list all known
-                                                                                        // algorithms
-        {"verbose", 'v', 0, 0, "Be verbose.", 0},                                       // verbose mode
-        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
-        {0, 0, 0, 0, 0, 0}                                                              // trailing entry
+
+        // list option: list all known algorithms
+        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
+
+        {"verbose", 'v', 0, 0, "Be verbose.", 0},                             // verbose mode
+        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},        // show version and exit
+        {0, 0, 0, 0, 0, 0}                                                    // trailing entry
 };
 
 

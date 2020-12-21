@@ -47,6 +47,12 @@ public:
     };
 
     /**
+     * @brief Constructor
+     * This will create the header texts instead the value.
+     */
+    explicit AlgorithmRow();
+
+    /**
      * @brief   Constructor
      * @param   name                        name of the algorithm.
      * @param   algorithm_description       the algorithm description.
