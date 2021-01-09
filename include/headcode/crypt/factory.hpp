@@ -29,6 +29,9 @@ class Factory {
 public:
     /**
      * @brief   Each concrete algorithm declares a dedicated Producer.
+     * The factory does not manage algorithm instances but producer instances,
+     * which in turn create new algorithm objects on demand.
+     * Every algorithm has to declare its (proper) Producer class.
      */
     class Producer {
     public:

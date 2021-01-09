@@ -20,6 +20,7 @@ using namespace headcode::crypt;
 
 /**
  * @brief   Our algorithm registry.
+ * The is the "database" of all known algortihm producers.
  */
 class Registry {
 public:
@@ -118,6 +119,8 @@ std::unique_ptr<Algorithm> Factory::Create(std::string const & name) {
 
 
 std::map<std::string, Algorithm::Description> Factory::GetAlgorithmDescriptions(Family family) {
+
+    // TODO: optimize this for lazy loading
 
     auto & registry = GetRegistryInstance();
 

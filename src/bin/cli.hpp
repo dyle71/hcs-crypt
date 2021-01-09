@@ -32,7 +32,7 @@ struct CryptoClientArguments {
     bool IsConfigOk() const {
         return error_string_.empty();
     }
-};
+} __attribute__((aligned(128)));
 
 
 /**

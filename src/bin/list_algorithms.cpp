@@ -7,17 +7,10 @@
  */
 
 
-#ifdef __linux__
-#include <sys/ioctl.h>
-#else
-#error "Need ioctl for terminal width. Unsuppoted platform."
-#endif
-
 #include <algorithm>
 #include <iomanip>
 #include <string>
 #include <string_view>
-#include <tuple>
 
 #include <headcode/crypt/crypt.hpp>
 

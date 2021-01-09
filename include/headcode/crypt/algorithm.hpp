@@ -31,7 +31,7 @@ namespace headcode::crypt {
  * This is a very broad definition and probably not only crypto algorithm fit this approach, since
  * the initial and final keys themselves are basically just memory BLOBs holding anything an
  * algorithm can interpret as initial (or final) data to process.
- * There is one single caveat: an algorithm may be initialized only once but finalized multiple times.
+ * There is one single limitation: an algorithm may be initialized only once but finalized multiple times.
  */
 class Algorithm {
 
@@ -107,7 +107,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * @param   text        the text to add.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(std::string const & text);
 
@@ -117,7 +117,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * @param   data        the data to add.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(std::vector<std::byte> const & data);
 
@@ -128,7 +128,7 @@ public:
      * be examined in the context of the algorithm.
      * @param   data        the data to add.
      * @param   size        size of the data to add.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(char const * data, std::uint64_t size);
 
@@ -140,7 +140,7 @@ public:
      * You may Finalize the object multiple times.
      * @param   result      the result of the algorithm.
      * @param   data        the final data (== final key) to use, if any
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Finalize(std::vector<std::byte> & result, std::vector<std::byte> const & data = {});
 
@@ -153,7 +153,7 @@ public:
      * @param   result      the result of the algorithm.
      * @param   data        the finalization data (== final key) to use, if any
      * @param   size        size of the data used for finalization.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t size);
 
@@ -210,7 +210,7 @@ private:
      * be examined in the context of the algorithm.
      * @param   data        the data to add.
      * @param   size        size of the data to add.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if add was ok, else an error.
      */
     virtual int Add_(char const * data, std::uint64_t size) = 0;
 
@@ -222,7 +222,7 @@ private:
      * @param   result      the result of the algorithm.
      * @param   data        the finalization data (== final key) to use, if any
      * @param   size        size of the data used for finalization.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if finalize was ok, else an error.
      */
     virtual int Finalize_(std::vector<std::byte> & result, char const * data, std::uint64_t size) = 0;
 

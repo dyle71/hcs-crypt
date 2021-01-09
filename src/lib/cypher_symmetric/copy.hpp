@@ -38,7 +38,7 @@ private:
      * @brief   Adds data to the algorithm
      * @param   data        the data to add.
      * @param   size        size of the data to add.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if add was ok, else an error.
      */
     int Add_(char const * data, std::uint64_t size) override;
 
@@ -47,7 +47,7 @@ private:
      * @param   result      the result of the algorithm.
      * @param   data        the finalization data (== final key) to use, if any
      * @param   size        size of the data used for finalization.
-     * @return  0 if initialize was ok, else an error.
+     * @return  0 if finalize was ok, else an error.
      */
     int Finalize_(std::vector<std::byte> & result, char const * data, std::uint64_t size) override;
 
