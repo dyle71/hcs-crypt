@@ -22,6 +22,7 @@ set(UNIT_TEST_SRC
     cypher_symmetric/test_copy.cpp
 
     hash/test_nohash.cpp
+    hash/ltc/test_ltc_md5.cpp
 )
 
 add_executable(unit-tests ${UNIT_TEST_SRC})

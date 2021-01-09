@@ -35,10 +35,11 @@ TEST(Hash_NoHash, simple) {
     auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
 
-    auto text = std::string{"The quick brown fox jumps over the lazy dog"};
-    algo->Add(text);
+    auto text = std::string{"The quick brown fox jumps over the lazy dog."};
+
+    EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
-    algo->Finalize(hash);
+    EXPECT_EQ(algo->Finalize(hash), 0);
 
     EXPECT_EQ(hash.size(), 0ul);
 }
@@ -55,7 +56,7 @@ TEST(Hash_NoHash, regular) {
 
     // NOHASH: always returns empty value.
 
-    algo->Add(IPSUM_LOREM_TEXT);
+    EXPECT_EQ(algo->Add(IPSUM_LOREM_TEXT), 0);
     std::vector<std::byte> hash;
     ASSERT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), 0ul);
@@ -84,7 +85,7 @@ TEST(Hash_NoHash, noinit) {
 
     // NOHASH: always returns empty value.
 
-    algo->Add(IPSUM_LOREM_TEXT);
+    EXPECT_EQ(algo->Add(IPSUM_LOREM_TEXT), 0);
     std::vector<std::byte> hash;
     ASSERT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), 0ul);
