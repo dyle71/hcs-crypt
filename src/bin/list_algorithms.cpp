@@ -142,8 +142,8 @@ static void ListAlgorithmsVerbose(std::ostream & out,
     AlgorithmRow header;
     ListAlgorithmRow(out, header, max_column_width);
     PrintSpanningLine(out, max_column_width);
-    for (auto const & pair : rows) {
-        ListAlgorithmRow(out, pair.second, max_column_width);
+    for (auto & [_, row] : rows) {
+        ListAlgorithmRow(out, row, max_column_width);
     }
 }
 
