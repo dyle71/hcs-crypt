@@ -54,8 +54,7 @@ static void CollectAlgorithmColumnWidths(std::vector<unsigned int> & maximim_col
         maximim_column_width[column] = AlgorithmRow::GetColumnHeader(static_cast<AlgorithmRow::Column>(column)).size();
     }
 
-    for (auto const & pair : row) {
-        auto const & algorithm = pair.second;
+    for (auto const & [_, algorithm] : row) {
         for (unsigned int column = 0; column < maximim_column_width.size(); ++column) {
             auto const & column_text = algorithm.GetColumn(static_cast<AlgorithmRow::Column>(column));
             maximim_column_width[column] = std::max<unsigned int>(column_text.size(), maximim_column_width[column]);
@@ -105,8 +104,8 @@ static void ListAlgorithmRow(std::ostream & out,
  */
 static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
 
-    for (auto const & pair : algorithms) {
-        out << "    " << pair.second.name_ << "\n";
+    for (auto const & [name, _] : algorithms) {
+        out << "    " << name << "\n";
     }
 }
 
