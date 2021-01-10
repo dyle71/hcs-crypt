@@ -10,6 +10,10 @@ FROM fedora:32
 
 RUN /bin/sh -c 'yum check-update || echo'
 RUN yum -y update
+
+# installs necessary and optional packages
+# optional:
+#   - openssl-devel for OpenSSL support
 RUN yum -y install \
     gcc \
     g++ \
@@ -21,7 +25,8 @@ RUN yum -y install \
     doxygen \
     unzip \
     curl \
-    wget
+    wget \
+    openssl-devel
 RUN yum clean all
 
 # install non repository packages

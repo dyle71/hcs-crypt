@@ -10,6 +10,9 @@ FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+# installs necessary and optional packages
+# optional:
+#   - libssl-dev for OpenSSL support
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -21,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     graphviz \
     curl \
     wget \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # install non repository packages
