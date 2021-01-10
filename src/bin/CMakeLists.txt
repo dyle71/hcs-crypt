@@ -13,6 +13,7 @@ set(CRYPT_SRC
     cli.cpp
     list_algorithms.cpp
     main.cpp
+    run.cpp
 )
 
 add_executable(crypt ${CRYPT_SRC})

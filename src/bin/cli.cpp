@@ -23,7 +23,8 @@
     " -- a cryptography command line client.\n\
 \n\
 ALGORITHM is one of the list of known algorithms. Type --list to get the list of known algorithms supported. \
-If FILE is ommited then stdin is read.\n\
+If FILE is ommited then stdin is read. If more than one FILE is processed, than the output is multilined and \
+hex.\n\
 \n\
 OPTIONS:\n\
 "
@@ -66,6 +67,7 @@ static struct argp_option options_[] = {
 
         // list option: list all known algorithms
         {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
+        {"multiline", LONG_ONLY_OPTION + 'm', 0, 0, "Forces multiline output.", 0},
 
         {"hex", 'h', 0, 0, "Output has hexadeciaml ASCII character string.", 0},        // hex output
         {"verbose", 'v', 0, 0, "Be verbose.", 0},                                       // verbose mode
@@ -89,6 +91,10 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
         case LONG_ONLY_OPTION + 'l':
             arguments->list_algorithms_ = true;
+            break;
+
+        case LONG_ONLY_OPTION + 'm':
+            arguments->multiline_output_ = true;
             break;
 
         case LONG_ONLY_OPTION + 'v':
@@ -143,6 +149,8 @@ CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
             }
         }
     }
+
+    res.multiline_output_ |= res.input_files_.size() > 1;
 
     return res;
 }

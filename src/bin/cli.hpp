@@ -9,6 +9,7 @@
 #ifndef HEADCODE_SPACE_CRYPT_CRYPT_CLI_HPP
 #define HEADCODE_SPACE_CRYPT_CRYPT_CLI_HPP
 
+#include <cstdio>
 #include <list>
 #include <string>
 
@@ -26,6 +27,8 @@ struct CryptoClientArguments {
     bool verbose_ = false;                      //!< @brief Verbosity flag.
     bool version_ = false;                      //!< @brief Show version.
     std::list<std::string> input_files_;        //!< @brief All the input files (if size() == 0 ==> use stdin).
+    FILE * output_ = stdout;                    //!< @brief The output stream to write to.
+    bool multiline_output_ = false;             //!< @brief List output file by file. True, for more than 1 input file.
 
     /**
      * @brief   Checks if the given configuration is ok.

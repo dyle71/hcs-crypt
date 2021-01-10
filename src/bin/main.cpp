@@ -10,6 +10,7 @@
 
 #include "cli.hpp"
 #include "list_algorithms.hpp"
+#include "run.hpp"
 
 
 int main(int argc, char ** argv) {
@@ -31,14 +32,5 @@ int main(int argc, char ** argv) {
         return 0;
     }
 
-    std::cout << "algorithm: " << config.algorithm_ << std::endl;
-    if (config.input_files_.empty()) {
-        std::cout << "stdin://" << std::endl;
-    } else {
-        for (auto const & name : config.input_files_) {
-            std::cout << "name: " << name << std::endl;
-        }
-    }
-
-    return 0;
+    return Run(config);
 }
