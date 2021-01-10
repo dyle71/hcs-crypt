@@ -87,41 +87,6 @@ int Initialize(CryptoClientArguments const & , std::unique_ptr<headcode::crypt::
 
 
 /**
- * @brief   Process all input data.
- * @param   config          The config as requested by the user.
- * @param   algorithm       The algorithm instance.
- * @return  exit code (0 == success).
- */
-int ProcessInput(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::Algorithm> & algorithm) {
-
-    if (config.input_files_.empty()) {
-        Add(config, algorithm, stdin);
-    } else {
-
-        for (auto const & file_name : config.input_files_) {
-
-            auto input = std::fopen(file_name.c_str(), "rb");
-            if (input == nullptr) {
-                std::cerr << "Failed to open file: '" << file_name << "' - "
-                          << "Failed to open file: " << std::strerror(errno) << std::endl;
-                std::cerr << "Aborted." << std::endl;
-                return 1;
-            }
-
-            if (config.verbose_) {
-                std::cerr << "Opened file: " << file_name << std::endl;
-            }
-
-            Add(config, algorithm, input);
-            fclose(input);
-        }
-    }
-
-    return 0;
-}
-
-
-/**
  * @brief   Produce the output.
  * @param   config          The config as requested by the user.
  * @param   result          The result generated.
