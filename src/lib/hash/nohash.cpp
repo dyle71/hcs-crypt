@@ -19,13 +19,16 @@ using namespace headcode::crypt;
  * @return  The description of this algorithm.
  */
 static Algorithm::Description const & GetDescription() {
+
     static Algorithm::Description description = {
-            "nohash",                                          // name
-            Family::HASH,                                      // family
-            {0ul, "Not needed.", false},                       // initial key
-            {0ul, "Not needed.", false},                       // final key
-            "NOHASH: not a real hash, always return 0."        // description
+            "nohash",                                           // name
+            Family::HASH,                                       // family
+            {0ul, "Not needed.", false},                        // initial key
+            {0ul, "Not needed.", false},                        // final key
+            "NOHASH: not a real hash, always return 0.",        // description
+            std::string{"hcs-crypt v"} + VERSION                // provider
     };
+
     return description;
 }
 

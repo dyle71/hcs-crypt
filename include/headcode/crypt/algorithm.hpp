@@ -62,6 +62,7 @@ public:
         ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
         ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
         std::string description_;                    //!< @brief A human readable description of the algorithm.
+        std::string provider_;                       //!< @brief Names the provider of the algorithm.
     };
 
 private:

@@ -15,7 +15,7 @@ AlgorithmRow::AlgorithmRow()
         : name_{"Name"},
           alias_{"Alias"},
           family_{"Family"},
-          source_{"Source"},
+          provider_{"Provider"},
           description_{"Description"},
           initialziation_size_{"Init size"},
           initialziation_description_{"Init description"},
@@ -28,7 +28,7 @@ AlgorithmRow::AlgorithmRow(std::string name, headcode::crypt::Algorithm::Descrip
         : name_{std::move(name)},
           alias_{"ALIAS NOT IMPLEMENTED"},
           family_{GetFamilyText(algorithm_description.family_)},
-          source_{"SOURCE NOT IMPLEMENTED"},
+          provider_{algorithm_description.provider_},
           description_{algorithm_description.description_},
           initialziation_size_{std::to_string(algorithm_description.initial_argument_.size_)},
           initialziation_description_{algorithm_description.initial_argument_.description_},
@@ -61,8 +61,8 @@ std::string const & AlgorithmRow::GetColumn(Column column) const {
         case AlgorithmRow::Column::FAMILY:
             return GetFamily();
 
-        case AlgorithmRow::Column::SOURCE:
-            return GetSource();
+        case AlgorithmRow::Column::PROVIDER:
+            return GetProvider();
 
         case AlgorithmRow::Column::DESCRIPTION:
             return GetDescription();

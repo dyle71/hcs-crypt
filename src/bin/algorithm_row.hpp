@@ -22,7 +22,7 @@ class AlgorithmRow {
     std::string name_;
     std::string alias_;
     std::string family_;
-    std::string source_;
+    std::string provider_;
     std::string description_;
     std::string initialziation_size_;
     std::string initialziation_description_;
@@ -37,7 +37,7 @@ public:
         NAME = 0,                          //!< @brief Name of the algorithm.
         ALIAS,                             //!< @brief Name this algorithm is an alias of.
         FAMILY,                            //!< @brief Algorithm family.
-        SOURCE,                            //!< @brief Point of origin (library).
+        PROVIDER,                          //!< @brief Point of origin (library).
         DESCRIPTION,                       //!< @brief Algorithm Description.
         INITIALIZATION_DESCRIPTION,        //!< @brief Description of the init data.
         INITIALIZATION_SIZE,               //!< @brief Block size of the init in bytes.
@@ -175,8 +175,8 @@ public:
      * @brief   Gets the source library of the algorithm.
      * @return  The source library of the algorithm.
      */
-    std::string const & GetSource() const {
-        return source_;
+    std::string const & GetProvider() const {
+        return provider_;
     }
 };
 

@@ -17,6 +17,7 @@
  * @brief   The crypto client configuration.
  */
 struct CryptoClientArguments {
+
     std::string error_string_;                  //!< @brief Error encountered while parsing.
     std::string algorithm_;                     //!< @brief Algorithm to use.
     bool list_algorithms_ = false;              //!< @brief List all known algorithms.
@@ -32,6 +33,7 @@ struct CryptoClientArguments {
     bool IsConfigOk() const {
         return error_string_.empty();
     }
+
 } __attribute__((aligned(128)));
 
 
