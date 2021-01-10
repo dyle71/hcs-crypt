@@ -22,8 +22,8 @@
     PROGRAM_NAME              \
     " -- a cryptography command line client.\n\
 \n\
-COMMAND is one of {encrypt, decrypt, hash}. If FILE\n\
-is ommited then stdin is read.\n\
+ALGORITHM is one of the list of known algorithms. Type --list to get the list of known algorithms supported. \
+If FILE is ommited then stdin is read.\n\
 \n\
 OPTIONS:\n\
 "
@@ -54,7 +54,7 @@ struct ARGPData {
     /**
      * @brief   ARGP: arguments.
      */
-    char const * argp_arguments = "COMMAND [FILE]";
+    char const * argp_arguments = "ALGORITHM [FILE]";
 
 } argp_data_;
 
@@ -67,9 +67,10 @@ static struct argp_option options_[] = {
         // list option: list all known algorithms
         {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
 
-        {"verbose", 'v', 0, 0, "Be verbose.", 0},                             // verbose mode
-        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},        // show version and exit
-        {0, 0, 0, 0, 0, 0}                                                    // trailing entry
+        {"hex", 'h', 0, 0, "Output has hexadeciaml ASCII character string.", 0},        // hex output
+        {"verbose", 'v', 0, 0, "Be verbose.", 0},                                       // verbose mode
+        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
+        {0, 0, 0, 0, 0, 0}                                                              // trailing entry
 };
 
 
@@ -92,6 +93,10 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
         case LONG_ONLY_OPTION + 'v':
             arguments->version_ = true;
+            break;
+
+        case 'h':
+            arguments->hex_output_ = true;
             break;
 
         case 'v':
