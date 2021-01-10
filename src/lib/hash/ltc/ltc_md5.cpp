@@ -58,6 +58,11 @@ public:
 };
 
 
+LTCMD5::LTCMD5() {
+    md5_init(&GetState());
+}
+
+
 int LTCMD5::Add_(char const * data, std::uint64_t size) {
     return md5_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
 }

@@ -13,8 +13,17 @@ set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
 set(BENCHMARK_TEST_SRC
     test_copy.cpp
     test_nohash.cpp
+
+    ltc/test_ltc_md5.cpp
 )
 
-add_executable(benchmark-tests ${BENCHMARK_TEST_SRC})
+
+if (WITH_OPENSSL)
+    set(BENCHMARK_TEST_OPENSSL_SRC
+        openssl/test_openssl_md5.cpp
+    )
+endif()
+
+add_executable(benchmark-tests ${BENCHMARK_TEST_SRC} ${BENCHMARK_TEST_OPENSSL_SRC})
 target_link_libraries(benchmark-tests hcs-crypt gtest gtest_main gmock gmock_main ${CMAKE_REQUIRED_LIBRARIES})
 gtest_add_tests(benchmark-tests "" AUTO)

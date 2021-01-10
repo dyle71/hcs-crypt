@@ -28,7 +28,13 @@ public:
      */
     static void Register();
 
+    /**
+     * @brief   Constructor.
+     */
+    LTCMD5();
+
 private:
+
     /**
      * @brief   Adds data to the algorithm
      * @param   data        the data to add.

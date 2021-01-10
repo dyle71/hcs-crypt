@@ -8,7 +8,6 @@
 
 #include <chrono>
 #include <cstdint>
-#include <cstring>
 #include <iostream>
 
 #include <gtest/gtest.h>
@@ -20,13 +19,13 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkCopy, CopyStdString1000) {
+TEST(BenchmarkOpenSSLMD5, OpenSSLMD5StdString1000) {
 
     auto loop_count = 1'000u;
 
-    auto algo = headcode::crypt::Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
-    EXPECT_STREQ(algo->GetDescription().name_.c_str(), "copy");
+    EXPECT_STREQ(algo->GetDescription().name_.c_str(), "openssl-md5");
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
@@ -37,17 +36,20 @@ TEST(BenchmarkCopy, CopyStdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkCopy::CopyStdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5StdString1000 ");
+
+    auto expected = std::string{"5ae330648ff2b41fbd2d1b5caa6ed2d6"};
+    EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(BenchmarkCopy, CopyCArray1000) {
+TEST(BenchmarkOpenSSLMD5, OpenSSLMD5CArray1000) {
 
     auto loop_count = 1'000u;
 
-    auto algo = headcode::crypt::Factory::Create("copy");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
-    EXPECT_STREQ(algo->GetDescription().name_.c_str(), "copy");
+    EXPECT_STREQ(algo->GetDescription().name_.c_str(), "openssl-md5");
 
     auto array = IPSUM_LOREM_TEXT.c_str();
     auto size = std::strlen(array);
@@ -61,5 +63,8 @@ TEST(BenchmarkCopy, CopyCArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkCopy::CopyCArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5CArray1000 ");
+
+    auto expected = std::string{"5ae330648ff2b41fbd2d1b5caa6ed2d6"};
+    EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

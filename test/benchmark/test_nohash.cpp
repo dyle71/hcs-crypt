@@ -33,9 +33,9 @@ TEST(BenchmarkNoHash, NoHashStdString1000) {
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
-
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
+
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkNoHash::NoHashStdString1000 ");
 }
 
@@ -57,8 +57,8 @@ TEST(BenchmarkNoHash, NoHashCArray1000) {
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
-
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
+
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkNoHash::NoHashCArray1000 ");
 }
