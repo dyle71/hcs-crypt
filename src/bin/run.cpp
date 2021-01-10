@@ -204,7 +204,7 @@ int Run(CryptoClientArguments const & config) {
                 break;
             }
 
-            // use a new algorithm instance time
+            // use a new algorithm instance next time
             algorithm = headcode::crypt::Factory::Create(config.algorithm_);
         }
     }
