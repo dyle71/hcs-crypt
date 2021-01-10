@@ -101,5 +101,3 @@ TEST(CryptSymmetric_Copy, noinit) {
     EXPECT_FALSE(algo->IsInitialized());
     EXPECT_TRUE(algo->IsFinalized());
 }
-
-

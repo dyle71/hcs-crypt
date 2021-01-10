@@ -93,5 +93,3 @@ TEST(Hash_NoHash, noinit) {
     EXPECT_FALSE(algo->IsInitialized());
     EXPECT_TRUE(algo->IsFinalized());
 }
-
-

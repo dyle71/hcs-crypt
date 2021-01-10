@@ -34,7 +34,6 @@ public:
     LTCMD5();
 
 private:
-
     /**
      * @brief   Adds data to the algorithm
      * @param   data        the data to add.

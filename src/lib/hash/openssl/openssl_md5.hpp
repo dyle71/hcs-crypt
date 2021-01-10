@@ -24,7 +24,6 @@ class OpenSSLMD5 : public Algorithm {
     MD5_CTX md5_ctx_;        //!< @brief The OpenSSL MD5 context used.
 
 public:
-
     /**
      * @brief   Constructor.
      */

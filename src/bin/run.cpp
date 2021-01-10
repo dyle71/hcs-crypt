@@ -80,7 +80,7 @@ int Finalize(std::vector<std::byte> & result,
  * @param   algorithm       The algorithm instance.
  * @return  exit code (0 == success).
  */
-int Initialize(CryptoClientArguments const & , std::unique_ptr<headcode::crypt::Algorithm> & algorithm) {
+int Initialize(CryptoClientArguments const &, std::unique_ptr<headcode::crypt::Algorithm> & algorithm) {
     // TODO: check on initialize data
     return algorithm->Initialize();
 }
@@ -108,7 +108,9 @@ void ProcessOutputBlock(CryptoClientArguments const & config, char const * data,
  * @param   name            The name of stream to read from.
  * @param   result          The result generated.
  */
-void ProcessOutput(CryptoClientArguments const & config, std::string const & name, std::vector<std::byte> const & result) {
+void ProcessOutput(CryptoClientArguments const & config,
+                   std::string const & name,
+                   std::vector<std::byte> const & result) {
 
     if (config.multiline_output_) {
         std::fprintf(config.output_, "%s: ", name.c_str());
@@ -138,7 +140,10 @@ void ProcessOutput(CryptoClientArguments const & config, std::string const & nam
  * @param   stream          The stream to read from.
  * @return  exit code (0 == success).
  */
-int Process(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::Algorithm> & algorithm, std::string const & name, FILE * stream) {
+int Process(CryptoClientArguments const & config,
+            std::unique_ptr<headcode::crypt::Algorithm> & algorithm,
+            std::string const & name,
+            FILE * stream) {
 
     int res = Initialize(config, algorithm);
     if (res != 0) {
@@ -199,7 +204,7 @@ int Run(CryptoClientArguments const & config) {
                 break;
             }
 
-            // use a new algorithm instance
+            // use a new algorithm instance time
             algorithm = headcode::crypt::Factory::Create(config.algorithm_);
         }
     }
