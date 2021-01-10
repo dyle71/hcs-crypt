@@ -80,6 +80,6 @@ int LTCMD5::Initialize_(char const *, std::uint64_t) {
 
 
 void LTCMD5::Register() {
-    auto description = ::GetDescription();
+    auto const & description = ::GetDescription();
     Factory::Register(description.name_, description.family_, std::make_shared<LTCMD5Producer>());
 }

@@ -25,6 +25,13 @@ set(UNIT_TEST_SRC
     hash/ltc/test_ltc_md5.cpp
 )
 
-add_executable(unit-tests ${UNIT_TEST_SRC})
+if (WITH_OPENSSL)
+    set(UNIT_TEST_OPENSSL_SRC
+        hash/openssl/test_openssl_md5.cpp
+    )
+endif ()
+
+
+add_executable(unit-tests ${UNIT_TEST_SRC} ${UNIT_TEST_OPENSSL_SRC})
 target_link_libraries(unit-tests hcs-crypt gtest gtest_main gmock gmock_main ${CMAKE_REQUIRED_LIBRARIES})
 gtest_add_tests(unit-tests "" AUTO)

@@ -6,23 +6,30 @@
  * https://www.headcode.space, <info@headcode.space>
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_HASH_LTC_MD5_HPP
-#define HEADCODE_SPACE_CRYPT_HASH_LTC_MD5_HPP
+#ifndef HEADCODE_SPACE_CRYPT_HASH_OPENSSL_MD5_HPP
+#define HEADCODE_SPACE_CRYPT_HASH_OPENSSL_MD5_HPP
 
-#include <memory>
+#include <headcode/crypt/algorithm.hpp>
 
-#include "ltc_hash.hpp"
-
+#include <openssl/md5.h>
 
 namespace headcode::crypt {
 
 
 /**
- * @brief   The libtomcrypt MD5 algorithm.
+ * @brief   The OpenSSL MD5 hash.
  */
-class LTCMD5 : public LTCHash {
+class OpenSSLMD5 : public Algorithm {
+
+    MD5_CTX md5_ctx_;        //!< @brief The OpenSSL MD5 context used.
 
 public:
+
+    /**
+     * @brief   Constructor.
+     */
+    OpenSSLMD5();
+
     /**
      * @brief   Register this class of algorithms.
      */

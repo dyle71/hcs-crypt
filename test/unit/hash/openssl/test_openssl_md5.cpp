@@ -14,15 +14,15 @@
 #include "shared/ipsum_lorem.hpp"
 
 
-TEST(Hash_LTCMD5, creation) {
+TEST(Hash_OpenSSLMD5, creation) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-md5");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_EQ(algo->Initialize(), 0);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "ltc-md5");
+    EXPECT_STREQ(description.name_.c_str(), "openssl-md5");
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
 
@@ -31,9 +31,9 @@ TEST(Hash_LTCMD5, creation) {
 }
 
 
-TEST(Hash_LTCMD5, simple) {
+TEST(Hash_OpenSSLMD5, simple) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-md5");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
 
     auto text = std::string{"The quick brown fox jumps over the lazy dog."};
@@ -46,11 +46,11 @@ TEST(Hash_LTCMD5, simple) {
 }
 
 
-TEST(Hash_LTCMD5, regular) {
+TEST(Hash_OpenSSLMD5, regular) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-md5");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
-    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "ltc-md5");
+    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "openssl-md5");
     EXPECT_EQ(algo->Initialize(), 0);
     EXPECT_TRUE(algo->IsInitialized());
     EXPECT_FALSE(algo->IsFinalized());
@@ -67,11 +67,11 @@ TEST(Hash_LTCMD5, regular) {
 }
 
 
-TEST(Hash_LTCMD5, empty) {
+TEST(Hash_OpenSSLMD5, empty) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-md5");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
-    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "ltc-md5");
+    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "openssl-md5");
     EXPECT_EQ(algo->Initialize(), 0);
 
     std::vector<std::byte> hash;
@@ -82,11 +82,11 @@ TEST(Hash_LTCMD5, empty) {
 }
 
 
-TEST(Hash_LTCMD5, noinit) {
+TEST(Hash_OpenSSLMD5, noinit) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-md5");
+    auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
-    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "ltc-md5");
+    ASSERT_STREQ(algo->GetDescription().name_.c_str(), "openssl-md5");
 
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;

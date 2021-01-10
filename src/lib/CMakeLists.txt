@@ -20,7 +20,14 @@ set(CRYPT_SRC
     hash/ltc/ltc_md5.cpp
 )
 
-add_library(hcs-crypt STATIC ${CRYPT_SRC})
+if (WITH_OPENSSL)
+    set(OPENSSL_SRC
+        hash/openssl/openssl_md5.cpp
+    )
+endif ()
+
+
+add_library(hcs-crypt STATIC ${CRYPT_SRC} ${OPENSSL_SRC})
 target_link_libraries(hcs-crypt ${CMAKE_REQUIRED_LIBRARIES})
 set_target_properties(hcs-crypt PROPERTIES VERSION ${VERSION})
 

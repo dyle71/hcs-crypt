@@ -13,6 +13,9 @@
 #include "hash/nohash.hpp"
 #include "hash/ltc/ltc_md5.hpp"
 
+#ifdef OPENSSL
+#include "hash/openssl/openssl_md5.hpp"
+#endif
 
 void headcode::crypt::RegisterKnownAlgorithms() {
 
@@ -20,4 +23,8 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
     NoHash::Register();
     LTCMD5::Register();
+
+#ifdef OPENSSL
+    OpenSSLMD5::Register();
+#endif
 }

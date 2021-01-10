@@ -78,6 +78,6 @@ int NoHash::Initialize_(char const *, std::uint64_t) {
 
 
 void NoHash::Register() {
-    auto description = ::GetDescription();
+    auto const & description = ::GetDescription();
     Factory::Register(description.name_, description.family_, std::make_shared<NoHashProducer>());
 }

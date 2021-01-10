@@ -86,6 +86,6 @@ int Copy::Initialize_(char const *, std::uint64_t) {
 
 
 void Copy::Register() {
-    auto description = ::GetDescription();
+    auto const & description = ::GetDescription();
     Factory::Register(description.name_, description.family_, std::make_shared<CopyProducer>());
 }

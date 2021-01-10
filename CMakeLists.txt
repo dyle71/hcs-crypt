@@ -148,7 +148,7 @@ include_directories(${CMAKE_SOURCE_DIR}/3rd/libtommath)
 
 
 # ------------------------------------------------------------
-# libtomcrypt... as real working horse =)
+# libtomcrypt... as default working horse =)
 #
 # Download https://github.com/libtom/libtomcrypt.git as
 #
@@ -165,6 +165,23 @@ execute_process(COMMAND make -f makefile.unix libtomcrypt.a
 
 include_directories(${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/src/headers)
 link_libraries(${CMAKE_SOURCE_DIR}/3rd/libtomcrypt/libtomcrypt.a)
+
+
+# ------------------------------------------------------------
+# OpenSSL as alternative provider: https://www.openssl.org/
+#
+
+option(WITH_OPENSSL "Add OpenSSL as algorithm provider." on)
+if (WITH_OPENSSL)
+
+    message(STATUS "Building hcs-crypto with OpenSSL.")
+    find_package(OpenSSL REQUIRED COMPONENTS Crypto)
+
+    include_directories(${OPENSSL_INCLUDE_DIR})
+    link_libraries(${OPENSSL_CRYPTO_LIBRARY})
+    add_compile_definitions(OPENSSL)
+
+endif ()
 
 
 # ------------------------------------------------------------
