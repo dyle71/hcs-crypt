@@ -23,7 +23,7 @@ TEST(SymmetricCipher_Copy, creation) {
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "copy");
-    EXPECT_EQ(description.family_, headcode::crypt::Family::CYPHER_SYMMETRIC);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_.empty());
 
     EXPECT_FALSE(description.final_argument_.needed_);

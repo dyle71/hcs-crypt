@@ -12,7 +12,7 @@
 
 
 TEST(Family, text_symmetric_cypher) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::CYPHER_SYMMETRIC);
+    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(text.empty());
 }
 

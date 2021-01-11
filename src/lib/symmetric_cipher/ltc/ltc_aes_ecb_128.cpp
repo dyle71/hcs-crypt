@@ -27,7 +27,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-aes-ecb-128",                               // name
-            Family::CYPHER_SYMMETRIC,                        // family
+            Family::SYMMETRIC_CIPHER,                        // family
             {16ul, INPUT_ARGUMENT_DESCRIPTION, true},        // initial key
             {0ul, "Not needed.", false},                     // final key
             "LibTomCrypt AES 128 ECB mode."                  // description

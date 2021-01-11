@@ -23,7 +23,7 @@ TEST(Factory, list_crypher_symmetric) {
 
     std::uint64_t symmetric_cyphers_count{0};
     for (auto const & [name, description] : algorithms) {
-        if (description.family_ == headcode::crypt::Family::CYPHER_SYMMETRIC) {
+        if (description.family_ == headcode::crypt::Family::SYMMETRIC_CIPHER) {
             symmetric_cyphers_count++;
         }
     }

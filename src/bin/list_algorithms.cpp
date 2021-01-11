@@ -154,7 +154,7 @@ static void ListAlgorithmsVerbose(std::ostream & out,
 
 void ListAlgorithms(std::ostream & out, bool verbose) {
 
-    for (auto family : {headcode::crypt::Family::CYPHER_SYMMETRIC, headcode::crypt::Family::HASH}) {
+    for (auto family : {headcode::crypt::Family::SYMMETRIC_CIPHER, headcode::crypt::Family::HASH}) {
 
         out << headcode::crypt::GetFamilyText(family) << "\n";
         auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();

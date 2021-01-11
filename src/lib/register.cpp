@@ -8,8 +8,6 @@
 
 #include "register.hpp"
 
-#include "cypher_symmetric/copy.hpp"
-
 #include "hash/nohash.hpp"
 #include "hash/ltc/ltc_md5.hpp"
 #include "hash/ltc/ltc_ripemd128.hpp"
@@ -32,6 +30,8 @@
 #include "hash/openssl/openssl_sha384.hpp"
 #include "hash/openssl/openssl_sha512.hpp"
 #endif
+
+#include "symmetric_cipher/copy.hpp"
 
 void headcode::crypt::RegisterKnownAlgorithms() {
 
