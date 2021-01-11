@@ -21,7 +21,7 @@
 
 TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-tiger192");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCTIGER192::LTCTIGER192StdString1000 ");
 
-    auto expected = std::string{"e3143b8b4ba8021232f27bbd062f22f407ee03eeb7f76dbd"};
+    auto expected = std::string{"abd09dd41fe994a53b3367eb336a37e0435df3d189beee88"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-tiger192");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCTIGER192::LTCTIGER192CArray1000 ");
 
-    auto expected = std::string{"e3143b8b4ba8021232f27bbd062f22f407ee03eeb7f76dbd"};
+    auto expected = std::string{"abd09dd41fe994a53b3367eb336a37e0435df3d189beee88"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

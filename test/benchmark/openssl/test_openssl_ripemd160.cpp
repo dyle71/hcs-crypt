@@ -21,7 +21,7 @@
 
 TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("openssl-ripemd160");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLRIPEMD160::OPENSSLRIPEMD160StdString1000 ");
 
-    auto expected = std::string{"3f98f5712966f61cd8c67c602c693e9dfbf86315"};
+    auto expected = std::string{"2fd015c70d718be400db78b7f3ee7e24dd9c8e27"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("openssl-ripemd160");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLRIPEMD160::OPENSSLRIPEMD160CArray1000 ");
 
-    auto expected = std::string{"3f98f5712966f61cd8c67c602c693e9dfbf86315"};
+    auto expected = std::string{"2fd015c70d718be400db78b7f3ee7e24dd9c8e27"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

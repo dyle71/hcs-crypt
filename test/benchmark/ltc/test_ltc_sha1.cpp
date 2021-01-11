@@ -21,7 +21,7 @@
 
 TEST(Benchmark_LTCSHA1, LTCSHA1StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-sha1");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_LTCSHA1, LTCSHA1StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA1::LTCSHA1StdString1000 ");
 
-    auto expected = std::string{"34c85ec6eb126270d7e2121e1cfc5ccbbae2a9b2"};
+    auto expected = std::string{"cae61d20a6352a4271f11417b041725768159a2a"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_LTCSHA1, LTCSHA1CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-sha1");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_LTCSHA1, LTCSHA1CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA1::LTCSHA1CArray1000 ");
 
-    auto expected = std::string{"34c85ec6eb126270d7e2121e1cfc5ccbbae2a9b2"};
+    auto expected = std::string{"cae61d20a6352a4271f11417b041725768159a2a"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

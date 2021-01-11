@@ -21,7 +21,7 @@
 
 TEST(Benchmark_Copy, CopyStdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 10'000u;
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
@@ -42,7 +42,7 @@ TEST(Benchmark_Copy, CopyStdString1000) {
 
 TEST(Benchmark_Copy, CopyCArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 10'000u;
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);

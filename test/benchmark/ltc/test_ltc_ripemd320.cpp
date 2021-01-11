@@ -21,7 +21,7 @@
 
 TEST(Benchmark_LTCRIPEMD320, LTCRIPEMD320StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-ripemd320");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_LTCRIPEMD320, LTCRIPEMD320StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCRIPEMD320::LTCRIPEMD320StdString1000 ");
 
-    auto expected = std::string{"3585ad7d150e1885377111ee6ad6c634576bc6d1ccaaee4676b0f5a3eec4331ac1b1181bdddc50e6"};
+    auto expected = std::string{"2605f9ab4ec844cd54b1be5fe8a544859cf57481ebea4cbafef81e097fec77f796d4016d3e6d6890"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_LTCRIPEMD320, LTCRIPEMD320CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-ripemd320");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_LTCRIPEMD320, LTCRIPEMD320CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCRIPEMD320::LTCRIPEMD320CArray1000 ");
 
-    auto expected = std::string{"3585ad7d150e1885377111ee6ad6c634576bc6d1ccaaee4676b0f5a3eec4331ac1b1181bdddc50e6"};
+    auto expected = std::string{"2605f9ab4ec844cd54b1be5fe8a544859cf57481ebea4cbafef81e097fec77f796d4016d3e6d6890"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

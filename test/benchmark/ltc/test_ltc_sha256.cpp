@@ -21,7 +21,7 @@
 
 TEST(Benchmark_LTCSHA256, LTCSHA256StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-sha256");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_LTCSHA256, LTCSHA256StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA256::LTCSHA256StdString1000 ");
 
-    auto expected = std::string{"57920da41542509a9997a2f9f2624515a092738d40051ca20cb98a00c6ab8bc7"};
+    auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_LTCSHA256, LTCSHA256CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("ltc-sha256");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_LTCSHA256, LTCSHA256CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA256::LTCSHA256CArray1000 ");
 
-    auto expected = std::string{"57920da41542509a9997a2f9f2624515a092738d40051ca20cb98a00c6ab8bc7"};
+    auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

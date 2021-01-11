@@ -21,7 +21,7 @@
 
 TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
@@ -38,14 +38,14 @@ TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5StdString1000 ");
 
-    auto expected = std::string{"5ae330648ff2b41fbd2d1b5caa6ed2d6"};
+    auto expected = std::string{"f6600c29b8b7b51b104c6536ab9764a4"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
 TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 100'000u;
 
     auto algo = headcode::crypt::Factory::Create("openssl-md5");
     ASSERT_NE(algo.get(), nullptr);
@@ -65,6 +65,6 @@ TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray1000) {
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5CArray1000 ");
 
-    auto expected = std::string{"5ae330648ff2b41fbd2d1b5caa6ed2d6"};
+    auto expected = std::string{"f6600c29b8b7b51b104c6536ab9764a4"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }

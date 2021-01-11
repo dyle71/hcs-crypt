@@ -21,7 +21,7 @@
 
 TEST(Benchmark_NoHash, NoHashStdString1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 10'000u;
 
     auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
@@ -42,7 +42,7 @@ TEST(Benchmark_NoHash, NoHashStdString1000) {
 
 TEST(Benchmark_NoHash, NoHashCArray1000) {
 
-    auto loop_count = 1'000u;
+    auto loop_count = 10'000u;
 
     auto algo = headcode::crypt::Factory::Create("nohash");
     ASSERT_NE(algo.get(), nullptr);
