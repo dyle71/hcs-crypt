@@ -18,6 +18,10 @@ set(CRYPT_SRC
 
     hash/nohash.cpp
     hash/ltc/ltc_md5.cpp
+    hash/ltc/ltc_ripemd128.cpp
+    hash/ltc/ltc_ripemd160.cpp
+    hash/ltc/ltc_ripemd256.cpp
+    hash/ltc/ltc_ripemd320.cpp
     hash/ltc/ltc_sha1.cpp
     hash/ltc/ltc_sha224.cpp
     hash/ltc/ltc_sha256.cpp

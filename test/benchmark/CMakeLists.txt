@@ -15,6 +15,10 @@ set(BENCHMARK_TEST_SRC
     test_nohash.cpp
 
     ltc/test_ltc_md5.cpp
+    ltc/test_ltc_ripemd128.cpp
+    ltc/test_ltc_ripemd160.cpp
+    ltc/test_ltc_ripemd256.cpp
+    ltc/test_ltc_ripemd320.cpp
     ltc/test_ltc_sha1.cpp
     ltc/test_ltc_sha224.cpp
     ltc/test_ltc_sha256.cpp

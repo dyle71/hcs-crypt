@@ -23,6 +23,10 @@ set(UNIT_TEST_SRC
 
     hash/test_nohash.cpp
     hash/ltc/test_ltc_md5.cpp
+    hash/ltc/test_ltc_ripemd128.cpp
+    hash/ltc/test_ltc_ripemd160.cpp
+    hash/ltc/test_ltc_ripemd256.cpp
+    hash/ltc/test_ltc_ripemd320.cpp
     hash/ltc/test_ltc_sha1.cpp
     hash/ltc/test_ltc_sha224.cpp
     hash/ltc/test_ltc_sha256.cpp

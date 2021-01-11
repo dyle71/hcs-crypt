@@ -12,6 +12,10 @@
 
 #include "hash/nohash.hpp"
 #include "hash/ltc/ltc_md5.hpp"
+#include "hash/ltc/ltc_ripemd128.hpp"
+#include "hash/ltc/ltc_ripemd160.hpp"
+#include "hash/ltc/ltc_ripemd256.hpp"
+#include "hash/ltc/ltc_ripemd320.hpp"
 #include "hash/ltc/ltc_sha1.hpp"
 #include "hash/ltc/ltc_sha224.hpp"
 #include "hash/ltc/ltc_sha256.hpp"
@@ -35,6 +39,10 @@ void headcode::crypt::RegisterKnownAlgorithms() {
     NoHash::Register();
 
     LTCMD5::Register();
+    LTCRIPEMD128::Register();
+    LTCRIPEMD160::Register();
+    LTCRIPEMD256::Register();
+    LTCRIPEMD320::Register();
     LTCSHA1::Register();
     LTCSHA224::Register();
     LTCSHA256::Register();

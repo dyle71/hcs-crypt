@@ -44,7 +44,7 @@ TEST(Factory, list_hashes) {
         }
     }
 
-    std::uint64_t expected_count = 8ul;
+    std::uint64_t expected_count = 12ul;
 #ifdef OPENSSL
     expected_count += 6ul;
 #endif
