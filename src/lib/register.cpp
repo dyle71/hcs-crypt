@@ -20,6 +20,11 @@
 
 #ifdef OPENSSL
 #include "hash/openssl/openssl_md5.hpp"
+#include "hash/openssl/openssl_sha1.hpp"
+#include "hash/openssl/openssl_sha224.hpp"
+#include "hash/openssl/openssl_sha256.hpp"
+#include "hash/openssl/openssl_sha384.hpp"
+#include "hash/openssl/openssl_sha512.hpp"
 #endif
 
 void headcode::crypt::RegisterKnownAlgorithms() {
@@ -37,5 +42,10 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
 #ifdef OPENSSL
     OpenSSLMD5::Register();
+    OpenSSLSHA1::Register();
+    OpenSSLSHA224::Register();
+    OpenSSLSHA256::Register();
+    OpenSSLSHA384::Register();
+    OpenSSLSHA512::Register();
 #endif
 }

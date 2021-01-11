@@ -31,9 +31,9 @@ TEST(Factory, list_hashes) {
 
     auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
 
-    auto all_known_hashes = 8ul;
+    auto all_known_hashes = 13ul;
 #ifndef OPENSSL
-    all_known_hashes -= 1;
+    all_known_hashes -= 6ul;
 #endif
 
     EXPECT_EQ(known_hashes.size(), all_known_hashes);
