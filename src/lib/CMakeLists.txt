@@ -18,6 +18,11 @@ set(CRYPT_SRC
 
     hash/nohash.cpp
     hash/ltc/ltc_md5.cpp
+    hash/ltc/ltc_sha1.cpp
+    hash/ltc/ltc_sha224.cpp
+    hash/ltc/ltc_sha256.cpp
+    hash/ltc/ltc_sha384.cpp
+    hash/ltc/ltc_sha512.cpp
 )
 
 if (WITH_OPENSSL)
