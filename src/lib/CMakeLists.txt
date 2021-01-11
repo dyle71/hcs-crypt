@@ -23,6 +23,7 @@ set(CRYPT_SRC
     hash/ltc/ltc_sha256.cpp
     hash/ltc/ltc_sha384.cpp
     hash/ltc/ltc_sha512.cpp
+    hash/ltc/ltc_tiger192.cpp
 )
 
 if (WITH_OPENSSL)

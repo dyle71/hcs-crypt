@@ -17,6 +17,7 @@
 #include "hash/ltc/ltc_sha256.hpp"
 #include "hash/ltc/ltc_sha384.hpp"
 #include "hash/ltc/ltc_sha512.hpp"
+#include "hash/ltc/ltc_tiger192.hpp"
 
 #ifdef OPENSSL
 #include "hash/openssl/openssl_md5.hpp"
@@ -39,6 +40,7 @@ void headcode::crypt::RegisterKnownAlgorithms() {
     LTCSHA256::Register();
     LTCSHA384::Register();
     LTCSHA512::Register();
+    LTCTIGER192::Register();
 
 #ifdef OPENSSL
     OpenSSLMD5::Register();

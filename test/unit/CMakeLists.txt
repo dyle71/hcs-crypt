@@ -28,6 +28,7 @@ set(UNIT_TEST_SRC
     hash/ltc/test_ltc_sha256.cpp
     hash/ltc/test_ltc_sha384.cpp
     hash/ltc/test_ltc_sha512.cpp
+    hash/ltc/test_ltc_tiger192.cpp
 )
 
 if (WITH_OPENSSL)
