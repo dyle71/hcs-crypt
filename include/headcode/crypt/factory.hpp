@@ -88,11 +88,10 @@ public:
     static std::unique_ptr<Algorithm> Create(std::string const & name);
 
     /**
-     * @brief   Gets a list of all known algorithms and their descriptions per family.
-     * @param   family      the algorithm family requested.
+     * @brief   Gets a list of all known algorithms and their descriptions.
      * @return  A list of all algorithms which can be instantiated incl. their descriptions.
      */
-    static std::map<std::string, Algorithm::Description> GetAlgorithmDescriptions(Family family);
+    static std::map<std::string, Algorithm::Description> const & GetAlgorithmDescriptions();
 
     /**
      * @brief   Registers a producer, which can create algorithm instance of a specific name and family.

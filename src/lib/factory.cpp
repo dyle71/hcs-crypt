@@ -40,6 +40,11 @@ public:
     std::map<std::string, std::tuple<Family, std::shared_ptr<Factory::Producer>>> producer_registry_;
 
     /**
+     * @brief   Modification counter.
+     */
+    std::uint64_t mod_counter_{0};
+
+    /**
      * @brief   Constructor.
      */
     Registry() = default;
@@ -118,24 +123,35 @@ std::unique_ptr<Algorithm> Factory::Create(std::string const & name) {
 }
 
 
-std::map<std::string, Algorithm::Description> Factory::GetAlgorithmDescriptions(Family family) {
-
-    // TODO: optimize this for lazy loading
+std::map<std::string, Algorithm::Description> const & Factory::GetAlgorithmDescriptions() {
 
     auto & registry = GetRegistryInstance();
 
-    std::map<std::string, Algorithm::Description> res;
+    // We try to not enumerate all known algorithms anew each time this
+    // method is invoked. Instead, we check, if something has changed in
+    // the registry. If not, we return the data we fetched in the past.
+    // If some new algorithms have been added (or removed, or something)
+    // then the mod_counter_ is different, thus enforcing us to
+    // re-fetch the data from the registry.
+
+    static struct {
+        std::uint64_t mod_counter_{0};
+        std::map<std::string, Algorithm::Description> description_;
+    } __attribute__((aligned(64))) cache;
+
     {
         std::lock_guard<std::mutex> lock(registry.mutex_);
-        for (auto const & p : registry.producer_registry_) {
-            if (std::get<0>(p.second) == family) {
+        if (cache.mod_counter_ != registry.mod_counter_) {
+            cache.description_.clear();
+            for (auto const & p : registry.producer_registry_) {
                 std::shared_ptr<Factory::Producer> const & producer = std::get<1>(p.second);
-                res.emplace(p.first, producer->GetDescription());
+                cache.description_.emplace(p.first, producer->GetDescription());
             }
+            cache.mod_counter_ = registry.mod_counter_;
         }
     }
 
-    return res;
+    return cache.description_;
 }
 
 
@@ -143,4 +159,5 @@ void Factory::Register(std::string const & name, Family family, std::shared_ptr<
     auto & registry = GetRegistryInstance();
     std::lock_guard<std::mutex> lock(registry.mutex_);
     registry.producer_registry_[name] = std::make_tuple(family, std::move(producer));
+    registry.mod_counter_++;
 }

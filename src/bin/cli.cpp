@@ -167,15 +167,10 @@ bool VerifyAlgorithm(std::string const & algorithm) {
         return false;
     }
 
-    auto known_symmetric_cyphers =
-            headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::CYPHER_SYMMETRIC);
-    auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
-
-    for (auto const & set : {known_symmetric_cyphers, known_hashes}) {
-        auto iter = set.find(algorithm);
-        if (iter != set.end()) {
-            return true;
-        }
+    auto const & known_algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
+    auto iter = known_algorithms.find(algorithm);
+    if (iter != known_algorithms.end()) {
+        return true;
     }
 
     return false;

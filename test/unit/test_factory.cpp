@@ -19,48 +19,68 @@ TEST(Factory, unknown_algorithm) {
 
 TEST(Factory, list_crypher_symmetric) {
 
-    auto known_symmetric_cyphers =
-            headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::CYPHER_SYMMETRIC);
-    EXPECT_EQ(known_symmetric_cyphers.size(), 1ul);
+    auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
 
-    EXPECT_NE(known_symmetric_cyphers.find("copy"), known_symmetric_cyphers.end());
+    std::uint64_t symmetric_cyphers_count{0};
+    for (auto const & [name, description] : algorithms) {
+        if (description.family_ == headcode::crypt::Family::CYPHER_SYMMETRIC) {
+            symmetric_cyphers_count++;
+        }
+    }
+
+    EXPECT_EQ(symmetric_cyphers_count, 1ul);
+    EXPECT_NE(algorithms.find("copy"), algorithms.end());
 }
 
 
 TEST(Factory, list_hashes) {
 
-    auto known_hashes = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::HASH);
+    auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
 
-    auto all_known_hashes = 8ul;
+    std::uint64_t hashes_count{0};
+    for (auto const & [name, description] : algorithms) {
+        if (description.family_ == headcode::crypt::Family::HASH) {
+            hashes_count++;
+        }
+    }
+
+    std::uint64_t expected_count = 8ul;
 #ifdef OPENSSL
-    all_known_hashes += 6ul;
+    expected_count += 6ul;
 #endif
 
-    EXPECT_EQ(known_hashes.size(), all_known_hashes);
-    EXPECT_NE(known_hashes.find("nohash"), known_hashes.end());
+    EXPECT_EQ(hashes_count, expected_count);
 
-    EXPECT_NE(known_hashes.find("ltc-md5"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-sha1"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-sha224"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-sha256"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-sha384"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-sha512"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("ltc-tiger192"), known_hashes.end());
+    EXPECT_NE(algorithms.find("nohash"), algorithms.end());
+
+    EXPECT_NE(algorithms.find("ltc-md5"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-sha1"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-sha224"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-sha256"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-sha384"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-sha512"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-tiger192"), algorithms.end());
 
 #ifdef OPENSSL
 
-    EXPECT_NE(known_hashes.find("openssl-md5"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("openssl-sha1"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("openssl-sha224"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("openssl-sha256"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("openssl-sha384"), known_hashes.end());
-    EXPECT_NE(known_hashes.find("openssl-sha512"), known_hashes.end());
+    EXPECT_NE(algorithms.find("openssl-md5"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-sha1"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-sha224"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-sha256"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-sha384"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-sha512"), algorithms.end());
 
 #endif
 }
 
 
 TEST(Factory, list_unknown) {
-    auto known_unknown = headcode::crypt::Factory::GetAlgorithmDescriptions(headcode::crypt::Family::UNKNOWN);
-    EXPECT_TRUE(known_unknown.empty());
+
+    // every algorithm must belong to a known family
+    auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
+    auto some_unknown = std::any_of(algorithms.begin(), algorithms.end(), [](auto const & p) {
+        return p.second.family_ == headcode::crypt::Family::UNKNOWN;
+    });
+
+    EXPECT_FALSE(some_unknown);
 }

@@ -24,12 +24,16 @@ using namespace headcode::crypt;
  * @brief   Turns the given set of algorithm data into algorithm rows.
  * @param   row             the final computed set of algorithm rows.
  * @param   algorithms      the set of exsiting algortihms.
+ * @param   family          filter by this family.
  */
 static void CollectAlgorithmRows(std::map<std::string, AlgorithmRow> & row,
-                                 std::map<std::string, Algorithm::Description> const & algorithms) {
+                                 std::map<std::string, Algorithm::Description> const & algorithms,
+                                 headcode::crypt::Family family) {
 
     for (const auto & [name, description] : algorithms) {
-        row.emplace(name, AlgorithmRow{name, description});
+        if (description.family_ == family) {
+            row.emplace(name, AlgorithmRow{name, description});
+        }
     }
 }
 
@@ -94,11 +98,16 @@ static void ListAlgorithmRow(std::ostream & out,
  * @brief   Simple, short listening of algorithms.
  * @param   out             stream to dump to.
  * @param   algorithms      name and description mapping.
+ * @param   family          filter by this family.
  */
-static void ListAlgorithmsSimple(std::ostream & out, std::map<std::string, Algorithm::Description> const & algorithms) {
+static void ListAlgorithmsSimple(std::ostream & out,
+                                 std::map<std::string, Algorithm::Description> const & algorithms,
+                                 headcode::crypt::Family family) {
 
-    for (auto const & [name, _] : algorithms) {
-        out << "    " << name << "\n";
+    for (auto const & [name, description] : algorithms) {
+        if (description.family_ == family) {
+            out << "    " << name << "\n";
+        }
     }
 }
 
@@ -122,12 +131,14 @@ static void PrintSpanningLine(std::ostream & out, std::vector<unsigned int> cons
  * @param   out             stream to dump to.
  * @param   trim            shorten columns on output.
  * @param   algorithms      name and description mapping.
+ * @param   family          filter by this family.
  */
 static void ListAlgorithmsVerbose(std::ostream & out,
-                                  std::map<std::string, Algorithm::Description> const & algorithms) {
+                                  std::map<std::string, Algorithm::Description> const & algorithms,
+                                  headcode::crypt::Family family) {
 
     std::map<std::string, AlgorithmRow> rows;
-    CollectAlgorithmRows(rows, algorithms);
+    CollectAlgorithmRows(rows, algorithms, family);
 
     std::vector<unsigned int> max_column_width;
     CollectAlgorithmColumnWidths(max_column_width, rows);
@@ -146,11 +157,11 @@ void ListAlgorithms(std::ostream & out, bool verbose) {
     for (auto family : {headcode::crypt::Family::CYPHER_SYMMETRIC, headcode::crypt::Family::HASH}) {
 
         out << headcode::crypt::GetFamilyText(family) << "\n";
-        auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions(family);
+        auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
         if (!verbose) {
-            ListAlgorithmsSimple(out, algorithms);
+            ListAlgorithmsSimple(out, algorithms, family);
         } else {
-            ListAlgorithmsVerbose(out, algorithms);
+            ListAlgorithmsVerbose(out, algorithms, family);
         }
 
         out << std::endl;
