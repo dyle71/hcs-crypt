@@ -33,6 +33,7 @@ set(CRYPT_SRC
 if (WITH_OPENSSL)
     set(OPENSSL_SRC
         hash/openssl/openssl_md5.cpp
+        hash/openssl/openssl_ripemd160.cpp
         hash/openssl/openssl_sha1.cpp
         hash/openssl/openssl_sha224.cpp
         hash/openssl/openssl_sha256.cpp

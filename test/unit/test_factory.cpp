@@ -46,7 +46,7 @@ TEST(Factory, list_hashes) {
 
     std::uint64_t expected_count = 12ul;
 #ifdef OPENSSL
-    expected_count += 6ul;
+    expected_count += 7ul;
 #endif
 
     EXPECT_EQ(hashes_count, expected_count);
@@ -54,6 +54,10 @@ TEST(Factory, list_hashes) {
     EXPECT_NE(algorithms.find("nohash"), algorithms.end());
 
     EXPECT_NE(algorithms.find("ltc-md5"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-ripemd128"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-ripemd160"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-ripemd256"), algorithms.end());
+    EXPECT_NE(algorithms.find("ltc-ripemd320"), algorithms.end());
     EXPECT_NE(algorithms.find("ltc-sha1"), algorithms.end());
     EXPECT_NE(algorithms.find("ltc-sha224"), algorithms.end());
     EXPECT_NE(algorithms.find("ltc-sha256"), algorithms.end());
@@ -64,6 +68,7 @@ TEST(Factory, list_hashes) {
 #ifdef OPENSSL
 
     EXPECT_NE(algorithms.find("openssl-md5"), algorithms.end());
+    EXPECT_NE(algorithms.find("openssl-ripemd160"), algorithms.end());
     EXPECT_NE(algorithms.find("openssl-sha1"), algorithms.end());
     EXPECT_NE(algorithms.find("openssl-sha224"), algorithms.end());
     EXPECT_NE(algorithms.find("openssl-sha256"), algorithms.end());

@@ -31,6 +31,7 @@ set(BENCHMARK_TEST_SRC
 if (WITH_OPENSSL)
     set(BENCHMARK_TEST_OPENSSL_SRC
         openssl/test_openssl_md5.cpp
+        openssl/test_openssl_ripemd160.cpp
         openssl/test_openssl_sha1.cpp
         openssl/test_openssl_sha224.cpp
         openssl/test_openssl_sha256.cpp

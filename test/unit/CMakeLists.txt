@@ -38,6 +38,7 @@ set(UNIT_TEST_SRC
 if (WITH_OPENSSL)
     set(UNIT_TEST_OPENSSL_SRC
         hash/openssl/test_openssl_md5.cpp
+        hash/openssl/test_openssl_ripemd160.cpp
         hash/openssl/test_openssl_sha1.cpp
         hash/openssl/test_openssl_sha224.cpp
         hash/openssl/test_openssl_sha256.cpp
