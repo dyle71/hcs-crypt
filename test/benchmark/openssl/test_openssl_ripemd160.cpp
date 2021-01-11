@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160StdString1000) {
+TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLRIPEMD160::OPENSSLRIPEMD160StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLRIPEMD160::OPENSSLRIPEMD160StdString ");
 
     auto expected = std::string{"2fd015c70d718be400db78b7f3ee7e24dd9c8e27"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160CArray1000) {
+TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_OPENSSLRIPEMD160, OPENSSLRIPEMD160CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLRIPEMD160::OPENSSLRIPEMD160CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLRIPEMD160::OPENSSLRIPEMD160CArray ");
 
     auto expected = std::string{"2fd015c70d718be400db78b7f3ee7e24dd9c8e27"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

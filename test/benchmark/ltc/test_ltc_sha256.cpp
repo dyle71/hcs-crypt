@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_LTCSHA256, LTCSHA256StdString1000) {
+TEST(Benchmark_LTCSHA256, LTCSHA256StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_LTCSHA256, LTCSHA256StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA256::LTCSHA256StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA256::LTCSHA256StdString ");
 
     auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_LTCSHA256, LTCSHA256CArray1000) {
+TEST(Benchmark_LTCSHA256, LTCSHA256CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_LTCSHA256, LTCSHA256CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA256::LTCSHA256CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA256::LTCSHA256CArray ");
 
     auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

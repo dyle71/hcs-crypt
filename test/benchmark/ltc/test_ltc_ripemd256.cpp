@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256StdString1000) {
+TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCRIPEMD256::LTCRIPEMD256StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCRIPEMD256::LTCRIPEMD256StdString ");
 
     auto expected = std::string{"4202b1d23944bc07ec1eaf09bf3a600b9734ea484725827f4ee7abf0d8522ddd"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256CArray1000) {
+TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCRIPEMD256::LTCRIPEMD256CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCRIPEMD256::LTCRIPEMD256CArray ");
 
     auto expected = std::string{"4202b1d23944bc07ec1eaf09bf3a600b9734ea484725827f4ee7abf0d8522ddd"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

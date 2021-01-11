@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString1000) {
+TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCTIGER192::LTCTIGER192StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCTIGER192::LTCTIGER192StdString ");
 
     auto expected = std::string{"abd09dd41fe994a53b3367eb336a37e0435df3d189beee88"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray1000) {
+TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCTIGER192::LTCTIGER192CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCTIGER192::LTCTIGER192CArray ");
 
     auto expected = std::string{"abd09dd41fe994a53b3367eb336a37e0435df3d189beee88"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

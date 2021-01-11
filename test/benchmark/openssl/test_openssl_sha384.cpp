@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384StdString1000) {
+TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,7 +36,7 @@ TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLSHA384::OPENSSLSHA384StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA384::OPENSSLSHA384StdString ");
 
     auto expected = std::string{
             "814421785ab423b48d9eac99e1a5a075"
@@ -46,7 +46,7 @@ TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384StdString1000) {
 }
 
 
-TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384CArray1000) {
+TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384CArray) {
 
     auto loop_count = 100'000u;
 
@@ -66,7 +66,7 @@ TEST(Benchmark_OPENSSLSHA384, OPENSSLSHA384CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLSHA384::OPENSSLSHA384CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA384::OPENSSLSHA384CArray ");
 
     auto expected = std::string{
             "814421785ab423b48d9eac99e1a5a075"

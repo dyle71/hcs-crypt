@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString1000) {
+TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLMD5::OpenSSLMD5StdString ");
 
     auto expected = std::string{"f6600c29b8b7b51b104c6536ab9764a4"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray1000) {
+TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOpenSSLMD5::OpenSSLMD5CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLMD5::OpenSSLMD5CArray ");
 
     auto expected = std::string{"f6600c29b8b7b51b104c6536ab9764a4"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_LTCSHA1, LTCSHA1StdString1000) {
+TEST(Benchmark_LTCSHA1, LTCSHA1StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_LTCSHA1, LTCSHA1StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA1::LTCSHA1StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA1::LTCSHA1StdString ");
 
     auto expected = std::string{"cae61d20a6352a4271f11417b041725768159a2a"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_LTCSHA1, LTCSHA1CArray1000) {
+TEST(Benchmark_LTCSHA1, LTCSHA1CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_LTCSHA1, LTCSHA1CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkLTCSHA1::LTCSHA1CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA1::LTCSHA1CArray ");
 
     auto expected = std::string{"cae61d20a6352a4271f11417b041725768159a2a"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());

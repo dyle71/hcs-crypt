@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256StdString1000) {
+TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256StdString) {
 
     auto loop_count = 100'000u;
 
@@ -36,14 +36,14 @@ TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256StdString1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * IPSUM_LOREM_TEXT.size()};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLSHA256::OPENSSLSHA256StdString1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA256::OPENSSLSHA256StdString ");
 
     auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
 
-TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256CArray1000) {
+TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256CArray) {
 
     auto loop_count = 100'000u;
 
@@ -63,7 +63,7 @@ TEST(Benchmark_OPENSSLSHA256, OPENSSLSHA256CArray1000) {
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
                                                loop_count * size};
 
-    std::cout << StreamPerformanceIndicators(throughput, "BenchmarkOPENSSLSHA256::OPENSSLSHA256CArray1000 ");
+    std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA256::OPENSSLSHA256CArray ");
 
     auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
