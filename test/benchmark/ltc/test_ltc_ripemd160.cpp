@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkLTCRIPEMD160, LTCRIPEMD160StdString1000) {
+TEST(Benchmark_LTCRIPEMD160, LTCRIPEMD160StdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -43,7 +43,7 @@ TEST(BenchmarkLTCRIPEMD160, LTCRIPEMD160StdString1000) {
 }
 
 
-TEST(BenchmarkLTCRIPEMD160, LTCRIPEMD160CArray1000) {
+TEST(Benchmark_LTCRIPEMD160, LTCRIPEMD160CArray1000) {
 
     auto loop_count = 1'000u;
 

@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkNoHash, NoHashStdString1000) {
+TEST(Benchmark_NoHash, NoHashStdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -40,7 +40,7 @@ TEST(BenchmarkNoHash, NoHashStdString1000) {
 }
 
 
-TEST(BenchmarkNoHash, NoHashCArray1000) {
+TEST(Benchmark_NoHash, NoHashCArray1000) {
 
     auto loop_count = 1'000u;
 

@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkLTCSHA256, LTCSHA256StdString1000) {
+TEST(Benchmark_LTCSHA256, LTCSHA256StdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -43,7 +43,7 @@ TEST(BenchmarkLTCSHA256, LTCSHA256StdString1000) {
 }
 
 
-TEST(BenchmarkLTCSHA256, LTCSHA256CArray1000) {
+TEST(Benchmark_LTCSHA256, LTCSHA256CArray1000) {
 
     auto loop_count = 1'000u;
 

@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkLTCSHA224, LTCSHA224StdString1000) {
+TEST(Benchmark_LTCSHA224, LTCSHA224StdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -43,7 +43,7 @@ TEST(BenchmarkLTCSHA224, LTCSHA224StdString1000) {
 }
 
 
-TEST(BenchmarkLTCSHA224, LTCSHA224CArray1000) {
+TEST(Benchmark_LTCSHA224, LTCSHA224CArray1000) {
 
     auto loop_count = 1'000u;
 

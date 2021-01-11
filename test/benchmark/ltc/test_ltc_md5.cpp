@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkLTCMD5, LTCMD5StdString1000) {
+TEST(Benchmark_LTCMD5, LTCMD5StdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -43,7 +43,7 @@ TEST(BenchmarkLTCMD5, LTCMD5StdString1000) {
 }
 
 
-TEST(BenchmarkLTCMD5, LTCMD5CArray1000) {
+TEST(Benchmark_LTCMD5, LTCMD5CArray1000) {
 
     auto loop_count = 1'000u;
 

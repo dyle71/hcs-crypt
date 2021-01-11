@@ -14,7 +14,7 @@
 #include "shared/ipsum_lorem.hpp"
 
 
-TEST(CryptSymmetric_Copy, creation) {
+TEST(SymmetricCipher_Copy, creation) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
@@ -31,7 +31,7 @@ TEST(CryptSymmetric_Copy, creation) {
 }
 
 
-TEST(CryptSymmetric_Copy, simple) {
+TEST(SymmetricCipher_Copy, simple) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
@@ -47,7 +47,7 @@ TEST(CryptSymmetric_Copy, simple) {
 }
 
 
-TEST(CryptSymmetric_Copy, regular) {
+TEST(SymmetricCipher_Copy, regular) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
@@ -69,7 +69,7 @@ TEST(CryptSymmetric_Copy, regular) {
 }
 
 
-TEST(CryptSymmetric_Copy, empty) {
+TEST(SymmetricCipher_Copy, empty) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
@@ -82,7 +82,7 @@ TEST(CryptSymmetric_Copy, empty) {
 }
 
 
-TEST(CryptSymmetric_Copy, noinit) {
+TEST(SymmetricCipher_Copy, noinit) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);

@@ -19,7 +19,7 @@
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkOpenSSLMD5, OpenSSLMD5StdString1000) {
+TEST(Benchmark_OpenSSLMD5, OpenSSLMD5StdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -43,7 +43,7 @@ TEST(BenchmarkOpenSSLMD5, OpenSSLMD5StdString1000) {
 }
 
 
-TEST(BenchmarkOpenSSLMD5, OpenSSLMD5CArray1000) {
+TEST(Benchmark_OpenSSLMD5, OpenSSLMD5CArray1000) {
 
     auto loop_count = 1'000u;
 

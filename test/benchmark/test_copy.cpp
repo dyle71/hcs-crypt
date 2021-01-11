@@ -14,13 +14,12 @@
 #include <gtest/gtest.h>
 
 #include <headcode/benchmark/benchmark.hpp>
-#include <headcode/mem/mem.hpp>
 #include <headcode/crypt/crypt.hpp>
 
 #include <shared/ipsum_lorem.hpp>
 
 
-TEST(BenchmarkCopy, CopyStdString1000) {
+TEST(Benchmark_Copy, CopyStdString1000) {
 
     auto loop_count = 1'000u;
 
@@ -41,7 +40,7 @@ TEST(BenchmarkCopy, CopyStdString1000) {
 }
 
 
-TEST(BenchmarkCopy, CopyCArray1000) {
+TEST(Benchmark_Copy, CopyCArray1000) {
 
     auto loop_count = 1'000u;
 
