@@ -23,11 +23,11 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-ripemd128",                                   // name
+            "ltc-ripemd128",                             // name
             Family::HASH,                                // family
             {0ul, "Not needed.", false},                 // initial key
             {0ul, "Not needed.", false},                 // final key
-            "LibTomCrypt RIPEMD128.",                          // description
+            "LibTomCrypt RIPEMD128.",                    // description
             std::string{"libtomcrypt v"} + SCRYPT        // provider
     };
 
