@@ -135,21 +135,21 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * @param   data        the data to add.
+     * @param   block_incoming      incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(std::vector<std::byte> const & data);
+    int Add(std::vector<std::byte> const & block_incoming);
 
     /**
      * @brief   Adds data to the algorithm
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * @param   data        the data to add.
-     * @param   size        size of the data to add.
+     * @param   block_incoming      incoming data block.
+     * @param   size_incoming       size of the incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(char const * data, std::uint64_t size);
+    int Add(char const * block_incoming, std::uint64_t size_incoming);
 
     /**
      * @brief   Finalizes this object instance.
@@ -227,11 +227,11 @@ private:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * @param   data        the data to add.
-     * @param   size        size of the data to add.
+     * @param   block_incoming      incoming data block to add.
+     * @param   size_incoming       size of the incoming data to add.
      * @return  0 if add was ok, else an error.
      */
-    virtual int Add_(char const * data, std::uint64_t size) = 0;
+    virtual int Add_(char const * block_incoming, std::uint64_t size_incoming) = 0;
 
     /**
      * @brief   Finalizes this object instance.

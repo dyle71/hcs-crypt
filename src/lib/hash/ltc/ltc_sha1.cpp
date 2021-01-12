@@ -66,8 +66,8 @@ LTCSHA1::LTCSHA1() {
 }
 
 
-int LTCSHA1::Add_(char const * data, std::uint64_t size) {
-    return sha1_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
+int LTCSHA1::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return sha1_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 
 

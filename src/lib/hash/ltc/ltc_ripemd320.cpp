@@ -66,8 +66,8 @@ LTCRIPEMD320::LTCRIPEMD320() {
 }
 
 
-int LTCRIPEMD320::Add_(char const * data, std::uint64_t size) {
-    return rmd320_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
+int LTCRIPEMD320::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return rmd320_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 
 

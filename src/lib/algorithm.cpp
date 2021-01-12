@@ -19,16 +19,18 @@ int Algorithm::Add(std::string const & text) {
 }
 
 
-int Algorithm::Add(std::vector<std::byte> const & data) {
-    return Add(reinterpret_cast<char const *>(data.data()), data.size());
+int Algorithm::Add(std::vector<std::byte> const & block_incoming) {
+    return Add(reinterpret_cast<char const *>(block_incoming.data()), block_incoming.size());
 }
 
 
-int Algorithm::Add(char const * data, std::uint64_t size) {
-    if (size > 0) {
-        assert(data != nullptr && "Adding to algorithm with data is NULL/nullptr while data size is > 0.");
+int Algorithm::Add(char const * block_incoming, std::uint64_t size_incoming) {
+
+    if (size_incoming > 0) {
+        assert(block_incoming != nullptr && "Adding to algorithm with data is NULL/nullptr while data size is > 0.");
     }
-    return Add_(data, size);
+
+    return Add_(block_incoming, size_incoming);
 }
 
 

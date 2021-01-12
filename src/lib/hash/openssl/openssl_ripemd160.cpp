@@ -66,8 +66,8 @@ OpenSSLRIPEMD160::OpenSSLRIPEMD160() {
 }
 
 
-int OpenSSLRIPEMD160::Add_(char const * data, std::uint64_t size) {
-    return RIPEMD160_Update(&ripemd160_ctx_, data, size) == 1 ? 0 : 1;
+int OpenSSLRIPEMD160::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return RIPEMD160_Update(&ripemd160_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 

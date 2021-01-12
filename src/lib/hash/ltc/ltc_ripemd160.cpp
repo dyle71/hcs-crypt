@@ -66,8 +66,8 @@ LTCRIPEMD160::LTCRIPEMD160() {
 }
 
 
-int LTCRIPEMD160::Add_(char const * data, std::uint64_t size) {
-    return rmd160_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
+int LTCRIPEMD160::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return rmd160_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 
 

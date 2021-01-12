@@ -66,8 +66,8 @@ OpenSSLMD5::OpenSSLMD5() {
 }
 
 
-int OpenSSLMD5::Add_(char const * data, std::uint64_t size) {
-    return MD5_Update(&md5_ctx_, data, size) == 1 ? 0 : 1;
+int OpenSSLMD5::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return MD5_Update(&md5_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 

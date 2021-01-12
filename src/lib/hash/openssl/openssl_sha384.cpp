@@ -66,8 +66,8 @@ OpenSSLSHA384::OpenSSLSHA384() {
 }
 
 
-int OpenSSLSHA384::Add_(char const * data, std::uint64_t size) {
-    return SHA384_Update(&sha_ctx_, data, size) == 1 ? 0 : 1;
+int OpenSSLSHA384::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return SHA384_Update(&sha_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 

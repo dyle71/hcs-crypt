@@ -61,7 +61,7 @@ public:
 };
 
 
-int LTCAESECB128::Add_(char const * data, std::uint64_t size) {
+int LTCAESECB128::Add_(char const * block_incoming, std::uint64_t size_incoming) {
 
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {

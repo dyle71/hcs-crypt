@@ -60,11 +60,11 @@ public:
 };
 
 
-int Copy::Add_(char const * data, std::uint64_t size) {
+int Copy::Add_(char const * block_incoming, std::uint64_t size_incoming) {
     auto old_size = data_.size();
-    data_.resize(old_size + size);
+    data_.resize(old_size + size_incoming);
     auto p = reinterpret_cast<char *>(data_.data());
-    std::memcpy(p + old_size, data, size);
+    std::memcpy(p + old_size, block_incoming, size_incoming);
     return 0;
 }
 

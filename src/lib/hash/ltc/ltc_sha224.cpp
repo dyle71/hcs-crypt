@@ -66,8 +66,8 @@ LTCSHA224::LTCSHA224() {
 }
 
 
-int LTCSHA224::Add_(char const * data, std::uint64_t size) {
-    return sha224_process(&GetState(), reinterpret_cast<const unsigned char *>(data), size);
+int LTCSHA224::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return sha224_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 
 

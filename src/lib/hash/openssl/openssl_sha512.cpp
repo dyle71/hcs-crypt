@@ -66,8 +66,8 @@ OpenSSLSHA512::OpenSSLSHA512() {
 }
 
 
-int OpenSSLSHA512::Add_(char const * data, std::uint64_t size) {
-    return SHA512_Update(&sha_ctx_, data, size) == 1 ? 0 : 1;
+int OpenSSLSHA512::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+    return SHA512_Update(&sha_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 
