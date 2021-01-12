@@ -26,7 +26,8 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 16ul);
-    EXPECT_EQ(description.result_size_, 16ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
+    EXPECT_EQ(description.result_size_, 0ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_TRUE(description.initial_argument_.needed_);

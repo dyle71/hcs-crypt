@@ -26,6 +26,7 @@ TEST(Hash_OPENSSLSHA512, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 128ul);
+    EXPECT_EQ(description.block_size_outgoing_, 0ul);
     EXPECT_EQ(description.result_size_, 64ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
