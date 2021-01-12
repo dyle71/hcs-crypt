@@ -25,6 +25,8 @@ TEST(Hash_LTCRIPEMD128, creation) {
     EXPECT_STREQ(description.name_.c_str(), "ltc-ripemd128");
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
+    EXPECT_EQ(description.block_size_incoming_, 64ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -40,7 +42,8 @@ TEST(Hash_LTCRIPEMD128, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 16ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"f39288a385e5996c6fb2c01f7f8fbf2f"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
@@ -58,7 +61,8 @@ TEST(Hash_LTCRIPEMD128, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 16ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"9a5bfb7a4c8f16487a4711bedbbd80a5"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -76,7 +80,8 @@ TEST(Hash_LTCRIPEMD128, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 16ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"cdf26213a150dc3ecb610f18f6b38b46"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
@@ -91,7 +96,8 @@ TEST(Hash_LTCRIPEMD128, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 16ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"9a5bfb7a4c8f16487a4711bedbbd80a5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 

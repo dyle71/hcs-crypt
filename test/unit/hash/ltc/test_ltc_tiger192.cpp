@@ -25,6 +25,8 @@ TEST(Hash_LTCTIGER192, creation) {
     EXPECT_STREQ(description.name_.c_str(), "ltc-tiger192");
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
+    EXPECT_EQ(description.block_size_incoming_, 64ul);
+    EXPECT_EQ(description.block_size_outgoing_, 24ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -40,7 +42,8 @@ TEST(Hash_LTCTIGER192, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 24ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"0bf46f237681b35301d46aa08d43c449643408521a263929"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
@@ -58,7 +61,8 @@ TEST(Hash_LTCTIGER192, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 24ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"eafd96d4d67afa8a8b2d4c703afc3e7064e0fc711c459003"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -76,7 +80,8 @@ TEST(Hash_LTCTIGER192, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 24ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"3293ac630c13f0245f92bbb1766e16167a4e58492dde73f3"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
@@ -91,7 +96,8 @@ TEST(Hash_LTCTIGER192, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 24ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{"eafd96d4d67afa8a8b2d4c703afc3e7064e0fc711c459003"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 

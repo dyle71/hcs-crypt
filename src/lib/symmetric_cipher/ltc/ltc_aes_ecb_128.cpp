@@ -2,7 +2,7 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Copyright (C) 2020-2021 headcode.space e.U.  
+ * Copyright (C) 2020-2021 headcode.space e.U.
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
@@ -26,6 +26,8 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "ltc-aes-ecb-128",                               // name
             Family::SYMMETRIC_CIPHER,                        // family
+            16ul,                                            // input block size
+            16ul,                                            // output block size
             {16ul, INPUT_ARGUMENT_DESCRIPTION, true},        // initial key
             {0ul, "Not needed.", false},                     // final key
             "LibTomCrypt AES 128 in ECB mode.",              // description

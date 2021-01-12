@@ -28,7 +28,12 @@ TEST(Factory, list_crypher_symmetric) {
         }
     }
 
-    EXPECT_EQ(symmetric_cyphers_count, 1ul);
+    std::uint64_t expected_count = 2ul;
+#ifdef OPENSSL
+    expected_count += 0ul;
+#endif
+
+    EXPECT_EQ(symmetric_cyphers_count, expected_count);
     EXPECT_NE(algorithms.find("copy"), algorithms.end());
 }
 

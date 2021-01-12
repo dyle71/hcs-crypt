@@ -2,7 +2,7 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Copyright (C) 2020-2021 headcode.space e.U.  
+ * Copyright (C) 2020-2021 headcode.space e.U.
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
@@ -38,6 +38,18 @@ class Algorithm {
 public:
     /**
      * @brief   This holds the algorithm description.
+     * Each algorithm has a unqiue name and is associated with a family of algorithms.
+     * Each algorithm operates on input data and produce output data. Some algorithm expect
+     * the input in specific block sizes. In such cases the value of block_size_incoming
+     * will hold a value != 0. If the algorithm produces data in blocks, then the value
+     * block_size_outgoing will be set accordingly. If the value is 0 for any or both of
+     * these variables, then the value is "unspecified", meaning any arbitrary block size
+     * value, including 0.
+     *
+     * If the algorithm has a defined input block size (not 0), then
+     * - the algorithm operates on input data of this size.
+     * - the algorithm will most likely pad the input chunks to a multiple of this block size.
+     * - the algorithm will most likely produce output with the very same block size.
      */
     struct Description {
         /**
@@ -59,6 +71,8 @@ public:
 
         std::string name_;                           //!< @brief The name of this algorithm.
         Family family_;                              //!< @brief The family of the algorithm.
+        std::uint64_t block_size_incoming_;          //!< @brief Size of each input block in bytes.
+        std::uint64_t block_size_outgoing_;          //!< @brief Size of each output block in bytes.
         ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
         ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
         std::string description_;                    //!< @brief A human readable description of the algorithm.

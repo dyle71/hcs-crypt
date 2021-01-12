@@ -25,6 +25,8 @@ TEST(Hash_LTCSHA512, creation) {
     EXPECT_STREQ(description.name_.c_str(), "ltc-sha512");
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
+    EXPECT_EQ(description.block_size_incoming_, 128ul);
+    EXPECT_EQ(description.block_size_outgoing_, 64ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -40,7 +42,8 @@ TEST(Hash_LTCSHA512, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 64ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{
             "91ea1245f20d46ae9a037a989f54f1f7"
             "90f0a47607eeb8a14d12890cea77a1bb"
@@ -62,7 +65,8 @@ TEST(Hash_LTCSHA512, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 64ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{
             "b5c0b147b533b9923fe7531d692f55e1"
             "26314038c6bb0a17daf65439b9958265"
@@ -84,7 +88,8 @@ TEST(Hash_LTCSHA512, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 64ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{
             "cf83e1357eefb8bdf1542850d66d8007"
             "d620e4050b5715dc83f4a921d36ce9ce"
@@ -103,7 +108,8 @@ TEST(Hash_LTCSHA512, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), 64ul);
+    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+
     auto expected = std::string{
             "b5c0b147b533b9923fe7531d692f55e1"
             "26314038c6bb0a17daf65439b9958265"
