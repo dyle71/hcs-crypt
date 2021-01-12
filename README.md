@@ -18,8 +18,8 @@ This C++17 library strives to be a very small and easy to use crypto library.
 ├── include                     Public header files. Add the path to this folder to your C++ search path.
 │   └── headcode                
 │       └── crypt               Include this: <headcode/crypt/crypt.hpp>
-├── src                         Tests.
-│   ├── bin                     Binary "crypt" sources.
+├── src                         Main sources.
+│   ├── bin                     Binary "crypt" sources, the command line client.
 │   └── lib                     Static libhcs-crypt.a sources.
 ├── test                        Tests.
 │   ├── benchmark               Benchmark tests.
@@ -107,6 +107,32 @@ This will give you the test coverage on stdout as well as:
   (open up the file `coverage-html/index.html` in a browser of your choice)
 
 in the build folder.
+
+
+## Installable package creation
+
+This project supports the creation of `DEB` and `RPM` files. This is done by specifying
+the `CPACK_GENERATOR` while configuring the project.
+
+To create an installable `DEB`:
+```bash
+$ cd build
+$ cmake -D CMAKE_BUILD_TYPE=Release -D CPACK_GENERATOR=DEB ..
+...
+$ make
+...
+$ make package
+```
+
+To create an installable `RPM`:
+```bash
+$ cd build
+$ cmake -D CMAKE_BUILD_TYPE=Release -D CPACK_GENERATOR=RPM ..
+...
+$ make
+...
+$ make package
+```
 
 
 ## Notable guidelines
