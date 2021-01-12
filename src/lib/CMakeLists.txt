@@ -2,8 +2,8 @@
 # This file is part of crypt of headcode.space
 #
 # The 'LICENSE.txt' file in the project root holds the software license.
-# Copyright (C) 2020-2021 headcode.space
-# https://www.headcode.space, <info@headcode.space>
+# Copyright (C) 2020-2021 headcode.space e.U.  
+# Oliver Maurhart <info@headcode.space>, https://www.headcode.space
 # ------------------------------------------------------------
 
 
@@ -15,6 +15,8 @@ set(CRYPT_SRC
     register.cpp
 
     symmetric_cipher/copy.cpp
+    symmetric_cipher/ltc/ltc_aes_ecb_128.cpp
+    symmetric_cipher/ltc/ltc_symmetric_cipher.cpp
 
     hash/nohash.cpp
     hash/ltc/ltc_md5.cpp

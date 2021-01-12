@@ -2,8 +2,8 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Copyright (C) 2020-2021 headcode.space
- * https://www.headcode.space, <info@headcode.space>
+ * Copyright (C) 2020-2021 headcode.space e.U.  
+ * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
 #include "register.hpp"
@@ -32,10 +32,10 @@
 #endif
 
 #include "symmetric_cipher/copy.hpp"
+#include "symmetric_cipher/ltc/ltc_aes_ecb_128.hpp"
+
 
 void headcode::crypt::RegisterKnownAlgorithms() {
-
-    Copy::Register();
 
     NoHash::Register();
 
@@ -50,6 +50,10 @@ void headcode::crypt::RegisterKnownAlgorithms() {
     LTCSHA384::Register();
     LTCSHA512::Register();
     LTCTIGER192::Register();
+
+    Copy::Register();
+
+    LTCAESECB128::Register();
 
 #ifdef OPENSSL
     OpenSSLMD5::Register();

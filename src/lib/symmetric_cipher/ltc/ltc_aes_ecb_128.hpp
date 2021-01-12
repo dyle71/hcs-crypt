@@ -2,8 +2,8 @@
  * This file is part of the headcode.space crypt.
  *
  * The 'LICENSE.txt' file in the project root holds the software license.
- * Copyright (C) 2020-2021 headcode.space
- * https://www.headcode.space, <info@headcode.space>
+ * Copyright (C) 2020-2021 headcode.space e.U.  
+ * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
 #ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_ECB_128_HPP
@@ -14,6 +14,8 @@
 
 #include <headcode/crypt/algorithm.hpp>
 
+#include "ltc_symmetric_ecb_cipher.hpp"
+
 
 namespace headcode::crypt {
 
@@ -21,7 +23,7 @@ namespace headcode::crypt {
 /**
  * @brief   The LibTomCrypt AES ECB 128 Bit Cypher.
  */
-class LTCAESECB128 : public Algorithm {
+class LTCAESECB128 : public LTCSymmetricECBCipher {
 
 public:
     /**
@@ -30,6 +32,7 @@ public:
     static void Register();
 
 private:
+
     /**
      * @brief   Adds data to the algorithm
      * @param   data        the data to add.
