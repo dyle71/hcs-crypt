@@ -26,7 +26,7 @@ TEST(Hash_LTCSHA384, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 128ul);
-    EXPECT_EQ(description.block_size_outgoing_, 48ul);
+    EXPECT_EQ(description.result_size_, 48ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -42,7 +42,7 @@ TEST(Hash_LTCSHA384, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
             "ed892481d8272ca6df370bf706e4d7bc1b5739fa2177aae6"
@@ -63,7 +63,7 @@ TEST(Hash_LTCSHA384, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
             "37fb5f101139c74c4bb2518108c6bf4c0b28e848db65b8ea"
@@ -84,7 +84,7 @@ TEST(Hash_LTCSHA384, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
             "38b060a751ac96384cd9327eb1b1e36a21fdb71114be0743"
@@ -102,7 +102,7 @@ TEST(Hash_LTCSHA384, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
             "37fb5f101139c74c4bb2518108c6bf4c0b28e848db65b8ea"

@@ -28,6 +28,7 @@ static Algorithm::Description const & GetDescription() {
             Family::SYMMETRIC_CIPHER,                        // family
             16ul,                                            // input block size
             16ul,                                            // output block size
+            0ul,                                             // result size
             {16ul, INPUT_ARGUMENT_DESCRIPTION, true},        // initial key
             {0ul, "Not needed.", false},                     // final key
             "LibTomCrypt AES 128 in ECB mode.",              // description

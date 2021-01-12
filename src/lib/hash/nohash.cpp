@@ -24,7 +24,8 @@ static Algorithm::Description const & GetDescription() {
             "nohash",                                           // name
             Family::HASH,                                       // family
             0ul,                                                // input block size
-            0ul,                                                // output block size
+            0ul,                                         // output block size
+            0ul,                                                // result size
             {0ul, "Not needed.", false},                        // initial key
             {0ul, "Not needed.", false},                        // final key
             "NOHASH: not a real hash, always return 0.",        // description

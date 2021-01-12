@@ -25,7 +25,8 @@ static Algorithm::Description const & GetDescription() {
             "copy",                                                           // name
             Family::SYMMETRIC_CIPHER,                                         // family
             0ul,                                                              // input block size
-            0ul,                                                              // output block size
+            0ul,                                         // output block size
+            0ul,                                                              // result size
             {0ul, "Not needed.", false},                                      // initial key
             {0ul, "Not needed.", false},                                      // final key
             "COPY: not a real cypher. Simply copies input to output.",        // description

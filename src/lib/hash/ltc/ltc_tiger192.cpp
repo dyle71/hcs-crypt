@@ -26,7 +26,8 @@ static Algorithm::Description const & GetDescription() {
             "ltc-tiger192",                              // name
             Family::HASH,                                // family
             64ul,                                        // input block size
-            24ul,                                        // output block size
+            0ul,                                         // output block size
+            24ul,                                        // result size
             {0ul, "Not needed.", false},                 // initial key
             {0ul, "Not needed.", false},                 // final key
             "LibTomCrypt TIGER192.",                     // description

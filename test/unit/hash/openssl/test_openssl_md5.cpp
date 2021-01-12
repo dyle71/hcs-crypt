@@ -26,7 +26,7 @@ TEST(Hash_OpenSSLMD5, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 64ul);
-    EXPECT_EQ(description.block_size_outgoing_, 16ul);
+    EXPECT_EQ(description.result_size_, 16ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -42,7 +42,7 @@ TEST(Hash_OpenSSLMD5, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"e4d909c290d0fb1ca068ffaddf22cbd0"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -61,7 +61,7 @@ TEST(Hash_OpenSSLMD5, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"c9f9e773953864f55f1681d00783b10f"};
     auto result = headcode::mem::MemoryToHex(hash);
@@ -80,7 +80,7 @@ TEST(Hash_OpenSSLMD5, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"d41d8cd98f00b204e9800998ecf8427e"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -96,7 +96,7 @@ TEST(Hash_OpenSSLMD5, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"c9f9e773953864f55f1681d00783b10f"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());

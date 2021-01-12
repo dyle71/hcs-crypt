@@ -26,7 +26,8 @@ static Algorithm::Description const & GetDescription() {
             "openssl-sha512",                   // name
             Family::HASH,                       // family
             128ul,                              // input block size
-            64ul,                               // output block size
+            0ul,                                         // output block size
+            64ul,                               // result size
             {0ul, "Not needed.", false},        // initial key
             {0ul, "Not needed.", false},        // final key
             "OpenSSL SHA512.",                  // description

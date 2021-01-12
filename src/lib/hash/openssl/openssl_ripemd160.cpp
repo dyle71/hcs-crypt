@@ -26,7 +26,8 @@ static Algorithm::Description const & GetDescription() {
             "openssl-ripemd160",                // name
             Family::HASH,                       // family
             64ul,                               // input block size
-            20ul,                               // output block size
+            0ul,                                         // output block size
+            20ul,                               // result size
             {0ul, "Not needed.", false},        // initial key
             {0ul, "Not needed.", false},        // final key
             "OpenSSL RIPEMD160.",               // description

@@ -26,7 +26,7 @@ TEST(Hash_LTCRIPEMD256, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 64ul);
-    EXPECT_EQ(description.block_size_outgoing_, 32ul);
+    EXPECT_EQ(description.result_size_, 32ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -42,7 +42,7 @@ TEST(Hash_LTCRIPEMD256, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"379e373d9e1b6e71712b8f4a19b8fb125caa3f4ce92a258eb764d721d9a08bad"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -61,7 +61,7 @@ TEST(Hash_LTCRIPEMD256, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"276138f0c3bbd3d6857fe722304b39bb3325704b861c20c815257128f13dce03"};
     auto result = headcode::mem::MemoryToHex(hash);
@@ -80,7 +80,7 @@ TEST(Hash_LTCRIPEMD256, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"02ba4c4e5f8ecd1877fc52d64d30e37a2d9774fb1e5d026380ae0168e3c5522d"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -96,7 +96,7 @@ TEST(Hash_LTCRIPEMD256, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"276138f0c3bbd3d6857fe722304b39bb3325704b861c20c815257128f13dce03"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());

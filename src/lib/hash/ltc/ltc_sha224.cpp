@@ -26,7 +26,8 @@ static Algorithm::Description const & GetDescription() {
             "ltc-sha224",                                // name
             Family::HASH,                                // family
             64ul,                                        // input block size
-            28ul,                                        // output block size
+            0ul,                                         // output block size
+            28ul,                                        // result size
             {0ul, "Not needed.", false},                 // initial key
             {0ul, "Not needed.", false},                 // final key
             "LibTomCrypt SHA224.",                       // description

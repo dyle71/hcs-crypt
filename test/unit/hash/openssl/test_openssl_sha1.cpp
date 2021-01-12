@@ -26,7 +26,7 @@ TEST(Hash_OPENSSLSHA1, creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
     EXPECT_FALSE(description.description_.empty());
     EXPECT_EQ(description.block_size_incoming_, 64ul);
-    EXPECT_EQ(description.block_size_outgoing_, 20ul);
+    EXPECT_EQ(description.result_size_, 20ul);
 
     EXPECT_FALSE(description.final_argument_.needed_);
     EXPECT_FALSE(description.initial_argument_.needed_);
@@ -42,7 +42,7 @@ TEST(Hash_OPENSSLSHA1, simple) {
     EXPECT_EQ(algo->Add(text), 0);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"408d94384216f890ff7a0c3528e8bed1e0b01621"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -61,7 +61,7 @@ TEST(Hash_OPENSSLSHA1, regular) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"f007c893d4e963c53109debcb2e0d7abdeff7466"};
     auto result = headcode::mem::MemoryToHex(hash);
@@ -80,7 +80,7 @@ TEST(Hash_OPENSSLSHA1, empty) {
 
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"da39a3ee5e6b4b0d3255bfef95601890afd80709"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
@@ -96,7 +96,7 @@ TEST(Hash_OPENSSLSHA1, noinit) {
     algo->Add(IPSUM_LOREM_TEXT);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
-    EXPECT_EQ(hash.size(), algo->GetDescription().block_size_outgoing_);
+    EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{"f007c893d4e963c53109debcb2e0d7abdeff7466"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());

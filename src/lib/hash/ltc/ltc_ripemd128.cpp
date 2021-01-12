@@ -26,7 +26,8 @@ static Algorithm::Description const & GetDescription() {
             "ltc-ripemd128",                             // name
             Family::HASH,                                // family
             64ul,                                        // input block size
-            16ul,                                        // output block size
+            0ul,                                         // output block size
+            16ul,                                        // result size
             {0ul, "Not needed.", false},                 // initial key
             {0ul, "Not needed.", false},                 // final key
             "LibTomCrypt RIPEMD128.",                    // description

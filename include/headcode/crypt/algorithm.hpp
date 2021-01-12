@@ -49,7 +49,10 @@ public:
      * If the algorithm has a defined input block size (not 0), then
      * - the algorithm operates on input data of this size.
      * - the algorithm will most likely pad the input chunks to a multiple of this block size.
-     * - the algorithm will most likely produce output with the very same block size.
+     * - the algorithm will most likely produce output with the very same block size each turn.
+     *
+     * The output block size is different to the result size. The result size constitutes to
+     * the final value of an algorithm, e.g. the size of the message digest of hash algorithms.
      */
     struct Description {
         /**
@@ -67,12 +70,13 @@ public:
             std::uint64_t size_;        //!< @brief Defines the size in bytes of the key (special meaning for value 0).
             std::string description_;        //!< @brief A description of this input data.
             bool needed_ = false;            //!< @brief States that this key is needed.
-        };
+        } __attribute__((aligned(64)));
 
         std::string name_;                           //!< @brief The name of this algorithm.
         Family family_;                              //!< @brief The family of the algorithm.
         std::uint64_t block_size_incoming_;          //!< @brief Size of each input block in bytes.
         std::uint64_t block_size_outgoing_;          //!< @brief Size of each output block in bytes.
+        std::uint64_t result_size_;                  //!< @brief Size of the final result in bytes.
         ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
         ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
         std::string description_;                    //!< @brief A human readable description of the algorithm.

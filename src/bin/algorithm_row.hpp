@@ -26,6 +26,7 @@ class AlgorithmRow {
     std::string description_;
     std::string block_incoming_size_;
     std::string block_outgoing_size_;
+    std::string result_size_;
     std::string initialziation_size_;
     std::string initialziation_description_;
     std::string finalization_size_;
@@ -41,8 +42,9 @@ public:
         FAMILY,                            //!< @brief Algorithm family.
         PROVIDER,                          //!< @brief Point of origin (library).
         DESCRIPTION,                       //!< @brief Algorithm Description.
-        BLOCK_SIZE_INCOMING,               //!< @brief The block size of the input.
-        BLOCK_SIZE_OUTGOING,               //!< @brief The block size of the output.
+        BLOCK_SIZE_INCOMING,               //!< @brief The block size of the input (each turn by Add).
+        BLOCK_SIZE_OUTGOING,               //!< @brief The block size of the output (each turn by Add).
+        RESULT_SIZE,                       //!< @brief The size of the result.
         INITIALIZATION_DESCRIPTION,        //!< @brief Description of the init data.
         INITIALIZATION_SIZE,               //!< @brief Block size of the init in bytes.
         FINALIZATION_DESCRIPTION,          //!< @brief Description of the finalization data.
@@ -121,6 +123,14 @@ public:
     std::string const & GetColumn(Column column) const;
 
     /**
+     * @brief   Returns the number of known columns.
+     * @return  The amount of columns we support.
+     */
+    static unsigned int GetColumnCount() {
+        return static_cast<unsigned int>(Column::FINALIZATION_SIZE) + 1;
+    }
+
+    /**
      * @brief   Gets the header text of a column.
      * @param   column      the column requested.
      * @return  the string labeling the column.
@@ -176,14 +186,6 @@ public:
     }
 
     /**
-     * @brief   Returns the number of known columns.
-     * @return  The amount of columns we support.
-     */
-    static unsigned int GetColumnCount() {
-        return static_cast<unsigned int>(Column::FINALIZATION_SIZE) + 1;
-    }
-
-    /**
      * @brief   Gets the name of the algorithm.
      * @return  The name of the algorithm.
      */
@@ -197,6 +199,14 @@ public:
      */
     std::string const & GetProvider() const {
         return provider_;
+    }
+
+    /**
+     * @brief   Gets the size of the final resut.
+     * @return  The size of the final result in bytes.
+     */
+    std::string const & GetResultSize() const {
+        return result_size_;
     }
 };
 
