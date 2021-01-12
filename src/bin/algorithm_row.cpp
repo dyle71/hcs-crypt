@@ -17,6 +17,8 @@ AlgorithmRow::AlgorithmRow()
           family_{"Family"},
           provider_{"Provider"},
           description_{"Description"},
+          block_incoming_size_{"Input block size"},
+          block_outgoing_size_{"Output block size"},
           initialziation_size_{"Init size"},
           initialziation_description_{"Init description"},
           finalization_size_{"Final size"},
@@ -46,6 +48,18 @@ AlgorithmRow::AlgorithmRow(std::string name, headcode::crypt::Algorithm::Descrip
     } else if (algorithm_description.final_argument_.size_ == 0) {
         finalization_size_ = "Varies";
     }
+
+    if (algorithm_description.block_size_incoming_ == 0) {
+        block_incoming_size_ = "n/a";
+    } else {
+        block_incoming_size_ = std::to_string(algorithm_description.block_size_incoming_);
+    }
+
+    if (algorithm_description.block_size_outgoing_ == 0) {
+        block_outgoing_size_ = "n/a";
+    } else {
+        block_outgoing_size_ = std::to_string(algorithm_description.block_size_outgoing_);
+    }
 }
 
 
@@ -66,6 +80,12 @@ std::string const & AlgorithmRow::GetColumn(Column column) const {
 
         case AlgorithmRow::Column::DESCRIPTION:
             return GetDescription();
+
+        case AlgorithmRow::Column::BLOCK_SIZE_INCOMING:
+            return GetBlockSizeIncoming();
+
+        case AlgorithmRow::Column::BLOCK_SIZE_OUTGOING:
+            return GetBlockSizeOutgoing();
 
         case AlgorithmRow::Column::INITIALIZATION_DESCRIPTION:
             return GetInitialziationDescription();

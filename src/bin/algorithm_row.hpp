@@ -24,6 +24,8 @@ class AlgorithmRow {
     std::string family_;
     std::string provider_;
     std::string description_;
+    std::string block_incoming_size_;
+    std::string block_outgoing_size_;
     std::string initialziation_size_;
     std::string initialziation_description_;
     std::string finalization_size_;
@@ -39,6 +41,8 @@ public:
         FAMILY,                            //!< @brief Algorithm family.
         PROVIDER,                          //!< @brief Point of origin (library).
         DESCRIPTION,                       //!< @brief Algorithm Description.
+        BLOCK_SIZE_INCOMING,               //!< @brief The block size of the input.
+        BLOCK_SIZE_OUTGOING,               //!< @brief The block size of the output.
         INITIALIZATION_DESCRIPTION,        //!< @brief Description of the init data.
         INITIALIZATION_SIZE,               //!< @brief Block size of the init in bytes.
         FINALIZATION_DESCRIPTION,          //!< @brief Description of the finalization data.
@@ -91,6 +95,22 @@ public:
      */
     std::string const & GetAlias() const {
         return alias_;
+    }
+
+    /**
+     * @brief   Gets the size of the blocks for input.
+     * @return  The block size of each input in bytes.
+     */
+    std::string const & GetBlockSizeIncoming() const {
+        return block_incoming_size_;
+    }
+
+    /**
+     * @brief   Gets the size of the blocks for output.
+     * @return  The block size of each output in bytes.
+     */
+    std::string const & GetBlockSizeOutgoing() const {
+        return block_outgoing_size_;
     }
 
     /**
