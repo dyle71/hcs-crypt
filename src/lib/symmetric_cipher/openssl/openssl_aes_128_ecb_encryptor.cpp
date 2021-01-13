@@ -67,45 +67,18 @@ public:
 };
 
 
-int OpenSSLAES128ECBEncrypter::Add_(char const * block_incoming,
-                                std::uint64_t size_incoming,
-                                char * block_outgoing,
-                                std::uint64_t & size_outgoing) {
-
-    size_outgoing = GetDescription().block_size_outgoing_;
-
-    auto cipher_index = SetDescriptor(&aes_desc);
-    if (cipher_index == -1) {
-        return -1;
-    }
-
-    symmetric_ECB * state = &GetState();
-    return ecb_encrypt(reinterpret_cast<unsigned char const *>(block_incoming),
-                       reinterpret_cast<unsigned char *>(block_outgoing),
-                       size_incoming,
-                       state);
+int OpenSSLAES128ECBEncrypter::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return 0;
 }
 
 
-int OpenSSLAES128ECBEncrypter::Finalize_(std::vector<std::byte> &, char const *, std::uint64_t) {
-    return 0;
+EVP_CIPHER const * OpenSSLAES128ECBEncrypter::GetCipher() const {
+    return EVP_aes_128_ecb();
 }
 
 
 Algorithm::Description const & OpenSSLAES128ECBEncrypter::GetDescription_() const {
     return ::GetDescription();
-}
-
-
-int OpenSSLAES128ECBEncrypter::Initialize_(char const * data, std::uint64_t size) {
-
-    auto cipher_index = SetDescriptor(&aes_desc);
-    if (cipher_index == -1) {
-        return -1;
-    }
-
-    symmetric_ECB * state = &GetState();
-    return ecb_start(cipher_index, reinterpret_cast<unsigned char const *>(data), size, 0, state);
 }
 
 

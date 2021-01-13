@@ -79,9 +79,8 @@ int LTCRIPEMD160::Add_(char const * block_incoming,
 }
 
 
-int LTCRIPEMD160::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(rmd160_desc.hashsize);
-    return rmd160_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCRIPEMD160::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return rmd160_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

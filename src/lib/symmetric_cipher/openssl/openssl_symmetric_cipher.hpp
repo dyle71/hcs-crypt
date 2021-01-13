@@ -27,7 +27,7 @@ class OpenSSLSymmetricCipher : public Algorithm {
 
 public:
     /**
-     * @brief Constructor
+     * @brief   Constructor
      * @param   encrypt         enrypt or decrypt instance.
      */
     explicit OpenSSLSymmetricCipher(bool encrypt = true);
@@ -38,6 +38,12 @@ public:
     ~OpenSSLSymmetricCipher() noexcept override;
 
 protected:
+    /**
+     * @brief   Gets the OpenSSL cipher to work on.
+     * @return  The OpenSSL cipher to use.
+     */
+    virtual EVP_CIPHER const * GetCipher() const = 0;
+
     /**
      * @brief   Returns the included OpenSSL cipher context.
      * @return  The OpenSSL cipher context.
@@ -61,6 +67,30 @@ protected:
     bool IsEncryptor() const {
         return encrypt_;
     }
+
+private:
+    /**
+     * @brief   Adds data to the algorithm
+     * @param   block_incoming      the incoming data to add.
+     * @param   size_incoming       size of the incoming data to add.
+     * @param   block_outgoing      outgoing data block.
+     * @param   size_outgoing       size of the outgoing data block (will be adjusted).
+     * @return  0 if add was ok, else an error.
+     */
+    int Add_(char const * block_incoming,
+             std::uint64_t size_incoming,
+             char * block_outgoing,
+             std::uint64_t & size_outgoing) override;
+
+
+    /**
+     * @brief   Initialize this object instance.
+     * This always returns 0.
+     * @param   data        the initial data (== initial key) to use, if any
+     * @param   size        size of the data used for initialization.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Initialize_(char const * data, std::uint64_t size) override;
 };
 
 

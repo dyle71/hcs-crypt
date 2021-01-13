@@ -80,9 +80,8 @@ int OpenSSLSHA512::Add_(char const * block_incoming,
 }
 
 
-int OpenSSLSHA512::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(64ul);
-    return SHA512_Final(reinterpret_cast<unsigned char *>(result.data()), &sha_ctx_) == 1 ? 0 : 1;
+int OpenSSLSHA512::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return SHA512_Final(reinterpret_cast<unsigned char *>(result), &sha_ctx_) == 1 ? 0 : 1;
 }
 
 

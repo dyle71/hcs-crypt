@@ -68,8 +68,10 @@ int NoHash::Add_(char const *, std::uint64_t, char *, std::uint64_t & size_outgo
 }
 
 
-int NoHash::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.clear();
+int NoHash::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    if (result != nullptr) {
+        *result = 0;
+    }
     return 0;
 }
 

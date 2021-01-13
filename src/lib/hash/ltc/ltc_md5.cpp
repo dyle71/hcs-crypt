@@ -77,9 +77,8 @@ int LTCMD5::Add_(char const * block_incoming, std::uint64_t size_incoming, char 
 }
 
 
-int LTCMD5::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(md5_desc.hashsize);
-    return md5_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCMD5::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t ) {
+    return md5_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

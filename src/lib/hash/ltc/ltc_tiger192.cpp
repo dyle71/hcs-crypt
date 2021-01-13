@@ -76,9 +76,8 @@ int LTCTIGER192::Add_(char const * block_incoming, std::uint64_t size_incoming, 
 }
 
 
-int LTCTIGER192::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(tiger_desc.hashsize);
-    return tiger_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCTIGER192::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return tiger_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

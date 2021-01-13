@@ -228,12 +228,27 @@ public:
      * be examined in the context of the algorithm.
      * You may Finalize the object multiple times.
      * Check the algorithms details/description of what constitutes a good finalization data.
-     * @param   result      the result of the algorithm.
-     * @param   data        the finalization data (== final key) to use, if any
-     * @param   size        size of the data used for finalization.
+     * @param   result          the result of the algorithm.
+     * @param   data            the finalization data (== final key) to use, if any
+     * @param   data_size       size of the data used for finalization.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t size);
+    int Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t data_size);
+
+    /**
+     * @brief   Finalizes this object instance.
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     * You may Finalize the object multiple times.
+     * Check the algorithms details/description of what constitutes a good finalization data.
+     * @param   result          the result of the algorithm.
+     * @param   rtesult_size    size of the result for finalization.
+     * @param   data            the finalization data (== final key) to use, if any
+     * @param   data_size       size of the data used for finalization.
+     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     */
+    int Finalize(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size);
 
     /**
      * @brief   Gets the algorithm description.
@@ -314,12 +329,15 @@ private:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * @param   result      the result of the algorithm.
-     * @param   data        the finalization data (== final key) to use, if any
-     * @param   size        size of the data used for finalization.
-     * @return  0 if finalize was ok, else an error.
+     * You may Finalize the object multiple times.
+     * Check the algorithms details/description of what constitutes a good finalization data.
+     * @param   result          the result of the algorithm.
+     * @param   rtesult_size    size of the result for finalization.
+     * @param   data            the finalization data (== final key) to use, if any
+     * @param   data_size       size of the data used for finalization.
+     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    virtual int Finalize_(std::vector<std::byte> & result, char const * data, std::uint64_t size) = 0;
+    virtual int Finalize_(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size) = 0;
 
     /**
      * @brief   Gets the algorithm description.

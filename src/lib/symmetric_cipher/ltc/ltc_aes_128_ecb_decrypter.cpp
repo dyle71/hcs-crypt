@@ -85,7 +85,7 @@ int LTCAES128ECBDecrypter::Add_(char const * block_incoming,
 }
 
 
-int LTCAES128ECBDecrypter::Finalize_(std::vector<std::byte> &, char const *, std::uint64_t) {
+int LTCAES128ECBDecrypter::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
     return 0;
 }
 

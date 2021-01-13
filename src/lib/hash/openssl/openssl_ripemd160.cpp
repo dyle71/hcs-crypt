@@ -79,9 +79,8 @@ int OpenSSLRIPEMD160::Add_(char const * block_incoming,
 }
 
 
-int OpenSSLRIPEMD160::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(20ul);
-    return RIPEMD160_Final(reinterpret_cast<unsigned char *>(result.data()), &ripemd160_ctx_) == 1 ? 0 : 1;
+int OpenSSLRIPEMD160::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return RIPEMD160_Final(reinterpret_cast<unsigned char *>(result), &ripemd160_ctx_) == 1 ? 0 : 1;
 }
 
 

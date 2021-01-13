@@ -80,9 +80,8 @@ int LTCRIPEMD128::Add_(char const * block_incoming,
 }
 
 
-int LTCRIPEMD128::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(rmd128_desc.hashsize);
-    return rmd128_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCRIPEMD128::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t ) {
+    return rmd128_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

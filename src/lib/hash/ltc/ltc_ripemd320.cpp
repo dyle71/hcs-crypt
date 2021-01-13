@@ -79,9 +79,8 @@ int LTCRIPEMD320::Add_(char const * block_incoming,
 }
 
 
-int LTCRIPEMD320::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(rmd320_desc.hashsize);
-    return rmd320_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCRIPEMD320::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return rmd320_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

@@ -77,9 +77,8 @@ int OpenSSLMD5::Add_(char const * block_incoming, std::uint64_t size_incoming, c
 }
 
 
-int OpenSSLMD5::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(16ul);
-    return MD5_Final(reinterpret_cast<unsigned char *>(result.data()), &md5_ctx_) == 1 ? 0 : 1;
+int OpenSSLMD5::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return MD5_Final(reinterpret_cast<unsigned char *>(result), &md5_ctx_) == 1 ? 0 : 1;
 }
 
 

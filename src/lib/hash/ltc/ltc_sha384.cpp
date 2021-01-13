@@ -76,9 +76,8 @@ int LTCSHA384::Add_(char const * block_incoming, std::uint64_t size_incoming, ch
 }
 
 
-int LTCSHA384::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(sha384_desc.hashsize);
-    return sha384_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCSHA384::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return sha384_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

@@ -72,13 +72,22 @@ int Algorithm::Finalize(std::vector<std::byte> & result, std::vector<std::byte> 
 }
 
 
-int Algorithm::Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t size) {
+int Algorithm::Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t data_size) {
+    result.resize(GetDescription().final_argument_.size_);
+    return Finalize_(reinterpret_cast<char *>(result.data()), result.size(), data, data_size);
+}
 
-    if (size > 0) {
+
+int Algorithm::Finalize(char * result, std::uint64_t result_size, const char * data, std::uint64_t data_size) {
+
+    if (result_size > 0) {
+        assert(result != nullptr && "Finalizing algorithm with result is NULL/nullptr while result size is > 0.");
+    }
+    if (data_size > 0) {
         assert(data != nullptr && "Finalizing algorithm with data is NULL/nullptr while data size is > 0.");
     }
 
-    int res = Finalize_(result, data, size);
+    int res = Finalize_(result, result_size, data, data_size);
     if (res == 0) {
         finalized_ = true;
     }

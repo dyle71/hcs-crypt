@@ -76,9 +76,8 @@ int LTCSHA512::Add_(char const * block_incoming, std::uint64_t size_incoming, ch
 }
 
 
-int LTCSHA512::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(sha512_desc.hashsize);
-    return sha512_done(&GetState(), reinterpret_cast<unsigned char *>(result.data()));
+int LTCSHA512::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    return sha512_done(&GetState(), reinterpret_cast<unsigned char *>(result));
 }
 
 

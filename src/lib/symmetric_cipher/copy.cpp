@@ -83,8 +83,10 @@ int Copy::Add_(char const * block_incoming,
 }
 
 
-int Copy::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.clear();
+int Copy::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+    if (result != nullptr) {
+        *result = 0;
+    }
     return 0;
 }
 
