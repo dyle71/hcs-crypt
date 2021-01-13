@@ -9,9 +9,9 @@
 #ifndef HEADCODE_SPACE_CRYPT_HASH_LTC_SYMMETRIC_CIPHER_HPP
 #define HEADCODE_SPACE_CRYPT_HASH_LTC_SYMMETRIC_CIPHER_HPP
 
-#include <tomcrypt.h>
-
 #include <headcode/crypt/algorithm.hpp>
+
+#include <tomcrypt.h>
 
 
 namespace headcode::crypt {
