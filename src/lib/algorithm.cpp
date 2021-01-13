@@ -73,8 +73,8 @@ int Algorithm::Finalize(std::vector<std::byte> & result, std::vector<std::byte> 
 
 
 int Algorithm::Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t data_size) {
-    result.resize(GetDescription().final_argument_.size_);
-    return Finalize_(reinterpret_cast<char *>(result.data()), result.size(), data, data_size);
+    result.resize(GetDescription().result_size_);
+    return Finalize(reinterpret_cast<char *>(result.data()), result.size(), data, data_size);
 }
 
 

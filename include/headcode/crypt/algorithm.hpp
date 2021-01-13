@@ -243,7 +243,7 @@ public:
      * You may Finalize the object multiple times.
      * Check the algorithms details/description of what constitutes a good finalization data.
      * @param   result          the result of the algorithm.
-     * @param   rtesult_size    size of the result for finalization.
+     * @param   result_size     size of the result for finalization.
      * @param   data            the finalization data (== final key) to use, if any
      * @param   data_size       size of the data used for finalization.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.

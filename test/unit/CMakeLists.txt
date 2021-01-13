@@ -19,8 +19,8 @@ set(UNIT_TEST_SRC
     ${CMAKE_SOURCE_DIR}/src/bin/cli.cpp
     cli/test_cli.cpp
 
-    symmetric_cipher/test_copy.cpp
-    symmetric_cipher/ltc/test_ltc_aes_ecb_128.cpp
+    #symmetric_cipher/test_copy.cpp
+    #symmetric_cipher/ltc/test_ltc_aes_ecb_128.cpp
 
     hash/test_nohash.cpp
     hash/ltc/test_ltc_md5.cpp
