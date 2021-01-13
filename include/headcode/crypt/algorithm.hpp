@@ -130,6 +130,9 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * This variant drops any outgoing blocks the algorithm would produce.
+     * If the block_size_incoming_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the input (text) is a multiple of this incoming block size.
      * @param   text                the text to add.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -140,6 +143,12 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     * If the block_size_incoming_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the input (text) is a multiple of this incoming block size.
+     * If the block_size_outgoing_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the output (block_outgoing) is a multiple of this outgoing block size.
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -152,6 +161,9 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * This variant drops any outgoing blocks the algorithm would produce.
+     * If the block_size_incoming_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the input (block_incoming) is a multiple of this incoming block size.
      * @param   block_incoming      incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -162,6 +174,12 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     * If the block_size_incoming_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the input (block_incoming) is a multiple of this incoming block size.
+     * If the block_size_outgoing_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the output (block_outgoing) is a multiple of this outgoing block size.
      * @param   block_incoming      incoming data block.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -173,6 +191,12 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     * If the block_size_incoming_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the input (block_incoming) is a multiple of this incoming block size.
+     * If the block_size_outgoing_ value in the algorithm's description is set
+     * to a non-zero value, then it is highly recommended that the length of
+     * the output (block_outgoing) is a multiple of this outgoing block size.
      * @param   block_incoming      incoming data block.
      * @param   size_incoming       size of the incoming data block.
      * @param   block_outgoing      outgoing data block.
@@ -216,6 +240,16 @@ public:
      * @return  A structure describing the algorithm.
      * */
     Description const & GetDescription() const;
+
+    /**
+     * @brief   Returns a block to be fitted as within a block size.
+     * This prepares a memory area to be a multiple of the given block_size.
+     * The given text is copied into the block. Any remainder is padded with 0.
+     * @param   text            Some text.
+     * @param   block_size      The block size.
+     * @return  a vector with the size of a multiple of block_size.
+     */
+    static std::vector<std::byte> GrowToBlockSize(std::string const & text, std::uint64_t block_size);
 
     /**
      * @brief   Initialize this object instance.

@@ -6,8 +6,8 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_ECB_128_HPP
-#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_ECB_128_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_128_ECB_DECRYPTOR_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_128_ECB_DECRYPTOR_HPP
 
 #include <cstddef>
 #include <vector>
@@ -21,9 +21,9 @@ namespace headcode::crypt {
 
 
 /**
- * @brief   The LibTomCrypt AES ECB 128 Bit Cypher.
+ * @brief   The LibTomCrypt AES 128 Bit Cypher ECB Decryptor.
  */
-class LTCAESECB128 : public LTCSymmetricECBCipher {
+class LTCAES128ECBDecrypter : public LTCSymmetricECBCipher {
 
 public:
     /**

@@ -8,21 +8,20 @@
 
 #include <gtest/gtest.h>
 
-#include <headcode/crypt/crypt.hpp>
 #include <headcode/mem/mem.hpp>
+#include <headcode/crypt/crypt.hpp>
 
 #include "shared/ipsum_lorem.hpp"
 
 
 TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-ecb-128");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo.get(), nullptr);
-    EXPECT_EQ(algo->Initialize(), 0);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-ecb-128");
+    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb-encryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -37,17 +36,30 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
 
 TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-ecb-128");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
-    auto key = std::string{"supercalifragilisticexpialidocious"};
+    auto key = std::string{
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"};
+
+    // trim key to size
+    key.resize(algo->GetDescription().initial_argument_.size_);
     ASSERT_EQ(algo->Initialize(key.c_str(), key.size()), 0);
 
-    auto text = std::string{"The quick brown fox jumps over the lazy dog."};
-    std::vector<std::byte> cipher;
-    EXPECT_EQ(algo->Add(text, cipher), 0);
+    auto plain = algo->GrowToBlockSize("The quick brown fox jumps over the lazy dog.",
+                                       algo->GetDescription().block_size_incoming_);
+    std::vector<std::byte> cipher{plain.size()};
+    EXPECT_EQ(algo->Add(plain, cipher), 0);
 
     // TODO: check cipher
+    std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
 
     std::vector<std::byte> result;
     EXPECT_EQ(algo->Finalize(result), 0);
@@ -57,23 +69,35 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
 
 TEST(SymmetricCipher_LTC_AES_ECB_128, regular) {
 
-    auto key = std::string{"supercalifragilisticexpialidocious"};
-
     // ---------- encrypt ----------
 
-    auto algo_encrypt = headcode::crypt::Factory::Create("ltc-aes-ecb-128");
+    auto algo_encrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo_encrypt.get(), nullptr);
-    ASSERT_STREQ(algo_encrypt->GetDescription().name_.c_str(), "ltc-aes-ecb-128");
+    ASSERT_STREQ(algo_encrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb-encryptor");
 
-    ASSERT_EQ(algo_encrypt->Initialize(key.c_str(), key.size()), 0);
+    auto key = std::string{
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"};
 
+    auto key_enc = key;
+    key_enc.resize(algo_encrypt->GetDescription().initial_argument_.size_);
+
+    ASSERT_EQ(algo_encrypt->Initialize(key_enc.c_str(), key_enc.size()), 0);
     EXPECT_TRUE(algo_encrypt->IsInitialized());
     EXPECT_FALSE(algo_encrypt->IsFinalized());
 
-    std::vector<std::byte> cipher;
-    EXPECT_EQ(algo_encrypt->Add(IPSUM_LOREM_TEXT, cipher), 0);
+    auto plain = algo_encrypt->GrowToBlockSize(IPSUM_LOREM_TEXT, algo_encrypt->GetDescription().block_size_incoming_);
+    std::vector<std::byte> cipher{plain.size()};
+    EXPECT_EQ(algo_encrypt->Add(plain, cipher), 0);
 
     // TODO: check cipher
+    std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
 
     std::vector<std::byte> result;
     EXPECT_EQ(algo_encrypt->Finalize(result), 0);
@@ -81,17 +105,20 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, regular) {
 
     // ---------- decrypt ----------
 
-    auto algo_decrypt = headcode::crypt::Factory::Create("ltc-aes-ecb-128");
+    auto algo_decrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo_decrypt.get(), nullptr);
-    ASSERT_STREQ(algo_decrypt->GetDescription().name_.c_str(), "ltc-aes-ecb-128");
+    ASSERT_STREQ(algo_decrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb-encryptor");
 
-    ASSERT_EQ(algo_decrypt->Initialize(key.c_str(), key.size()), 0);
+    auto key_dec = key;
+    key_dec.resize(algo_encrypt->GetDescription().initial_argument_.size_);
+    ASSERT_EQ(algo_decrypt->Initialize(key_dec.c_str(), key_dec.size()), 0);
 
     EXPECT_TRUE(algo_decrypt->IsInitialized());
     EXPECT_FALSE(algo_decrypt->IsFinalized());
 
-    std::vector<std::byte> plain;
-    EXPECT_EQ(algo_decrypt->Add(cipher, plain), 0);
+    std::vector<std::byte> plain_decrypted{cipher.size()};
+    EXPECT_EQ(algo_decrypt->Add(cipher, plain_decrypted), 0);
+    std::cout << headcode::mem::MemoryToHex(plain_decrypted) << std::endl;
 
     EXPECT_EQ(algo_decrypt->Finalize(result), 0);
     EXPECT_TRUE(result.empty());

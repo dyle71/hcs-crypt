@@ -18,7 +18,6 @@ TEST(SymmetricCipher_Copy, creation) {
 
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
-    EXPECT_EQ(algo->Initialize(), 0);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 

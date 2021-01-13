@@ -7,6 +7,7 @@
  */
 
 #include <cassert>
+#include <cstring>
 
 #include <headcode/crypt/algorithm.hpp>
 
@@ -40,12 +41,7 @@ int Algorithm::Add(std::vector<std::byte> const & block_incoming) {
 
 int Algorithm::Add(std::vector<std::byte> const & block_incoming, std::vector<std::byte> & block_outgoing) {
 
-    auto block_size_outgoing = GetDescription().block_size_outgoing_;
-    if (block_size_outgoing == 0) {
-        block_size_outgoing = block_incoming.size();
-    }
-    block_outgoing.resize(block_size_outgoing);
-
+    auto block_size_outgoing = block_outgoing.size();
     return Add(reinterpret_cast<char const *>(block_incoming.data()),
                block_incoming.size(),
                reinterpret_cast<char *>(block_outgoing.data()),
@@ -93,6 +89,15 @@ int Algorithm::Finalize(std::vector<std::byte> & result, char const * data, std:
 
 Algorithm::Description const & Algorithm::GetDescription() const {
     return GetDescription_();
+}
+
+
+std::vector<std::byte> Algorithm::GrowToBlockSize(std::string const & text, std::uint64_t block_size) {
+    std::uint64_t multiple = text.size() / block_size + (text.size() % block_size > 0 ? 1 : 0);
+    std::vector<std::byte> res{multiple * block_size};
+    std::memcpy(res.data(), text.data(), text.size());
+    std::memset(res.data() + text.size(), 0, res.size() - text.size());
+    return res;
 }
 
 

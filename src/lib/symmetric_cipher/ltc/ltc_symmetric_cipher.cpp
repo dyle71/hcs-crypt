@@ -23,10 +23,6 @@ LTCSymmetricCipher::~LTCSymmetricCipher() noexcept {
 
 int LTCSymmetricCipher::SetDescriptor(ltc_cipher_descriptor const * descriptor) {
 
-    if (descriptor_ != nullptr) {
-        unregister_cipher(nullptr);
-    }
-
     int res = 0;
 
     descriptor_ = descriptor;
