@@ -51,17 +51,18 @@ TEST(Benchmark_LTCSHA1, LTCSHA1CArray) {
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_STREQ(algo->GetDescription().name_.c_str(), "ltc-sha1");
 
-    auto array = IPSUM_LOREM_TEXT.c_str();
-    auto size = std::strlen(array);
+    auto block_incoming = IPSUM_LOREM_TEXT.c_str();
+    auto size_incoming = std::strlen(block_incoming);
+    std::uint64_t size_outgoing = 0ul;
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
-        algo->Add(array, size);
+        algo->Add(block_incoming, size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * size};
+                                               loop_count * size_incoming};
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA1::LTCSHA1CArray ");
 

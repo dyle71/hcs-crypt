@@ -48,17 +48,21 @@ TEST(Benchmark_Copy, CopyCArray1000) {
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_STREQ(algo->GetDescription().name_.c_str(), "copy");
 
-    auto array = IPSUM_LOREM_TEXT.c_str();
-    auto size = std::strlen(array);
+    auto block_incoming = IPSUM_LOREM_TEXT.c_str();
+    auto size_incoming = std::strlen(block_incoming);
+    auto block_outgoing = new char[size_incoming];
+    auto size_outgoing = size_incoming;
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
-        algo->Add(array, size);
+        algo->Add(block_incoming, size_incoming, block_outgoing, size_outgoing);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * size};
+                                               loop_count * size_incoming};
+
+    delete [] block_outgoing;
 
     std::cout << StreamPerformanceIndicators(throughput, "BenchmarkCopy::CopyCArray1000 ");
 }
