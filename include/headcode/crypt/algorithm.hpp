@@ -59,6 +59,18 @@ public:
      *
      * The output block size is different to the result size. The result size constitutes to
      * the final value of an algorithm, e.g. the size of the message digest of hash algorithms.
+     *
+     * Example for a scenario with AES 128 ECB is:
+     * @code
+     *      std::vector<std::byte> key = ....;              // get key from somewhere
+     *
+     *      auto algorithm = headcode::crypt::Factory::Create("openssl-aes-128-ecb encryptor");
+     *      algorithm->Initialize(key.data(), key.size());
+     *
+     *      std::vector<std::byte> plain = ....;            // get the plain input data
+     *      std::vector<std::byte> cipher{plain.size()};    // this will hold the final cihper
+     *      algorithm->Add(plain, cipher);
+     * @endcode
      */
     struct Description {
         /**
@@ -414,7 +426,7 @@ private:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * 
+     *
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error.
