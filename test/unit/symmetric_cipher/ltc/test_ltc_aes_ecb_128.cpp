@@ -16,12 +16,12 @@
 
 TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb-encryptor");
+    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb encryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -36,7 +36,7 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
 
 TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     auto key = std::string{
@@ -71,9 +71,9 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, regular) {
 
     // ---------- encrypt ----------
 
-    auto algo_encrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
+    auto algo_encrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
     ASSERT_NE(algo_encrypt.get(), nullptr);
-    ASSERT_STREQ(algo_encrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb-encryptor");
+    ASSERT_STREQ(algo_encrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb encryptor");
 
     auto key = std::string{
             "supercalifragilisticexpialidocious"
@@ -105,9 +105,9 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, regular) {
 
     // ---------- decrypt ----------
 
-    auto algo_decrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
+    auto algo_decrypt = headcode::crypt::Factory::Create("ltc-aes-128-ecb decryptor");
     ASSERT_NE(algo_decrypt.get(), nullptr);
-    ASSERT_STREQ(algo_decrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb-encryptor");
+    ASSERT_STREQ(algo_decrypt->GetDescription().name_.c_str(), "ltc-aes-128-ecb decryptor");
 
     auto key_dec = key;
     key_dec.resize(algo_encrypt->GetDescription().initial_argument_.size_);

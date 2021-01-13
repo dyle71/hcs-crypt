@@ -28,7 +28,7 @@ TEST(Factory, list_crypher_symmetric) {
         }
     }
 
-    std::uint64_t expected_count = 2ul;
+    std::uint64_t expected_count = 3ul;
 #ifdef OPENSSL
     expected_count += 0ul;
 #endif
