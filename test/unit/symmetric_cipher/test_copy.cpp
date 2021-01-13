@@ -44,6 +44,8 @@ TEST(SymmetricCipher_Copy, simple) {
     std::vector<std::byte> cipher;
     algo->Add(text, cipher);
 
+    // COPY: copies from input to output
+
     EXPECT_EQ(std::memcmp(text.c_str(), cipher.data(), text.size()), 0);
 
     std::vector<std::byte> result;
@@ -82,6 +84,12 @@ TEST(SymmetricCipher_Copy, empty) {
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
     EXPECT_EQ(algo->Initialize(), 0);
 
+    std::vector<std::byte> plain;
+    std::vector<std::byte> cipher;
+    algo->Add(plain, cipher);
+    EXPECT_EQ(plain.size(), 0ul);
+    EXPECT_EQ(cipher.size(), 0ul);
+
     std::vector<std::byte> result;
     ASSERT_EQ(algo->Finalize(result), 0);
     EXPECT_TRUE(result.empty());
@@ -94,8 +102,6 @@ TEST(SymmetricCipher_Copy, noinit) {
     auto algo = headcode::crypt::Factory::Create("copy");
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
-
-    // COPY: copies from input to output
 
     std::vector<std::byte> cipher;
     algo->Add(IPSUM_LOREM_TEXT, cipher);

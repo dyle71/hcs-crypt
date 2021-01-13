@@ -73,7 +73,6 @@ int Copy::Add_(char const * block_incoming,
         return 1;
     }
 
-    size_outgoing = GetDescription().block_size_outgoing_;
     auto copy_size = std::min(size_incoming, size_outgoing);
     std::memcpy(block_outgoing, block_incoming, copy_size);
     if (copy_size < size_outgoing) {

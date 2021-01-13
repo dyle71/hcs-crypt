@@ -21,8 +21,13 @@ int Algorithm::Add(const std::string & text) {
 
 
 int Algorithm::Add(std::string const & text, std::vector<std::byte> & block_outgoing) {
+
     auto block_size_outgoing = GetDescription().block_size_outgoing_;
+    if (block_size_outgoing == 0) {
+        block_size_outgoing = text.size();
+    }
     block_outgoing.resize(block_size_outgoing);
+
     return Add(text.c_str(), text.size(), reinterpret_cast<char *>(block_outgoing.data()), block_size_outgoing);
 }
 
@@ -34,8 +39,13 @@ int Algorithm::Add(std::vector<std::byte> const & block_incoming) {
 
 
 int Algorithm::Add(std::vector<std::byte> const & block_incoming, std::vector<std::byte> & block_outgoing) {
+
     auto block_size_outgoing = GetDescription().block_size_outgoing_;
+    if (block_size_outgoing == 0) {
+        block_size_outgoing = block_incoming.size();
+    }
     block_outgoing.resize(block_size_outgoing);
+
     return Add(reinterpret_cast<char const *>(block_incoming.data()),
                block_incoming.size(),
                reinterpret_cast<char *>(block_outgoing.data()),
