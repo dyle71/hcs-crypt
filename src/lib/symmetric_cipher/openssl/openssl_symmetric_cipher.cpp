@@ -28,15 +28,16 @@ int OpenSSLSymmetricCipher::Add_(char const * block_incoming,
 
     // some rather wild (unnecessary) casting...
     auto out = reinterpret_cast<unsigned char *>(block_outgoing);
-    auto out_size = reinterpret_cast<int *>(size_outgoing);
+    int out_size = size_outgoing;
     auto in = reinterpret_cast<const unsigned char *>(block_incoming);
 
-    auto res = EVP_CipherUpdate(GetCipherContext(), out, out_size, in, size_incoming);
+    auto res = EVP_CipherUpdate(GetCipherContext(), out, &out_size, in, size_incoming);
+    size_outgoing = out_size;
     if (res != 1) {
         return 1;
     }
 
-    return res;
+    return 0;
 }
 
 
@@ -65,5 +66,5 @@ int OpenSSLSymmetricCipher::Initialize_(char const * data, std::uint64_t size) {
         return 1;
     }
 
-    return res;
+    return 0;
 }

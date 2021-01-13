@@ -30,7 +30,7 @@ TEST(Factory, list_crypher_symmetric) {
 
     std::uint64_t expected_count = 3ul;
 #ifdef OPENSSL
-    expected_count += 0ul;
+    expected_count += 1ul;
 #endif
 
     EXPECT_EQ(symmetric_cyphers_count, expected_count);

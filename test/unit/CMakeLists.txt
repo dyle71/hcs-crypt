@@ -19,7 +19,7 @@ set(UNIT_TEST_SRC
     ${CMAKE_SOURCE_DIR}/src/bin/cli.cpp
     cli/test_cli.cpp
 
-    #symmetric_cipher/test_copy.cpp
+    symmetric_cipher/test_copy.cpp
     #symmetric_cipher/ltc/test_ltc_aes_ecb_128.cpp
 
     hash/test_nohash.cpp
@@ -37,7 +37,9 @@ set(UNIT_TEST_SRC
 )
 
 if (WITH_OPENSSL)
+
     set(UNIT_TEST_OPENSSL_SRC
+
         hash/openssl/test_openssl_md5.cpp
         hash/openssl/test_openssl_ripemd160.cpp
         hash/openssl/test_openssl_sha1.cpp
@@ -45,7 +47,10 @@ if (WITH_OPENSSL)
         hash/openssl/test_openssl_sha256.cpp
         hash/openssl/test_openssl_sha384.cpp
         hash/openssl/test_openssl_sha512.cpp
+
+        symmetric_cipher/openssl/test_openssl_aes_128_ecb.cpp
     )
+
 endif ()
 
 
