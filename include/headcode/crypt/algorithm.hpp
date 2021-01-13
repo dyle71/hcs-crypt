@@ -71,6 +71,8 @@ public:
      *      std::vector<std::byte> cipher{plain.size()};    // this will hold the final cihper
      *      algorithm->Add(plain, cipher);
      * @endcode
+     *
+     * To list all available algorithms see the Factory::GetAlgorithmDescriptions method.
      */
     struct Description {
         /**

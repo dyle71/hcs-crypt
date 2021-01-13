@@ -38,6 +38,10 @@
 #ifdef OPENSSL
 #include "symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.hpp"
 #include "symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.hpp"
+#include "symmetric_cipher/openssl/openssl_aes_192_ecb_decryptor.hpp"
+#include "symmetric_cipher/openssl/openssl_aes_192_ecb_encryptor.hpp"
+#include "symmetric_cipher/openssl/openssl_aes_256_ecb_decryptor.hpp"
+#include "symmetric_cipher/openssl/openssl_aes_256_ecb_encryptor.hpp"
 #endif
 
 
@@ -74,6 +78,10 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
     OpenSSLAES128ECBDecrypter::Register();
     OpenSSLAES128ECBEncrypter::Register();
+    OpenSSLAES192ECBDecrypter::Register();
+    OpenSSLAES192ECBEncrypter::Register();
+    OpenSSLAES256ECBDecrypter::Register();
+    OpenSSLAES256ECBEncrypter::Register();
 
 #endif
 }

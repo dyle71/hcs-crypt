@@ -49,6 +49,8 @@ if (WITH_OPENSSL)
         hash/openssl/test_openssl_sha512.cpp
 
         symmetric_cipher/openssl/test_openssl_aes_128_ecb.cpp
+        symmetric_cipher/openssl/test_openssl_aes_192_ecb.cpp
+        symmetric_cipher/openssl/test_openssl_aes_256_ecb.cpp
     )
 
 endif ()
