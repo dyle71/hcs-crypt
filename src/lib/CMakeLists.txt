@@ -44,6 +44,7 @@ if (WITH_OPENSSL)
         hash/openssl/openssl_sha384.cpp
         hash/openssl/openssl_sha512.cpp
 
+        symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.cpp
         symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.cpp
         symmetric_cipher/openssl/openssl_symmetric_cipher.cpp
     )

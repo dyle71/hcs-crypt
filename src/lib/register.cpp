@@ -36,6 +36,7 @@
 #include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
 
 #ifdef OPENSSL
+#include "symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.hpp"
 #include "symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.hpp"
 #endif
 
@@ -71,6 +72,7 @@ void headcode::crypt::RegisterKnownAlgorithms() {
     OpenSSLSHA384::Register();
     OpenSSLSHA512::Register();
 
+    OpenSSLAES128ECBDecrypter::Register();
     OpenSSLAES128ECBEncrypter::Register();
 
 #endif

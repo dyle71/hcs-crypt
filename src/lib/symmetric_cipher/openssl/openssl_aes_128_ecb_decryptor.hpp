@@ -6,8 +6,8 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_ECB_ENCRYPTOR_HPP
-#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_ECB_ENCRYPTOR_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_ECB_DECRYPTOR_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_ECB_DECRYPTOR_HPP
 
 #include <cstddef>
 #include <vector>
@@ -21,15 +21,15 @@ namespace headcode::crypt {
 
 
 /**
- * @brief   The OpenSSL AES 128 Bit Cypher ECB Encryptor.
+ * @brief   The OpenSSL AES 128 Bit Cypher ECB Decryptor.
  */
-class OpenSSLAES128ECBEncrypter : public OpenSSLSymmetricCipher {
+class OpenSSLAES128ECBDecrypter : public OpenSSLSymmetricCipher {
 
 public:
     /**
      * @brief   Constructor
      */
-    OpenSSLAES128ECBEncrypter() : OpenSSLSymmetricCipher(true) {
+    OpenSSLAES128ECBDecrypter() : OpenSSLSymmetricCipher(false) {
     }
 
     /**

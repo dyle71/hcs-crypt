@@ -12,26 +12,26 @@
 
 #include <headcode/crypt/factory.hpp>
 
-#include "openssl_aes_128_ecb_encryptor.hpp"
+#include "openssl_aes_128_ecb_decryptor.hpp"
 
 using namespace headcode::crypt;
 
 
 /**
- * @brief   The OpenSSL AES 128 ECB algorithm (encryptor) description.
+ * @brief   The OpenSSL AES 128 ECB algorithm (decryptor) description.
  * @return  The description of this algorithm.
  */
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-aes-128-ecb encryptor",                        // name
+            "openssl-aes-128-ecb decryptor",                        // name
             Family::SYMMETRIC_CIPHER,                               // family
             16ul,                                                   // input block size
             16ul,                                                   // output block size
             0ul,                                                    // result size
             {16ul, "A secret shared key.", true},                   // initial data
             {0ul, "No finalization data needed.", false},           // finalization data
-            "OpenSSL AES 128 in ECB mode (encryptor part).",        // description (short/left and long/below)
+            "OpenSSL AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
             "in ECB (electronic codebook) mode. Note that ECB bears some weaknesses and should be avoided. "
@@ -47,14 +47,14 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class OpenSSLAES128ECBEncryptorProducer : public Factory::Producer {
+class OpenSSLAES128ECBDecryptorProducer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
      * @return  A new algorithm instance.
      */
     std::unique_ptr<Algorithm> operator()() const override {
-        return std::make_unique<OpenSSLAES128ECBEncrypter>();
+        return std::make_unique<OpenSSLAES128ECBDecrypter>();
     }
 
     /**
@@ -67,22 +67,22 @@ public:
 };
 
 
-int OpenSSLAES128ECBEncrypter::Finalize_(char * result, std::uint64_t, char const *, std::uint64_t) {
+int OpenSSLAES128ECBDecrypter::Finalize_(char * result, std::uint64_t, char const *, std::uint64_t) {
     return 0;
 }
 
 
-EVP_CIPHER const * OpenSSLAES128ECBEncrypter::GetCipher() const {
+EVP_CIPHER const * OpenSSLAES128ECBDecrypter::GetCipher() const {
     return EVP_aes_128_ecb();
 }
 
 
-Algorithm::Description const & OpenSSLAES128ECBEncrypter::GetDescription_() const {
+Algorithm::Description const & OpenSSLAES128ECBDecrypter::GetDescription_() const {
     return ::GetDescription();
 }
 
 
-void OpenSSLAES128ECBEncrypter::Register() {
+void OpenSSLAES128ECBDecrypter::Register() {
     auto const & description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES128ECBEncryptorProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES128ECBDecryptorProducer>());
 }
