@@ -41,6 +41,11 @@ int OpenSSLSymmetricCipher::Add_(char const * block_incoming,
 }
 
 
+int OpenSSLSymmetricCipher::Finalize_(char *, std::uint64_t, char const *, std::uint64_t) {
+    return 0;
+}
+
+
 int OpenSSLSymmetricCipher::Initialize_(char const * data, std::uint64_t size) {
 
     int res = EVP_CipherInit_ex(GetCipherContext(), GetCipher(), nullptr, nullptr, nullptr, IsEncryptor() ? 1 : 0);

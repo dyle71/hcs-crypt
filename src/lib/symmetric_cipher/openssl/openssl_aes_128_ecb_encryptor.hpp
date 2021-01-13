@@ -46,16 +46,6 @@ protected:
 
 private:
     /**
-     * @brief   Finalizes this object instance.
-     * @param   result          the result of the algorithm.
-     * @param   rtesult_size    size of the result for finalization.
-     * @param   data            the finalization data (== final key) to use, if any
-     * @param   data_size       size of the data used for finalization.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
-     */
-    int Finalize_(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size) override;
-
-    /**
      * @brief   Gets the algorithm description.
      * @return  A string describing the algorithm.
      * */

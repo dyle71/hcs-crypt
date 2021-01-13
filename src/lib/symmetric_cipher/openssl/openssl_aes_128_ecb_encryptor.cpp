@@ -67,11 +67,6 @@ public:
 };
 
 
-int OpenSSLAES128ECBEncrypter::Finalize_(char * result, std::uint64_t, char const *, std::uint64_t) {
-    return 0;
-}
-
-
 EVP_CIPHER const * OpenSSLAES128ECBEncrypter::GetCipher() const {
     return EVP_aes_128_ecb();
 }
