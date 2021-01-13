@@ -14,7 +14,7 @@
 #include "shared/ipsum_lorem.hpp"
 
 
-TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
+TEST(SymmetricCipher_LTC_AES_128_ECB, creation) {
 
     auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
     ASSERT_NE(algo.get(), nullptr);
@@ -34,7 +34,48 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, creation) {
 }
 
 
-TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
+TEST(SymmetricCipher_LTC_AES_128_ECB, single_block) {
+
+    auto elgo_enc = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
+    ASSERT_NE(elgo_enc.get(), nullptr);
+
+    auto key = std::string{
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"};
+
+    // trim key to size
+    key.resize(elgo_enc->GetDescription().initial_argument_.size_);
+    ASSERT_EQ(elgo_enc->Initialize(key.c_str(), key.size()), 0);
+
+    auto plain = elgo_enc->GrowToBlockSize("0123456789012345", elgo_enc->GetDescription().block_size_incoming_);
+    plain.resize(elgo_enc->GetDescription().block_size_incoming_);
+    std::vector<std::byte> cipher{plain.size()};
+    EXPECT_EQ(elgo_enc->Add(plain, cipher), 0);
+
+    // TODO: check cipher
+    std::cout << key << std::endl;
+    std::cout << headcode::mem::MemoryToHex(plain) << std::endl;
+    std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
+
+    std::vector<std::byte> result_enc;
+    EXPECT_EQ(elgo_enc->Finalize(result_enc), 0);
+    EXPECT_TRUE(result_enc.empty());
+
+    auto algo_dec = headcode::crypt::Factory::Create("ltc-aes-128-ecb decryptor");
+    ASSERT_NE(algo_dec.get(), nullptr);
+    std::vector<std::byte> plain_decrypted{cipher.size()};
+    EXPECT_EQ(algo_dec->Add(cipher, plain_decrypted), 0);
+    std::cout << headcode::mem::MemoryToHex(plain_decrypted) << std::endl;
+}
+
+
+TEST(SymmetricCipher_LTC_AES_128_ECB, simple) {
 
     auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
     ASSERT_NE(algo.get(), nullptr);
@@ -59,6 +100,8 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
     EXPECT_EQ(algo->Add(plain, cipher), 0);
 
     // TODO: check cipher
+    std::cout << key << std::endl;
+    std::cout << headcode::mem::MemoryToHex(plain) << std::endl;
     std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
 
     std::vector<std::byte> result;
@@ -67,7 +110,7 @@ TEST(SymmetricCipher_LTC_AES_ECB_128, simple) {
 }
 
 
-TEST(SymmetricCipher_LTC_AES_ECB_128, regular) {
+TEST(SymmetricCipher_LTC_AES_128_ECB, regular) {
 
     // ---------- encrypt ----------
 

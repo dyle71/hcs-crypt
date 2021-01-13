@@ -6,8 +6,6 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <headcode/crypt/factory.hpp>
-
 #include "ltc_symmetric_cipher.hpp"
 
 using namespace headcode::crypt;
