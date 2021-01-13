@@ -30,7 +30,11 @@ static Algorithm::Description const & GetDescription() {
             24ul,                                                // result size
             {0ul, "No initial data needed.", false},             // initial data
             {0ul, "No finalization data needed.", false},        // finalization data
-            "LibTomCrypt TIGER192.",                             // description
+            "LibTomCrypt TIGER192.",                             // description (short/left and long/below)
+
+            "This is the 192 Bit variant of the TIGER hash algorithm created by Ross Anderson and Eli Biham. "
+            "See: https://en.wikipedia.org/wiki/Tiger_(hash_function).",
+
             std::string{"libtomcrypt v"} + SCRYPT                // provider
     };
 

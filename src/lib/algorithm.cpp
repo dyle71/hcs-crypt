@@ -14,10 +14,22 @@
 using namespace headcode::crypt;
 
 
+int Algorithm::Add(const std::string & text) {
+    std::vector<std::byte> ignored_outgoing;
+    return Add(text, ignored_outgoing);
+}
+
+
 int Algorithm::Add(std::string const & text, std::vector<std::byte> & block_outgoing) {
     auto block_size_outgoing = GetDescription().block_size_outgoing_;
     block_outgoing.resize(block_size_outgoing);
     return Add(text.c_str(), text.size(), reinterpret_cast<char *>(block_outgoing.data()), block_size_outgoing);
+}
+
+
+int Algorithm::Add(std::vector<std::byte> const & block_incoming) {
+    std::vector<std::byte> ignored_outgoing;
+    return Add(block_incoming, ignored_outgoing);
 }
 
 

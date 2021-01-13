@@ -129,11 +129,33 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     * This variant drops any outgoing blocks the algorithm would produce.
+     * @param   text                the text to add.
+     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     */
+    int Add(std::string const & text);
+
+    /**
+     * @brief   Adds text to the algorithm
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
     int Add(std::string const & text, std::vector<std::byte> & block_outgoing);
+
+    /**
+     * @brief   Adds data to the algorithm
+     * The concrete implementation of the algorithm may report any error value.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     * This variant drops any outgoing blocks the algorithm would produce.
+     * @param   block_incoming      incoming data block.
+     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     */
+    int Add(std::vector<std::byte> const & block_incoming);
 
     /**
      * @brief   Adds data to the algorithm
