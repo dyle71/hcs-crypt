@@ -22,15 +22,19 @@ namespace headcode::crypt {
 
 /**
  * @brief   The Algorithm class is the abstract class for any crypto-algorithm.
+ *
  * Hashes, encryptor and decrypter are all algorithms in this sense:
  * - an algorithm instance is created. This may or may not use an initial key.
  * - data is (repeatedly) added to the algorithm instance, which changes its inner state.
  * - at last the algorithm instance is finalized, again sometimes with a final key and sometime not.
+ *
  * If an initial and/or a final key is used depends on the algorithm itself and can be queried by
  * inspecting the Algorithm::Description.
+ *
  * This is a very broad definition and probably not only crypto algorithm fit this approach, since
  * the initial and final keys themselves are basically just memory BLOBs holding anything an
  * algorithm can interpret as initial (or final) data to process.
+ *
  * There is one single limitation: an algorithm may be initialized only once but finalized multiple times.
  */
 class Algorithm {
@@ -38,7 +42,9 @@ class Algorithm {
 public:
     /**
      * @brief   This holds the algorithm description.
+     *
      * Each algorithm has a unqiue name and is associated with a family of algorithms.
+     *
      * Each algorithm operates on input data and produce output data. Some algorithm expect
      * the input in specific block sizes. In such cases the value of block_size_incoming
      * will hold a value != 0. If the algorithm produces data in blocks, then the value
@@ -57,6 +63,7 @@ public:
     struct Description {
         /**
          * @brief   This structure defines requirements for input data (most likely the key) used.
+         *
          * This structure describes the requirement for input data used in the algorithms. Some algorithms need
          * initial key values, some need final key values, some need none, some need both. The `needed_` field
          * defines if the particular key is needed at all and the `size_` field holds the size in bytes of the
@@ -126,13 +133,18 @@ public:
 
     /**
      * @brief   Adds text to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * This variant drops any outgoing blocks the algorithm would produce.
+     *
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (text) is a multiple of this incoming block size.
+     *
      * @param   text                the text to add.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -140,15 +152,20 @@ public:
 
     /**
      * @brief   Adds text to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (text) is a multiple of this incoming block size.
+     *
      * If the block_size_outgoing_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
+     *
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -157,13 +174,18 @@ public:
 
     /**
      * @brief   Adds data to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * This variant drops any outgoing blocks the algorithm would produce.
+     *
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (block_incoming) is a multiple of this incoming block size.
+     *
      * @param   block_incoming      incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -171,15 +193,20 @@ public:
 
     /**
      * @brief   Adds data to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (block_incoming) is a multiple of this incoming block size.
+     *
      * If the block_size_outgoing_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
+     *
      * @param   block_incoming      incoming data block.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -188,15 +215,19 @@ public:
 
     /**
      * @brief   Adds data to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (block_incoming) is a multiple of this incoming block size.
+     *
      * If the block_size_outgoing_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
+     *
      * @param   block_incoming      incoming data block.
      * @param   size_incoming       size of the incoming data block.
      * @param   block_outgoing      outgoing data block.
@@ -210,11 +241,15 @@ public:
 
     /**
      * @brief   Finalizes this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * You may Finalize the object multiple times.
+     *
      * Check the algorithms details/description of what constitutes a good finalization data.
+     *
      * @param   result      the result of the algorithm.
      * @param   data        the final data (== final key) to use, if any
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
@@ -223,11 +258,16 @@ public:
 
     /**
      * @brief   Finalizes this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * You may Finalize the object multiple times.
+     *
      * Check the algorithms details/description of what constitutes a good finalization data.
+     *
      * @param   result          the result of the algorithm.
      * @param   data            the finalization data (== final key) to use, if any
      * @param   data_size       size of the data used for finalization.
@@ -237,11 +277,16 @@ public:
 
     /**
      * @brief   Finalizes this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * You may Finalize the object multiple times.
+     *
      * Check the algorithms details/description of what constitutes a good finalization data.
+     *
      * @param   result          the result of the algorithm.
      * @param   result_size     size of the result for finalization.
      * @param   data            the finalization data (== final key) to use, if any
@@ -258,8 +303,10 @@ public:
 
     /**
      * @brief   Returns a block to be fitted as within a block size.
+     *
      * This prepares a memory area to be a multiple of the given block_size.
      * The given text is copied into the block. Any remainder is padded with 0.
+     *
      * @param   text            Some text.
      * @param   block_size      The block size.
      * @return  a vector with the size of a multiple of block_size.
@@ -268,11 +315,16 @@ public:
 
     /**
      * @brief   Initialize this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * The object **WILL NOT** be initialized twice.
+     *
      * Check the algorithms details/description of what constitutes a good init data.
+     *
      * @param   data        the initial data (== initial key) to use, if any
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -280,11 +332,16 @@ public:
 
     /**
      * @brief   Initialize this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
+     *
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * The object **WILL NOT** be initialized twice.
+     *
      * Check the algorithms details/description of what constitutes a good init data.
+     *
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
@@ -310,9 +367,11 @@ public:
 private:
     /**
      * @brief   Adds data to the algorithm
+     *
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * @param   block_incoming      incoming data block to add.
      * @param   size_incoming       size of the incoming data to add.
      * @param   block_outgoing      outgoing data block.
@@ -326,11 +385,15 @@ private:
 
     /**
      * @brief   Finalizes this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     *
      * You may Finalize the object multiple times.
+     *
      * Check the algorithms details/description of what constitutes a good finalization data.
+     *
      * @param   result          the result of the algorithm.
      * @param   rtesult_size    size of the result for finalization.
      * @param   data            the finalization data (== final key) to use, if any
@@ -347,9 +410,11 @@ private:
 
     /**
      * @brief   Initialize this object instance.
+     *
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
+     * 
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error.
