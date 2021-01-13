@@ -21,18 +21,22 @@ using namespace headcode::crypt;
  */
 static Algorithm::Description const & GetDescription() {
 
-    static std::string const INPUT_ARGUMENT_DESCRIPTION = "The input argument only contains the key as binary.";
-
     static Algorithm::Description description = {
-            "ltc-aes-ecb-128",                               // name
-            Family::SYMMETRIC_CIPHER,                        // family
-            16ul,                                            // input block size
-            16ul,                                            // output block size
-            0ul,                                             // result size
-            {16ul, INPUT_ARGUMENT_DESCRIPTION, true},        // initial key
-            {0ul, "Not needed.", false},                     // final key
-            "LibTomCrypt AES 128 in ECB mode.",              // description
-            std::string{"libtomcrypt v"} + SCRYPT            // provider
+            "ltc-aes-ecb-128",                                   // name
+            Family::SYMMETRIC_CIPHER,                            // family
+            16ul,                                                // input block size
+            16ul,                                                // output block size
+            0ul,                                                 // result size
+            {16ul, "A secret shared key.", true},                // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "LibTomCrypt AES 128 in ECB mode.",                  // description (short/left and long/below)
+
+            "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
+            "in ECB (electronic codebook) mode. Note that ECB bears some weaknesses and should be avoided. "
+            "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
+            "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
+
+            std::string{"libtomcrypt v"} + SCRYPT        // provider
     };
     return description;
 }
@@ -61,7 +65,12 @@ public:
 };
 
 
-int LTCAESECB128::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int LTCAESECB128::Add_(char const * block_incoming,
+                       std::uint64_t size_incoming,
+                       char *,
+                       std::uint64_t & size_outgoing) {
+
+    size_outgoing = GetDescription().block_size_outgoing_;
 
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {

@@ -23,15 +23,20 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-md5",                      // name
-            Family::HASH,                       // family
-            64ul,                               // input block size
-            0ul,                                         // output block size
-            16ul,                               // result size
-            {0ul, "Not needed.", false},        // initial key
-            {0ul, "Not needed.", false},        // final key
-            "OpenSSL MD5.",                     // description
-            OPENSSL_VERSION_TEXT                // provider
+            "openssl-md5",                                       // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            16ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "OpenSSL MD5.",                                      // description (short/left and long/below)
+
+            "This is the MD5 message digest algorithm by Ronald Rivest. Originally intended to be a secure "
+            "hash algorithm its weakness has been demonstrated and thus should not be used as a secure hash "
+            "algorithm any longer. See: https://en.wikipedia.org/wiki/MD5.",
+
+            OPENSSL_VERSION_TEXT        // provider
     };
 
     return description;
@@ -66,7 +71,8 @@ OpenSSLMD5::OpenSSLMD5() {
 }
 
 
-int OpenSSLMD5::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int OpenSSLMD5::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+    size_outgoing = GetDescription().block_size_outgoing_;
     return MD5_Update(&md5_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 

@@ -23,7 +23,8 @@ class AlgorithmRow {
     std::string alias_;
     std::string family_;
     std::string provider_;
-    std::string description_;
+    std::string description_short_;
+    std::string description_long_;
     std::string block_incoming_size_;
     std::string block_outgoing_size_;
     std::string result_size_;
@@ -41,7 +42,8 @@ public:
         ALIAS,                             //!< @brief Name this algorithm is an alias of.
         FAMILY,                            //!< @brief Algorithm family.
         PROVIDER,                          //!< @brief Point of origin (library).
-        DESCRIPTION,                       //!< @brief Algorithm Description.
+        DESCRIPTION_SHORT,                 //!< @brief Short algorithm Description.
+        DESCRIPTION_LONG,                  //!< @brief Long algorithm Description.
         BLOCK_SIZE_INCOMING,               //!< @brief The block size of the input (each turn by Add).
         BLOCK_SIZE_OUTGOING,               //!< @brief The block size of the output (each turn by Add).
         RESULT_SIZE,                       //!< @brief The size of the result.
@@ -138,14 +140,6 @@ public:
     static std::string const & GetColumnHeader(Column column);
 
     /**
-     * @brief   Gets the description of the algorithm.
-     * @return  The description of the algorithm.
-     */
-    std::string const & GetDescription() const {
-        return description_;
-    }
-
-    /**
      * @brief   Gets the family description of the algorithm.
      * @return  The family description of the algorithm.
      */
@@ -186,6 +180,14 @@ public:
     }
 
     /**
+     * @brief   Gets the long description of the algorithm.
+     * @return  The short description of the algorithm.
+     */
+    std::string const & GetLongDescription() const {
+        return description_long_;
+    }
+
+    /**
      * @brief   Gets the name of the algorithm.
      * @return  The name of the algorithm.
      */
@@ -207,6 +209,14 @@ public:
      */
     std::string const & GetResultSize() const {
         return result_size_;
+    }
+
+    /**
+     * @brief   Gets the short description of the algorithm.
+     * @return  The short description of the algorithm.
+     */
+    std::string const & GetShortDescription() const {
+        return description_short_;
     }
 };
 

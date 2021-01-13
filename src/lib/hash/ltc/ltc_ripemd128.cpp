@@ -23,14 +23,18 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-ripemd128",                             // name
-            Family::HASH,                                // family
-            64ul,                                        // input block size
-            0ul,                                         // output block size
-            16ul,                                        // result size
-            {0ul, "Not needed.", false},                 // initial key
-            {0ul, "Not needed.", false},                 // final key
-            "LibTomCrypt RIPEMD128.",                    // description
+            "ltc-ripemd128",                                     // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            16ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "LibTomCrypt RIPEMD128.",                            // description (short/left and long/below)
+
+            "This is an 128Bit implementation of the RIPE Message Digest. This 128Bit variant is not "
+            "considered secure. See: https://en.wikipedia.org/wiki/RIPEMD.",
+
             std::string{"libtomcrypt v"} + SCRYPT        // provider
     };
 
@@ -66,7 +70,12 @@ LTCRIPEMD128::LTCRIPEMD128() {
 }
 
 
-int LTCRIPEMD128::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int LTCRIPEMD128::Add_(char const * block_incoming,
+                       std::uint64_t size_incoming,
+                       char *,
+                       std::uint64_t & size_outgoing) {
+
+    size_outgoing = GetDescription().block_size_outgoing_;
     return rmd128_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 

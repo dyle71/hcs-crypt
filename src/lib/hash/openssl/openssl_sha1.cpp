@@ -23,15 +23,19 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-sha1",                     // name
-            Family::HASH,                       // family
-            64ul,                               // input block size
-            0ul,                                         // output block size
-            20ul,                               // result size
-            {0ul, "Not needed.", false},        // initial key
-            {0ul, "Not needed.", false},        // final key
-            "OpenSSL SHA1.",                    // description
-            OPENSSL_VERSION_TEXT                // provider
+            "openssl-sha1",                                      // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            20ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "OpenSSL SHA1.",                                     // description (short/left and long/below)
+
+            "This is the Secure Hash Algorithm 1 as defined by the NSA. The NIST formaly deprecated the use of "
+            "this algorithms due to discovered weaknesses. See: https://en.wikipedia.org/wiki/SHA-1.",
+
+            OPENSSL_VERSION_TEXT        // provider
     };
 
     return description;
@@ -66,7 +70,8 @@ OpenSSLSHA1::OpenSSLSHA1() {
 }
 
 
-int OpenSSLSHA1::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int OpenSSLSHA1::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+    size_outgoing = GetDescription().block_size_outgoing_;
     return SHA1_Update(&sha_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 

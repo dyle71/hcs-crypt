@@ -23,14 +23,17 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-ripemd320",                             // name
-            Family::HASH,                                // family
-            64ul,                                        // input block size
-            0ul,                                         // output block size
-            40ul,                                        // result size
-            {0ul, "Not needed.", false},                 // initial key
-            {0ul, "Not needed.", false},                 // final key
-            "LibTomCrypt RIPEMD320.",                    // description
+            "ltc-ripemd320",                                     // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            40ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "LibTomCrypt RIPEMD320.",                            // description (short/left and long/below)
+
+            "This is an 360Bit implementation of the RIPE Message Digest. See: https://en.wikipedia.org/wiki/RIPEMD.",
+
             std::string{"libtomcrypt v"} + SCRYPT        // provider
     };
 
@@ -66,7 +69,12 @@ LTCRIPEMD320::LTCRIPEMD320() {
 }
 
 
-int LTCRIPEMD320::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int LTCRIPEMD320::Add_(char const * block_incoming,
+                       std::uint64_t size_incoming,
+                       char *,
+                       std::uint64_t & size_outgoing) {
+
+    size_outgoing = GetDescription().block_size_outgoing_;
     return rmd320_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 

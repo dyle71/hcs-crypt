@@ -28,13 +28,14 @@
 int Add(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream) {
 
     std::uint64_t total_read = 0;
-    char buffer[64 * 1024];
+    char block_incoming[64 * 1024];
+    char block_outgoing[64 * 1024];
 
     while (stream && !std::feof(stream)) {
 
         std::uint64_t read = 0;
         try {
-            read = std::fread(buffer, 1, sizeof(buffer), stream);
+            read = std::fread(block_incoming, 1, sizeof(block_incoming), stream);
         } catch (std::exception & ex) {
             std::cerr << "Failed to read data: " << ex.what();
             return 1;
@@ -42,7 +43,11 @@ int Add(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::A
 
         if (read > 0) {
 
-            algorithm->Add(buffer, read);
+            std::uint64_t size_outgoing = sizeof(block_outgoing);
+            algorithm->Add(block_incoming, read, block_outgoing, size_outgoing);
+
+            // TODO: output block to stderr...
+
             total_read += read;
 
             if (config.verbose_) {

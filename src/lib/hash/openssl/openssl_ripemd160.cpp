@@ -23,15 +23,18 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-ripemd160",                // name
-            Family::HASH,                       // family
-            64ul,                               // input block size
-            0ul,                                         // output block size
-            20ul,                               // result size
-            {0ul, "Not needed.", false},        // initial key
-            {0ul, "Not needed.", false},        // final key
-            "OpenSSL RIPEMD160.",               // description
-            OPENSSL_VERSION_TEXT                // provider
+            "openssl-ripemd160",                                 // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            20ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "OpenSSL RIPEMD160.",                                // description (short/left and long/below)
+
+            "This is an 160Bit implementation of the RIPE Message Digest. See: https://en.wikipedia.org/wiki/RIPEMD.",
+
+            OPENSSL_VERSION_TEXT        // provider
     };
 
     return description;
@@ -66,7 +69,12 @@ OpenSSLRIPEMD160::OpenSSLRIPEMD160() {
 }
 
 
-int OpenSSLRIPEMD160::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int OpenSSLRIPEMD160::Add_(char const * block_incoming,
+                           std::uint64_t size_incoming,
+                           char *,
+                           std::uint64_t & size_outgoing) {
+
+    size_outgoing = GetDescription().block_size_outgoing_;
     return RIPEMD160_Update(&ripemd160_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 

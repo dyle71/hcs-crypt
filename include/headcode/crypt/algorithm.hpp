@@ -67,9 +67,11 @@ public:
          * data which is needed for a particular algorithm instance.
          */
         struct ArgumentDefinition {
+
             std::uint64_t size_;        //!< @brief Defines the size in bytes of the key (special meaning for value 0).
             std::string description_;        //!< @brief A description of this input data.
             bool needed_ = false;            //!< @brief States that this key is needed.
+
         } __attribute__((aligned(64)));
 
         std::string name_;                           //!< @brief The name of this algorithm.
@@ -79,9 +81,11 @@ public:
         std::uint64_t result_size_;                  //!< @brief Size of the final result in bytes.
         ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
         ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
-        std::string description_;                    //!< @brief A human readable description of the algorithm.
+        std::string description_short_;              //!< @brief A human readable short description of the algorithm.
+        std::string description_long_;               //!< @brief A human readable long description of the algorithm.
         std::string provider_;                       //!< @brief Names the provider of the algorithm.
-    };
+
+    } __attribute__((aligned(128)));
 
 private:
     bool finalized_ = false;          //!< @brief Finalized flag.
@@ -125,10 +129,11 @@ public:
      * The concrete implementation of the algorithm may report any error value.
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
-     * @param   text        the text to add.
+     * @param   text                the text to add.
+     * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(std::string const & text);
+    int Add(std::string const & text, std::vector<std::byte> & block_outgoing);
 
     /**
      * @brief   Adds data to the algorithm
@@ -136,9 +141,10 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * @param   block_incoming      incoming data block.
+     * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(std::vector<std::byte> const & block_incoming);
+    int Add(std::vector<std::byte> const & block_incoming, std::vector<std::byte> & block_outgoing);
 
     /**
      * @brief   Adds data to the algorithm
@@ -147,9 +153,14 @@ public:
      * be examined in the context of the algorithm.
      * @param   block_incoming      incoming data block.
      * @param   size_incoming       size of the incoming data block.
+     * @param   block_outgoing      outgoing data block.
+     * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(char const * block_incoming, std::uint64_t size_incoming);
+    int Add(char const * block_incoming,
+            std::uint64_t size_incoming,
+            char * block_outgoing,
+            std::uint64_t & size_outgoing);
 
     /**
      * @brief   Finalizes this object instance.
@@ -157,6 +168,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * You may Finalize the object multiple times.
+     * Check the algorithms details/description of what constitutes a good finalization data.
      * @param   result      the result of the algorithm.
      * @param   data        the final data (== final key) to use, if any
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
@@ -169,6 +181,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * You may Finalize the object multiple times.
+     * Check the algorithms details/description of what constitutes a good finalization data.
      * @param   result      the result of the algorithm.
      * @param   data        the finalization data (== final key) to use, if any
      * @param   size        size of the data used for finalization.
@@ -188,6 +201,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * The object **WILL NOT** be initialized twice.
+     * Check the algorithms details/description of what constitutes a good init data.
      * @param   data        the initial data (== initial key) to use, if any
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -199,6 +213,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      * The object **WILL NOT** be initialized twice.
+     * Check the algorithms details/description of what constitutes a good init data.
      * @param   data        the initial data (== initial key) to use, if any
      * @param   size        size of the data used for initialization.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
@@ -229,9 +244,14 @@ private:
      * be examined in the context of the algorithm.
      * @param   block_incoming      incoming data block to add.
      * @param   size_incoming       size of the incoming data to add.
+     * @param   block_outgoing      outgoing data block.
+     * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error.
      */
-    virtual int Add_(char const * block_incoming, std::uint64_t size_incoming) = 0;
+    virtual int Add_(char const * block_incoming,
+                     std::uint64_t size_incoming,
+                     char * block_outgoing,
+                     std::uint64_t & size_outgoing) = 0;
 
     /**
      * @brief   Finalizes this object instance.

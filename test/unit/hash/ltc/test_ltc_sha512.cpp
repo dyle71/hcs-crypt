@@ -24,7 +24,8 @@ TEST(Hash_LTCSHA512, creation) {
 
     EXPECT_STREQ(description.name_.c_str(), "ltc-sha512");
     EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
-    EXPECT_FALSE(description.description_.empty());
+    EXPECT_FALSE(description.description_short_.empty());
+    EXPECT_FALSE(description.description_long_.empty());
     EXPECT_EQ(description.block_size_incoming_, 128ul);
     EXPECT_EQ(description.block_size_outgoing_, 0ul);
     EXPECT_EQ(description.result_size_, 64ul);

@@ -21,15 +21,18 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "nohash",                                           // name
-            Family::HASH,                                       // family
-            0ul,                                                // input block size
-            0ul,                                         // output block size
-            0ul,                                                // result size
-            {0ul, "Not needed.", false},                        // initial key
-            {0ul, "Not needed.", false},                        // final key
-            "NOHASH: not a real hash, always return 0.",        // description
-            std::string{"hcs-crypt v"} + VERSION                // provider
+            "nohash",                                            // name
+            Family::HASH,                                        // family
+            0ul,                                                 // input block size
+            0ul,                                                 // output block size
+            0ul,                                                 // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "NOHASH: not a real hash, always return 0.",         // description (short/left and long/below)
+
+            "This a No-Operation dummy hash algorithm.",
+
+            std::string{"hcs-crypt v"} + VERSION        // provider
     };
 
     return description;
@@ -59,7 +62,8 @@ public:
 };
 
 
-int NoHash::Add_(char const *, std::uint64_t) {
+int NoHash::Add_(char const *, std::uint64_t, char *, std::uint64_t & size_outgoing) {
+    size_outgoing = GetDescription().block_size_outgoing_;
     return 0;
 }
 

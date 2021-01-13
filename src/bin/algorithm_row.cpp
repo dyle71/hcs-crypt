@@ -16,7 +16,8 @@ AlgorithmRow::AlgorithmRow()
           alias_{"Alias"},
           family_{"Family"},
           provider_{"Provider"},
-          description_{"Description"},
+          description_short_{"Short description"},
+          description_long_{"Long description"},
           block_incoming_size_{"Input block size"},
           block_outgoing_size_{"Output block size"},
           result_size_{"Result size"},
@@ -32,7 +33,8 @@ AlgorithmRow::AlgorithmRow(std::string name, headcode::crypt::Algorithm::Descrip
           alias_{"ALIAS NOT IMPLEMENTED"},
           family_{GetFamilyText(algorithm_description.family_)},
           provider_{algorithm_description.provider_},
-          description_{algorithm_description.description_},
+          description_short_{algorithm_description.description_short_},
+          description_long_{algorithm_description.description_long_},
           initialziation_size_{std::to_string(algorithm_description.initial_argument_.size_)},
           initialziation_description_{algorithm_description.initial_argument_.description_},
           finalization_size_{std::to_string(algorithm_description.final_argument_.size_)},
@@ -85,8 +87,11 @@ std::string const & AlgorithmRow::GetColumn(Column column) const {
         case AlgorithmRow::Column::PROVIDER:
             return GetProvider();
 
-        case AlgorithmRow::Column::DESCRIPTION:
-            return GetDescription();
+        case AlgorithmRow::Column::DESCRIPTION_SHORT:
+            return GetShortDescription();
+
+        case AlgorithmRow::Column::DESCRIPTION_LONG:
+            return GetLongDescription();
 
         case AlgorithmRow::Column::BLOCK_SIZE_INCOMING:
             return GetBlockSizeIncoming();

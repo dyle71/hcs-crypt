@@ -24,7 +24,8 @@ TEST(SymmetricCipher_Copy, creation) {
 
     EXPECT_STREQ(description.name_.c_str(), "copy");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
-    EXPECT_FALSE(description.description_.empty());
+    EXPECT_FALSE(description.description_short_.empty());
+    EXPECT_FALSE(description.description_long_.empty());
     EXPECT_EQ(description.block_size_incoming_, 0ul);
     EXPECT_EQ(description.block_size_outgoing_, 0ul);
     EXPECT_EQ(description.result_size_, 0ul);
@@ -40,13 +41,15 @@ TEST(SymmetricCipher_Copy, simple) {
     ASSERT_NE(algo.get(), nullptr);
 
     auto text = std::string{"The quick brown fox jumps over the lazy dog"};
-    algo->Add(text);
-    std::vector<std::byte> cypher;
-    algo->Finalize(cypher);
+    std::vector<std::byte> cipher;
+    algo->Add(text, cipher);
 
-    auto expected = headcode::mem::MemoryToHex(text.data(), text.size());
-    auto result = headcode::mem::MemoryToHex(cypher);
-    EXPECT_STREQ(expected.c_str(), result.c_str());
+    EXPECT_EQ(std::memcmp(text.c_str(), cipher.data(), text.size()), 0);
+
+    std::vector<std::byte> result;
+    algo->Finalize(result);
+    EXPECT_TRUE(result.empty());
+    EXPECT_TRUE(algo->IsFinalized());
 }
 
 
@@ -61,13 +64,13 @@ TEST(SymmetricCipher_Copy, regular) {
 
     // COPY: copies from input to output
 
-    algo->Add(IPSUM_LOREM_TEXT);
-    std::vector<std::byte> cypher;
-    ASSERT_EQ(algo->Finalize(cypher), 0);
-    auto expected = headcode::mem::MemoryToHex(IPSUM_LOREM_TEXT.data(), IPSUM_LOREM_TEXT.size());
-    auto result = headcode::mem::MemoryToHex(cypher);
+    std::vector<std::byte> cipher;
+    algo->Add(IPSUM_LOREM_TEXT, cipher);
+    EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
 
-    EXPECT_STREQ(expected.c_str(), result.c_str());
+    std::vector<std::byte> result;
+    algo->Finalize(result);
+    EXPECT_TRUE(result.empty());
     EXPECT_TRUE(algo->IsFinalized());
 }
 
@@ -79,9 +82,10 @@ TEST(SymmetricCipher_Copy, empty) {
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
     EXPECT_EQ(algo->Initialize(), 0);
 
-    std::vector<std::byte> cypher;
-    ASSERT_EQ(algo->Finalize(cypher), 0);
-    EXPECT_EQ(cypher.size(), 0ul);
+    std::vector<std::byte> result;
+    ASSERT_EQ(algo->Finalize(result), 0);
+    EXPECT_TRUE(result.empty());
+    EXPECT_TRUE(algo->IsFinalized());
 }
 
 
@@ -93,14 +97,12 @@ TEST(SymmetricCipher_Copy, noinit) {
 
     // COPY: copies from input to output
 
-    algo->Add(IPSUM_LOREM_TEXT);
-    std::vector<std::byte> cypher;
-    ASSERT_EQ(algo->Finalize(cypher), 0);
-    auto expected = headcode::mem::MemoryToHex(IPSUM_LOREM_TEXT.data(), IPSUM_LOREM_TEXT.size());
-    auto result = headcode::mem::MemoryToHex(cypher);
+    std::vector<std::byte> cipher;
+    algo->Add(IPSUM_LOREM_TEXT, cipher);
+    EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
 
-    EXPECT_STREQ(expected.c_str(), result.c_str());
-
-    EXPECT_FALSE(algo->IsInitialized());
+    std::vector<std::byte> result;
+    algo->Finalize(result);
+    EXPECT_TRUE(result.empty());
     EXPECT_TRUE(algo->IsFinalized());
 }

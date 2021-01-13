@@ -14,23 +14,38 @@
 using namespace headcode::crypt;
 
 
-int Algorithm::Add(std::string const & text) {
-    return Add(text.c_str(), text.size());
+int Algorithm::Add(std::string const & text, std::vector<std::byte> & block_outgoing) {
+    auto block_size_outgoing = GetDescription().block_size_outgoing_;
+    block_outgoing.resize(block_size_outgoing);
+    return Add(text.c_str(), text.size(), reinterpret_cast<char *>(block_outgoing.data()), block_size_outgoing);
 }
 
 
-int Algorithm::Add(std::vector<std::byte> const & block_incoming) {
-    return Add(reinterpret_cast<char const *>(block_incoming.data()), block_incoming.size());
+int Algorithm::Add(std::vector<std::byte> const & block_incoming, std::vector<std::byte> & block_outgoing) {
+    auto block_size_outgoing = GetDescription().block_size_outgoing_;
+    block_outgoing.resize(block_size_outgoing);
+    return Add(reinterpret_cast<char const *>(block_incoming.data()),
+               block_incoming.size(),
+               reinterpret_cast<char *>(block_outgoing.data()),
+               block_size_outgoing);
 }
 
 
-int Algorithm::Add(char const * block_incoming, std::uint64_t size_incoming) {
+int Algorithm::Add(char const * block_incoming,
+                   std::uint64_t size_incoming,
+                   char * block_outgoing,
+                   std::uint64_t & size_outgoing) {
 
     if (size_incoming > 0) {
-        assert(block_incoming != nullptr && "Adding to algorithm with data is NULL/nullptr while data size is > 0.");
+        assert(block_incoming != nullptr &&
+               "Adding to algorithm with incoming block is NULL/nullptr while incoming size is > 0.");
+    }
+    if (size_outgoing > 0) {
+        assert(block_outgoing != nullptr &&
+               "Adding to algorithm with outgoing block is NULL/nullptr while outgoing size is > 0.");
     }
 
-    return Add_(block_incoming, size_incoming);
+    return Add_(block_incoming, size_incoming, block_outgoing, size_outgoing);
 }
 
 

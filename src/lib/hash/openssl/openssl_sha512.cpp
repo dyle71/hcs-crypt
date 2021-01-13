@@ -23,15 +23,19 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-sha512",                   // name
-            Family::HASH,                       // family
-            128ul,                              // input block size
-            0ul,                                         // output block size
-            64ul,                               // result size
-            {0ul, "Not needed.", false},        // initial key
-            {0ul, "Not needed.", false},        // final key
-            "OpenSSL SHA512.",                  // description
-            OPENSSL_VERSION_TEXT                // provider
+            "openssl-sha512",                                    // name
+            Family::HASH,                                        // family
+            128ul,                                               // input block size
+            0ul,                                                 // output block size
+            64ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "OpenSSL SHA512.",                                   // description (short/left and long/below)
+
+            "This is the Secure Hash Algorithm 2 variant 512 as defined by the NSA. The SHA-2 family introduced "
+            "signifcant changes to SHA-1. See: https://en.wikipedia.org/wiki/SHA-2.",
+
+            OPENSSL_VERSION_TEXT        // provider
     };
 
     return description;
@@ -66,7 +70,12 @@ OpenSSLSHA512::OpenSSLSHA512() {
 }
 
 
-int OpenSSLSHA512::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int OpenSSLSHA512::Add_(char const * block_incoming,
+                        std::uint64_t size_incoming,
+                        char *,
+                        std::uint64_t & size_outgoing) {
+
+    size_outgoing = GetDescription().block_size_outgoing_;
     return SHA512_Update(&sha_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 

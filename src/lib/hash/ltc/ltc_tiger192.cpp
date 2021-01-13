@@ -23,15 +23,15 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-tiger192",                              // name
-            Family::HASH,                                // family
-            64ul,                                        // input block size
-            0ul,                                         // output block size
-            24ul,                                        // result size
-            {0ul, "Not needed.", false},                 // initial key
-            {0ul, "Not needed.", false},                 // final key
-            "LibTomCrypt TIGER192.",                     // description
-            std::string{"libtomcrypt v"} + SCRYPT        // provider
+            "ltc-tiger192",                                      // name
+            Family::HASH,                                        // family
+            64ul,                                                // input block size
+            0ul,                                                 // output block size
+            24ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "LibTomCrypt TIGER192.",                             // description
+            std::string{"libtomcrypt v"} + SCRYPT                // provider
     };
 
     return description;
@@ -66,7 +66,8 @@ LTCTIGER192::LTCTIGER192() {
 }
 
 
-int LTCTIGER192::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int LTCTIGER192::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+    size_outgoing = GetDescription().block_size_outgoing_;
     return tiger_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 

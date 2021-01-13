@@ -23,14 +23,18 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-sha384",                                // name
-            Family::HASH,                                // family
-            128ul,                                       // input block size
-            0ul,                                         // output block size
-            48ul,                                        // result size
-            {0ul, "Not needed.", false},                 // initial key
-            {0ul, "Not needed.", false},                 // final key
-            "LibTomCrypt SHA384.",                       // description
+            "ltc-sha384",                                        // name
+            Family::HASH,                                        // family
+            128ul,                                               // input block size
+            0ul,                                                 // output block size
+            48ul,                                                // result size
+            {0ul, "No initial data needed.", false},             // initial data
+            {0ul, "No finalization data needed.", false},        // finalization data
+            "LibTomCrypt SHA384.",                               // description (short/left and long/below)
+
+            "This is the Secure Hash Algorithm 2 variant 384 as defined by the NSA. The SHA-2 family introduced "
+            "signifcant changes to SHA-1. See: https://en.wikipedia.org/wiki/SHA-2.",
+
             std::string{"libtomcrypt v"} + SCRYPT        // provider
     };
 
@@ -66,7 +70,8 @@ LTCSHA384::LTCSHA384() {
 }
 
 
-int LTCSHA384::Add_(char const * block_incoming, std::uint64_t size_incoming) {
+int LTCSHA384::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+    size_outgoing = GetDescription().block_size_outgoing_;
     return sha384_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
 }
 

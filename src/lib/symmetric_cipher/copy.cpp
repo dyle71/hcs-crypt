@@ -25,12 +25,15 @@ static Algorithm::Description const & GetDescription() {
             "copy",                                                           // name
             Family::SYMMETRIC_CIPHER,                                         // family
             0ul,                                                              // input block size
-            0ul,                                         // output block size
+            0ul,                                                              // output block size
             0ul,                                                              // result size
-            {0ul, "Not needed.", false},                                      // initial key
-            {0ul, "Not needed.", false},                                      // final key
-            "COPY: not a real cypher. Simply copies input to output.",        // description
-            std::string{"hcs-crypt v"} + VERSION                              // provider
+            {0ul, "No initial data needed.", false},                          // initial data
+            {0ul, "No finalization data needed.", false},                     // finalization data
+            "COPY: not a real cypher. Simply copies input to output.",        // description (short/left and long/below)
+
+            "This a No-Operation dummy pseudo-cipher algorithm.",
+
+            std::string{"hcs-crypt v"} + VERSION        // provider
     };
 
     return description;
@@ -60,20 +63,29 @@ public:
 };
 
 
-int Copy::Add_(char const * block_incoming, std::uint64_t size_incoming) {
-    auto old_size = data_.size();
-    data_.resize(old_size + size_incoming);
-    auto p = reinterpret_cast<char *>(data_.data());
-    std::memcpy(p + old_size, block_incoming, size_incoming);
+int Copy::Add_(char const * block_incoming,
+               std::uint64_t size_incoming,
+               char * block_outgoing,
+               std::uint64_t & size_outgoing) {
+
+    if (size_outgoing < GetDescription().block_size_outgoing_) {
+        // We need at least block_size_outgoing space in the target
+        return 1;
+    }
+
+    size_outgoing = GetDescription().block_size_outgoing_;
+    auto copy_size = std::min(size_incoming, size_outgoing);
+    std::memcpy(block_outgoing, block_incoming, copy_size);
+    if (copy_size < size_outgoing) {
+        std::memset(block_outgoing + copy_size, 0, size_outgoing - copy_size);
+    }
+
     return 0;
 }
 
 
 int Copy::Finalize_(std::vector<std::byte> & result, char const *, std::uint64_t) {
-    result.resize(data_.size());
-    auto out = reinterpret_cast<char *>(result.data());
-    auto in = reinterpret_cast<char const *>(data_.data());
-    std::memcpy(out, in, result.size());
+    result.clear();
     return 0;
 }
 

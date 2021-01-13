@@ -36,9 +36,14 @@ private:
      * @brief   Adds data to the algorithm
      * @param   block_incoming      the incoming data to add.
      * @param   size_incoming       size of the incoming data to add.
+     * @param   block_outgoing      outgoing data block.
+     * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error.
      */
-    int Add_(char const * block_incoming, std::uint64_t size_incoming) override;
+    int Add_(char const * block_incoming,
+             std::uint64_t size_incoming,
+             char * block_outgoing,
+             std::uint64_t & size_outgoing) override;
 
     /**
      * @brief   Finalizes this object instance.
