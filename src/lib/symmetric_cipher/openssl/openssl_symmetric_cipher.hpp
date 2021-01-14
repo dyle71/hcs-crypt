@@ -71,35 +71,28 @@ protected:
 private:
     /**
      * @brief   Adds data to the algorithm
-     * @param   block_incoming      the incoming data to add.
+     * @param   block_incoming      incoming data block to add.
      * @param   size_incoming       size of the incoming data to add.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error.
      */
-    int Add_(char const * block_incoming,
+    int Add_(unsigned char const * block_incoming,
              std::uint64_t size_incoming,
-             char * block_outgoing,
+             unsigned char * block_outgoing,
              std::uint64_t & size_outgoing) override;
 
     /**
      * @brief   Finalizes this object instance.
-     * @param   result          the result of the algorithm.
-     * @param   rtesult_size    size of the result for finalization.
-     * @param   data            the finalization data (== final key) to use, if any
-     * @param   data_size       size of the data used for finalization.
+     * @param   result                  the result of the algorithm.
+     * @param   result_size             size of the result for finalization.
+     * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize_(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size) override;
-
-    /**
-     * @brief   Initialize this object instance.
-     * This always returns 0.
-     * @param   data        the initial data (== initial key) to use, if any
-     * @param   size        size of the data used for initialization.
-     * @return  0 if initialize was ok, else an error.
-     */
-    int Initialize_(char const * data, std::uint64_t size) override;
+    int Finalize_(
+            unsigned char * result,
+            std::uint64_t result_size,
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) override;
 };
 
 

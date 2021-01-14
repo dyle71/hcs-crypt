@@ -23,20 +23,21 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-md5",                                       // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            16ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "OpenSSL MD5.",                                      // description (short/left and long/below)
+            "openssl-md5",         // name
+            Family::HASH,          // family
+            "OpenSSL MD5.",        // description (short/left and long/below)
 
             "This is the MD5 message digest algorithm by Ronald Rivest. Originally intended to be a secure "
             "hash algorithm its weakness has been demonstrated and thus should not be used as a secure hash "
             "algorithm any longer. See: https://en.wikipedia.org/wiki/MD5.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            64ul,                                     // input block size
+            0ul,                                      // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            16ul,                                     // result size
+            {},                                       // initial data
+            {}                                        // finalization data
     };
 
     return description;
@@ -71,14 +72,19 @@ OpenSSLMD5::OpenSSLMD5() {
 }
 
 
-int OpenSSLMD5::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+int OpenSSLMD5::Add_(unsigned char const * block_incoming,
+                     std::uint64_t size_incoming,
+                     unsigned char *,
+                     std::uint64_t & size_outgoing) {
     size_outgoing = GetDescription().block_size_outgoing_;
     return MD5_Update(&md5_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 
-int OpenSSLMD5::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return MD5_Final(reinterpret_cast<unsigned char *>(result), &md5_ctx_) == 1 ? 0 : 1;
+int OpenSSLMD5::Finalize_(unsigned char * result,
+                          std::uint64_t,
+                          std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return MD5_Final(result, &md5_ctx_) == 1 ? 0 : 1;
 }
 
 
@@ -87,7 +93,7 @@ Algorithm::Description const & OpenSSLMD5::GetDescription_() const {
 }
 
 
-int OpenSSLMD5::Initialize_(char const *, std::uint64_t) {
+int OpenSSLMD5::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return MD5_Init(&md5_ctx_) == 1 ? 0 : 1;
 }
 

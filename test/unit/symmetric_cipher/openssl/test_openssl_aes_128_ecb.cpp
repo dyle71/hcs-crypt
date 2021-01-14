@@ -29,8 +29,13 @@ TEST(SymmetricCipher_OpenSSL_AES_128_ECB, encryptor_creation) {
     EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_FALSE(description.final_argument_.needed_);
-    EXPECT_TRUE(description.initial_argument_.needed_);
+    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
+    auto argument_description_key = description.initialization_argument_.at("key");
+    EXPECT_EQ(argument_description_key.size_, 16ul);
+    EXPECT_FALSE(argument_description_key.optional_);
+    EXPECT_FALSE(argument_description_key.description_.empty());
+    EXPECT_TRUE(description.finalization_argument_.empty());
 }
 
 
@@ -49,8 +54,13 @@ TEST(SymmetricCipher_OpenSSL_AES_128_ECB, decryptor_creation) {
     EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_FALSE(description.final_argument_.needed_);
-    EXPECT_TRUE(description.initial_argument_.needed_);
+    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
+    auto argument_description_key = description.initialization_argument_.at("key");
+    EXPECT_EQ(argument_description_key.size_, 16ul);
+    EXPECT_FALSE(argument_description_key.optional_);
+    EXPECT_FALSE(argument_description_key.description_.empty());
+    EXPECT_TRUE(description.finalization_argument_.empty());
 }
 
 

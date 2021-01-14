@@ -23,18 +23,19 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-ripemd160",                                 // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            20ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "OpenSSL RIPEMD160.",                                // description (short/left and long/below)
+            "openssl-ripemd160",         // name
+            Family::HASH,                // family
+            "OpenSSL RIPEMD160.",        // description (short/left and long/below)
 
             "This is an 160Bit implementation of the RIPE Message Digest. See: https://en.wikipedia.org/wiki/RIPEMD.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            64ul,                                     // input block size
+            0ul,                                      // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            20ul,                                     // result size
+            {},                                       // initial data
+            {}                                        // finalization data
     };
 
     return description;
@@ -69,9 +70,9 @@ OpenSSLRIPEMD160::OpenSSLRIPEMD160() {
 }
 
 
-int OpenSSLRIPEMD160::Add_(char const * block_incoming,
+int OpenSSLRIPEMD160::Add_(unsigned char const * block_incoming,
                            std::uint64_t size_incoming,
-                           char *,
+                           unsigned char *,
                            std::uint64_t & size_outgoing) {
 
     size_outgoing = GetDescription().block_size_outgoing_;
@@ -79,8 +80,10 @@ int OpenSSLRIPEMD160::Add_(char const * block_incoming,
 }
 
 
-int OpenSSLRIPEMD160::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return RIPEMD160_Final(reinterpret_cast<unsigned char *>(result), &ripemd160_ctx_) == 1 ? 0 : 1;
+int OpenSSLRIPEMD160::Finalize_(unsigned char * result,
+                                std::uint64_t,
+                                std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return RIPEMD160_Final(result, &ripemd160_ctx_) == 1 ? 0 : 1;
 }
 
 
@@ -89,7 +92,7 @@ Algorithm::Description const & OpenSSLRIPEMD160::GetDescription_() const {
 }
 
 
-int OpenSSLRIPEMD160::Initialize_(char const *, std::uint64_t) {
+int OpenSSLRIPEMD160::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return RIPEMD160_Init(&ripemd160_ctx_) == 1 ? 0 : 1;
 }
 

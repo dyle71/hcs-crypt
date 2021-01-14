@@ -26,11 +26,6 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "openssl-aes-192-ecb encryptor",                        // name
             Family::SYMMETRIC_CIPHER,                               // family
-            24ul,                                                   // input block size
-            24ul,                                                   // output block size
-            0ul,                                                    // result size
-            {24ul, "A secret shared key.", true},                   // initial data
-            {0ul, "No finalization data needed.", false},           // finalization data
             "OpenSSL AES 192 in ECB mode (encryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 192 Bit encryption algorithm "
@@ -38,8 +33,19 @@ static Algorithm::Description const & GetDescription() {
             "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            24ul,                                     // input block size
+            24ul,                                     // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            0ul,                                      // result size
+
+            // initial data
+            {{"key", {24ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
+
+            // finalization data
+            {}
     };
+
     return description;
 }
 
@@ -47,7 +53,7 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class OpenSSLAES192ECBEncryptorProducer : public Factory::Producer {
+class OpenSSLAES192ECBEncrypterProducer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
@@ -67,6 +73,11 @@ public:
 };
 
 
+int OpenSSLAES192ECBEncrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
+    // TODO
+}
+
+
 EVP_CIPHER const * OpenSSLAES192ECBEncrypter::GetCipher() const {
     return EVP_aes_192_ecb();
 }
@@ -79,5 +90,5 @@ Algorithm::Description const & OpenSSLAES192ECBEncrypter::GetDescription_() cons
 
 void OpenSSLAES192ECBEncrypter::Register() {
     auto const & description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES192ECBEncryptorProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES192ECBEncrypterProducer>());
 }

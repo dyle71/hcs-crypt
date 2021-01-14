@@ -9,6 +9,8 @@
 #ifndef HEADCODE_SPACE_CRYPT_PADDING_HPP
 #define HEADCODE_SPACE_CRYPT_PADDING_HPP
 
+#include <cstdint>
+#include <vector>
 
 namespace headcode::crypt {
 
@@ -60,7 +62,6 @@ enum class PaddingStrategy {
 /**
  * @brief   Perform padding on the given block.
  * @param   block                   the block to be padded.
- * @param   padded_block            the padded block.
  * @param   size                    the desired size
  * @param   padding_strategy        The padding strategy applied.
  */

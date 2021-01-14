@@ -23,19 +23,21 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-sha1",                                      // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            20ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "OpenSSL SHA1.",                                     // description (short/left and long/below)
+            "openssl-sha1",         // name
+            Family::HASH,           // family
+            "OpenSSL SHA1.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 1 as defined by the NSA. The NIST formaly deprecated the use of "
             "this algorithms due to discovered weaknesses. See: https://en.wikipedia.org/wiki/SHA-1.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            64ul,                                     // input block size
+            0ul,                                      // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            20ul,                                     // result size
+            {},                                       // initial data
+            {}                                        // finalization data
+
     };
 
     return description;
@@ -70,14 +72,19 @@ OpenSSLSHA1::OpenSSLSHA1() {
 }
 
 
-int OpenSSLSHA1::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+int OpenSSLSHA1::Add_(unsigned char const * block_incoming,
+                      std::uint64_t size_incoming,
+                      unsigned char *,
+                      std::uint64_t & size_outgoing) {
     size_outgoing = GetDescription().block_size_outgoing_;
     return SHA1_Update(&sha_ctx_, block_incoming, size_incoming) == 1 ? 0 : 1;
 }
 
 
-int OpenSSLSHA1::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return SHA1_Final(reinterpret_cast<unsigned char *>(result), &sha_ctx_) == 1 ? 0 : 1;
+int OpenSSLSHA1::Finalize_(unsigned char * result,
+                           std::uint64_t,
+                           std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return SHA1_Final(result, &sha_ctx_) == 1 ? 0 : 1;
 }
 
 
@@ -86,7 +93,7 @@ Algorithm::Description const & OpenSSLSHA1::GetDescription_() const {
 }
 
 
-int OpenSSLSHA1::Initialize_(char const *, std::uint64_t) {
+int OpenSSLSHA1::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return SHA1_Init(&sha_ctx_) == 1 ? 0 : 1;
 }
 

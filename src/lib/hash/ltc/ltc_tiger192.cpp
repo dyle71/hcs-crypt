@@ -23,19 +23,20 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-tiger192",                                      // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            24ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "LibTomCrypt TIGER192.",                             // description (short/left and long/below)
+            "ltc-tiger192",                 // name
+            Family::HASH,                   // family
+            "LibTomCrypt TIGER192.",        // description (short/left and long/below)
 
             "This is the 192 Bit variant of the TIGER hash algorithm created by Ross Anderson and Eli Biham. "
             "See: https://en.wikipedia.org/wiki/Tiger_(hash_function).",
 
-            std::string{"libtomcrypt v"} + SCRYPT                // provider
+            std::string{"libtomcrypt v"} + SCRYPT,        // provider
+            64ul,                                         // input block size
+            0ul,                                          // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
+            24ul,                                         // result size
+            {},                                           // initial data
+            {}                                            // finalization data
     };
 
     return description;
@@ -70,14 +71,19 @@ LTCTIGER192::LTCTIGER192() {
 }
 
 
-int LTCTIGER192::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+int LTCTIGER192::Add_(unsigned char const * block_incoming,
+                      std::uint64_t size_incoming,
+                      unsigned char *,
+                      std::uint64_t & size_outgoing) {
     size_outgoing = GetDescription().block_size_outgoing_;
-    return tiger_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
+    return tiger_process(&GetState(), block_incoming, size_incoming);
 }
 
 
-int LTCTIGER192::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return tiger_done(&GetState(), reinterpret_cast<unsigned char *>(result));
+int LTCTIGER192::Finalize_(unsigned char * result,
+                           std::uint64_t,
+                           std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return tiger_done(&GetState(), result);
 }
 
 
@@ -86,7 +92,7 @@ Algorithm::Description const & LTCTIGER192::GetDescription_() const {
 }
 
 
-int LTCTIGER192::Initialize_(char const *, std::uint64_t) {
+int LTCTIGER192::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return tiger_init(&GetState());
 }
 

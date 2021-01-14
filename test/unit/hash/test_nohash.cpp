@@ -29,8 +29,8 @@ TEST(Hash_NoHash, creation) {
     EXPECT_EQ(description.block_size_outgoing_, 0ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_FALSE(description.final_argument_.needed_);
-    EXPECT_FALSE(description.initial_argument_.needed_);
+    EXPECT_TRUE(description.initialization_argument_.empty());
+    EXPECT_TRUE(description.finalization_argument_.empty());
 }
 
 

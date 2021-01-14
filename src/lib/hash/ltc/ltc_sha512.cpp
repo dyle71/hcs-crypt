@@ -23,19 +23,20 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-sha512",                                        // name
-            Family::HASH,                                        // family
-            128ul,                                               // input block size
-            0ul,                                                 // output block size
-            64ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "LibTomCrypt SHA512.",                               // description (short/left and long/below)
+            "ltc-sha512",                 // name
+            Family::HASH,                 // family
+            "LibTomCrypt SHA512.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 2 variant 512 as defined by the NSA. The SHA-2 family introduced "
             "signifcant changes to SHA-1. See: https://en.wikipedia.org/wiki/SHA-2.",
 
-            std::string{"libtomcrypt v"} + SCRYPT        // provider
+            std::string{"libtomcrypt v"} + SCRYPT,        // provider
+            128ul,                                        // input block size
+            0ul,                                          // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
+            64ul,                                         // result size
+            {},                                           // initial data
+            {}                                            // finalization data
     };
 
     return description;
@@ -70,14 +71,19 @@ LTCSHA512::LTCSHA512() {
 }
 
 
-int LTCSHA512::Add_(char const * block_incoming, std::uint64_t size_incoming, char *, std::uint64_t & size_outgoing) {
+int LTCSHA512::Add_(unsigned char const * block_incoming,
+                    std::uint64_t size_incoming,
+                    unsigned char *,
+                    std::uint64_t & size_outgoing) {
     size_outgoing = GetDescription().block_size_outgoing_;
-    return sha512_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
+    return sha512_process(&GetState(), block_incoming, size_incoming);
 }
 
 
-int LTCSHA512::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return sha512_done(&GetState(), reinterpret_cast<unsigned char *>(result));
+int LTCSHA512::Finalize_(unsigned char * result,
+                         std::uint64_t,
+                         std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return sha512_done(&GetState(), result);
 }
 
 
@@ -86,7 +92,7 @@ Algorithm::Description const & LTCSHA512::GetDescription_() const {
 }
 
 
-int LTCSHA512::Initialize_(char const *, std::uint64_t) {
+int LTCSHA512::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return sha512_init(&GetState());
 }
 

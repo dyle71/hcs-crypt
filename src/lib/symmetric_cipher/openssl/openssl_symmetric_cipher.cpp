@@ -21,17 +21,13 @@ OpenSSLSymmetricCipher::~OpenSSLSymmetricCipher() noexcept {
 }
 
 
-int OpenSSLSymmetricCipher::Add_(char const * block_incoming,
+int OpenSSLSymmetricCipher::Add_(unsigned char const * block_incoming,
                                  std::uint64_t size_incoming,
-                                 char * block_outgoing,
+                                 unsigned char * block_outgoing,
                                  std::uint64_t & size_outgoing) {
 
-    // some rather wild (unnecessary) casting...
-    auto out = reinterpret_cast<unsigned char *>(block_outgoing);
     int out_size = size_outgoing;
-    auto in = reinterpret_cast<const unsigned char *>(block_incoming);
-
-    auto res = EVP_CipherUpdate(GetCipherContext(), out, &out_size, in, size_incoming);
+    auto res = EVP_CipherUpdate(GetCipherContext(), block_outgoing, &out_size, block_incoming, size_incoming);
     size_outgoing = out_size;
     if (res != 1) {
         return 1;
@@ -41,11 +37,14 @@ int OpenSSLSymmetricCipher::Add_(char const * block_incoming,
 }
 
 
-int OpenSSLSymmetricCipher::Finalize_(char *, std::uint64_t, char const *, std::uint64_t) {
+int OpenSSLSymmetricCipher::Finalize_(unsigned char *,
+                                      std::uint64_t,
+                                      std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return 0;
 }
 
-
+/*
+TODO
 int OpenSSLSymmetricCipher::Initialize_(char const * data, std::uint64_t size) {
 
     int res = EVP_CipherInit_ex(GetCipherContext(), GetCipher(), nullptr, nullptr, nullptr, IsEncryptor() ? 1 : 0);
@@ -73,3 +72,4 @@ int OpenSSLSymmetricCipher::Initialize_(char const * data, std::uint64_t size) {
 
     return 0;
 }
+*/

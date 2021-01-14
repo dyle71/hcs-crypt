@@ -23,18 +23,19 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-ripemd256",                                     // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            32ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "LibTomCrypt RIPEMD256.",                            // description (short/left and long/below)
+            "ltc-ripemd256",                 // name
+            Family::HASH,                    // family
+            "LibTomCrypt RIPEMD256.",        // description (short/left and long/below)
 
             "This is an 265Bit implementation of the RIPE Message Digest. See: https://en.wikipedia.org/wiki/RIPEMD.",
 
-            std::string{"libtomcrypt v"} + SCRYPT        // provider
+            std::string{"libtomcrypt v"} + SCRYPT,        // provider
+            64ul,                                         // input block size
+            0ul,                                          // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
+            32ul,                                         // result size
+            {},                                           // initial data
+            {}                                            // finalization data
     };
 
     return description;
@@ -69,18 +70,20 @@ LTCRIPEMD256::LTCRIPEMD256() {
 }
 
 
-int LTCRIPEMD256::Add_(char const * block_incoming,
+int LTCRIPEMD256::Add_(unsigned char const * block_incoming,
                        std::uint64_t size_incoming,
-                       char *,
+                       unsigned char *,
                        std::uint64_t & size_outgoing) {
 
     size_outgoing = GetDescription().block_size_outgoing_;
-    return rmd256_process(&GetState(), reinterpret_cast<const unsigned char *>(block_incoming), size_incoming);
+    return rmd256_process(&GetState(), block_incoming, size_incoming);
 }
 
 
-int LTCRIPEMD256::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return rmd256_done(&GetState(), reinterpret_cast<unsigned char *>(result));
+int LTCRIPEMD256::Finalize_(unsigned char * result,
+                            std::uint64_t,
+                            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return rmd256_done(&GetState(), result);
 }
 
 
@@ -89,7 +92,7 @@ Algorithm::Description const & LTCRIPEMD256::GetDescription_() const {
 }
 
 
-int LTCRIPEMD256::Initialize_(char const *, std::uint64_t) {
+int LTCRIPEMD256::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return rmd256_init(&GetState());
 }
 

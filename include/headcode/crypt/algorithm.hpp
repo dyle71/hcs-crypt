@@ -111,7 +111,6 @@ public:
             PaddingStrategy padding_strategy_;        //!< @brief The preferred padding strategy.
             std::string description_;                 //!< @brief A description of this input data.
             bool optional_ = false;        //!< @brief If true, this is an optional and not mandatory data element.
-
         };
 
         std::string name_;                     //!< @brief The name of this algorithm.
@@ -137,7 +136,6 @@ public:
          * Some algorithms may need a argument for the final computation.
          */
         std::map<std::string, ArgumentDefinition> finalization_argument_;
-
     };
 
 private:
@@ -363,9 +361,8 @@ public:
      * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize(
-            std::vector<std::byte> & result,
-            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data = {});
+    int Finalize(std::vector<std::byte> & result,
+                 std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data);
 
     /**
      * @brief   Finalizes this object instance.
@@ -387,10 +384,9 @@ public:
      * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize(
-            unsigned char * result,
-            std::uint64_t result_size,
-            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data = {});
+    int Finalize(unsigned char * result,
+                 std::uint64_t result_size,
+                 std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data);
 
     /**
      * @brief   Gets the algorithm description.
@@ -430,8 +426,7 @@ public:
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Initialize(
-            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data = {});
+    int Initialize(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data);
 
     /**
      * @brief   Checks if this algorithm instance has been finalized.

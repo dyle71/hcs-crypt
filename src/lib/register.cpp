@@ -32,10 +32,12 @@
 #endif
 
 #include "symmetric_cipher/copy.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
+//#include "symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.hpp"
+//#include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
 
 #ifdef OPENSSL
+#include "symmetric_cipher/openssl/openssl_aes_128_cbc_decryptor.hpp"
+#include "symmetric_cipher/openssl/openssl_aes_128_cbc_encryptor.hpp"
 #include "symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.hpp"
 #include "symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.hpp"
 #include "symmetric_cipher/openssl/openssl_aes_192_ecb_decryptor.hpp"
@@ -63,8 +65,8 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
     Copy::Register();
 
-    LTCAES128ECBDecrypter::Register();
-    LTCAES128ECBEncrypter::Register();
+    //LTCAES128ECBDecrypter::Register();
+    //LTCAES128ECBEncrypter::Register();
 
 #ifdef OPENSSL
 
@@ -76,6 +78,8 @@ void headcode::crypt::RegisterKnownAlgorithms() {
     OpenSSLSHA384::Register();
     OpenSSLSHA512::Register();
 
+    OpenSSLAES128CBCDecrypter::Register();
+    OpenSSLAES128CBCEncrypter::Register();
     OpenSSLAES128ECBDecrypter::Register();
     OpenSSLAES128ECBEncrypter::Register();
     OpenSSLAES192ECBDecrypter::Register();

@@ -14,59 +14,69 @@
 #include "shared/ipsum_lorem.hpp"
 
 
-TEST(SymmetricCipher_OpenSSL_AES_192_ECB, encryptor_creation) {
+TEST(SymmetricCipher_OpenSSL_AES_128_CBC, encryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("openssl-aes-192-ecb encryptor");
+    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-192-ecb encryptor");
+    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc encryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
-    EXPECT_EQ(description.block_size_incoming_, 24ul);
-    EXPECT_EQ(description.block_size_outgoing_, 24ul);
+    EXPECT_EQ(description.block_size_incoming_, 16ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    EXPECT_EQ(description.initialization_argument_.size(), 2);
     ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
     auto argument_description_key = description.initialization_argument_.at("key");
-    EXPECT_EQ(argument_description_key.size_, 24ul);
+    EXPECT_EQ(argument_description_key.size_, 16ul);
     EXPECT_FALSE(argument_description_key.optional_);
     EXPECT_FALSE(argument_description_key.description_.empty());
+    ASSERT_NE(description.initialization_argument_.find("iv"), description.finalization_argument_.end());
+    auto argument_description_iv = description.initialization_argument_.at("iv");
+    EXPECT_EQ(argument_description_iv.size_, 16ul);
+    EXPECT_FALSE(argument_description_iv.optional_);
+    EXPECT_FALSE(argument_description_iv.description_.empty());
     EXPECT_TRUE(description.finalization_argument_.empty());
 }
 
 
-TEST(SymmetricCipher_OpenSSL_AES_192_ECB, decryptor_creation) {
+TEST(SymmetricCipher_OpenSSL_AES_128_CBC, decryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("openssl-aes-192-ecb decryptor");
+    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-192-ecb decryptor");
+    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc decryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
-    EXPECT_EQ(description.block_size_incoming_, 24ul);
-    EXPECT_EQ(description.block_size_outgoing_, 24ul);
+    EXPECT_EQ(description.block_size_incoming_, 16ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    EXPECT_EQ(description.initialization_argument_.size(), 2);
     ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
     auto argument_description_key = description.initialization_argument_.at("key");
-    EXPECT_EQ(argument_description_key.size_, 24ul);
+    EXPECT_EQ(argument_description_key.size_, 16ul);
     EXPECT_FALSE(argument_description_key.optional_);
     EXPECT_FALSE(argument_description_key.description_.empty());
+    ASSERT_NE(description.initialization_argument_.find("iv"), description.finalization_argument_.end());
+    auto argument_description_iv = description.initialization_argument_.at("iv");
+    EXPECT_EQ(argument_description_iv.size_, 16ul);
+    EXPECT_FALSE(argument_description_iv.optional_);
+    EXPECT_FALSE(argument_description_iv.description_.empty());
     EXPECT_TRUE(description.finalization_argument_.empty());
 }
 
 
-TEST(SymmetricCipher_OpenSSL_AES_192_ECB, single_block) {
+TEST(SymmetricCipher_OpenSSL_AES_128_CBC, single_block) {
 
-    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-192-ecb encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
 
     auto key = std::string{
@@ -81,6 +91,9 @@ TEST(SymmetricCipher_OpenSSL_AES_192_ECB, single_block) {
 
     // trim key to size
     key.resize(algo_enc->GetDescription().initial_argument_.size_);
+
+    auto iv = std::
+
     ASSERT_EQ(algo_enc->Initialize(key.c_str(), key.size()), 0);
 
     // --------- encrypt ---------
@@ -96,7 +109,7 @@ TEST(SymmetricCipher_OpenSSL_AES_192_ECB, single_block) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-192-ecb decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_EQ(algo_dec->Initialize(key.c_str(), key.size()), 0);
 
@@ -110,14 +123,14 @@ TEST(SymmetricCipher_OpenSSL_AES_192_ECB, single_block) {
     EXPECT_NE(std::memcmp(plain.data(), cipher.data(), plain.size()), 0);
     EXPECT_NE(std::memcmp(plain_decrypted.data(), cipher.data(), plain_decrypted.size()), 0);
     EXPECT_EQ(std::memcmp(plain.data(), plain_decrypted.data(), plain.size()), 0);
-    EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(), "303132333435363738393031323334350000000000000000");
-    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "640250391be5f0a5c7ba93904385f8330000000000000000");
+    EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(), "30313233343536373839303132333435");
+    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "604e214b9c683c167df76d3cfc342e37");
 }
 
 
-TEST(SymmetricCipher_OpenSSL_AES_192_ECB, regular) {
+TEST(SymmetricCipher_OpenSSL_AES_128_CBC, regular) {
 
-    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-192-ecb encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
 
     auto key = std::string{
@@ -146,7 +159,7 @@ TEST(SymmetricCipher_OpenSSL_AES_192_ECB, regular) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-192-ecb decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_EQ(algo_dec->Initialize(key.c_str(), key.size()), 0);
 

@@ -22,18 +22,20 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "copy",                                                           // name
-            Family::SYMMETRIC_CIPHER,                                         // family
-            0ul,                                                              // input block size
-            0ul,                                                              // output block size
-            0ul,                                                              // result size
-            {0ul, "No initial data needed.", false},                          // initial data
-            {0ul, "No finalization data needed.", false},                     // finalization data
+            "copy",                          // name
+            Family::SYMMETRIC_CIPHER,        // family
+
             "COPY: not a real cypher. Simply copies input to output.",        // description (short/left and long/below)
 
             "This a No-Operation dummy pseudo-cipher algorithm.",
 
-            std::string{"hcs-crypt v"} + VERSION        // provider
+            std::string{"hcs-crypt v"} + VERSION,        // provider
+            0ul,                                         // input block size
+            0ul,                                         // output block size
+            PaddingStrategy::PADDING_NONE,               // default padding strategy
+            0ul,                                         // result size
+            {},                                          // initial data
+            {},                                          // finalization data
     };
 
     return description;
@@ -63,9 +65,9 @@ public:
 };
 
 
-int Copy::Add_(char const * block_incoming,
+int Copy::Add_(unsigned char const * block_incoming,
                std::uint64_t size_incoming,
-               char * block_outgoing,
+               unsigned char * block_outgoing,
                std::uint64_t & size_outgoing) {
 
     if (size_outgoing < GetDescription().block_size_outgoing_) {
@@ -83,7 +85,9 @@ int Copy::Add_(char const * block_incoming,
 }
 
 
-int Copy::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+int Copy::Finalize_(unsigned char * result,
+                    std::uint64_t,
+                    std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     if (result != nullptr) {
         *result = 0;
     }
@@ -96,7 +100,7 @@ Algorithm::Description const & Copy::GetDescription_() const {
 }
 
 
-int Copy::Initialize_(char const *, std::uint64_t) {
+int Copy::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return 0;
 }
 

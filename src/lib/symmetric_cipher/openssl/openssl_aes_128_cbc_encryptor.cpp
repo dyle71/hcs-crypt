@@ -12,36 +12,35 @@
 
 #include <headcode/crypt/factory.hpp>
 
-#include "openssl_aes_128_ecb_decryptor.hpp"
+#include "openssl_aes_128_cbc_encryptor.hpp"
 
 using namespace headcode::crypt;
 
 
 /**
- * @brief   The OpenSSL AES 128 ECB algorithm (decryptor) description.
+ * @brief   The OpenSSL AES 128 CBC algorithm (encryptor) description.
  * @return  The description of this algorithm.
  */
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-aes-128-ecb decryptor",                        // name
+            "openssl-aes-128-cbc encryptor",                        // name
             Family::SYMMETRIC_CIPHER,                               // family
-            "OpenSSL AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
+            "OpenSSL AES 128 in CBC mode (encryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
-            "in ECB (electronic codebook) mode. Note that ECB bears some weaknesses and should be avoided. "
-            "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
-            "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
+            "in CBC (cipher block chaining) mode. See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard "
+            "and https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_block_chaining_(CBC).",
 
-            OPENSSL_VERSION_TEXT,        // provider
-
+            OPENSSL_VERSION_TEXT,                     // provider
             16ul,                                     // input block size
             16ul,                                     // output block size
             PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
             0ul,                                      // result size
 
             // initial data
-            {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
+            {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}},
+             {"iv", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A initialization vector.", false}}},
 
             // finalization data
             {}
@@ -54,14 +53,14 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class OpenSSLAES128ECBDecrypterProducer : public Factory::Producer {
+class OpenSSLAES128CBCEncrypterProducer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
      * @return  A new algorithm instance.
      */
     std::unique_ptr<Algorithm> operator()() const override {
-        return std::make_unique<OpenSSLAES128ECBDecrypter>();
+        return std::make_unique<OpenSSLAES128CBCEncrypter>();
     }
 
     /**
@@ -74,22 +73,22 @@ public:
 };
 
 
-int OpenSSLAES128ECBDecrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
+int OpenSSLAES128CBCEncrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
     // TODO
 }
 
 
-EVP_CIPHER const * OpenSSLAES128ECBDecrypter::GetCipher() const {
-    return EVP_aes_128_ecb();
+EVP_CIPHER const * OpenSSLAES128CBCEncrypter::GetCipher() const {
+    return EVP_aes_128_cbc();
 }
 
 
-Algorithm::Description const & OpenSSLAES128ECBDecrypter::GetDescription_() const {
+Algorithm::Description const & OpenSSLAES128CBCEncrypter::GetDescription_() const {
     return ::GetDescription();
 }
 
 
-void OpenSSLAES128ECBDecrypter::Register() {
+void OpenSSLAES128CBCEncrypter::Register() {
     auto const & description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES128ECBDecrypterProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES128CBCEncrypterProducer>());
 }

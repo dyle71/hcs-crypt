@@ -26,11 +26,6 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "openssl-aes-256-ecb decryptor",                        // name
             Family::SYMMETRIC_CIPHER,                               // family
-            32ul,                                                   // input block size
-            32ul,                                                   // output block size
-            0ul,                                                    // result size
-            {32ul, "A secret shared key.", true},                   // initial data
-            {0ul, "No finalization data needed.", false},           // finalization data
             "OpenSSL AES 256 in ECB mode (decryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 256 Bit encryption algorithm "
@@ -38,8 +33,19 @@ static Algorithm::Description const & GetDescription() {
             "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            32ul,                                     // input block size
+            32ul,                                     // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            0ul,                                      // result size
+
+            // initial data
+            {{"key", {32ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
+
+            // finalization data
+            {}
     };
+
     return description;
 }
 
@@ -47,7 +53,7 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class OpenSSLAES256ECBDecryptorProducer : public Factory::Producer {
+class OpenSSLAES256ECBDecrypterProducer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
@@ -67,6 +73,11 @@ public:
 };
 
 
+int OpenSSLAES256ECBDecrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
+    // TODO
+}
+
+
 EVP_CIPHER const * OpenSSLAES256ECBDecrypter::GetCipher() const {
     return EVP_aes_256_ecb();
 }
@@ -79,5 +90,5 @@ Algorithm::Description const & OpenSSLAES256ECBDecrypter::GetDescription_() cons
 
 void OpenSSLAES256ECBDecrypter::Register() {
     auto const & description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES256ECBDecryptorProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<OpenSSLAES256ECBDecrypterProducer>());
 }

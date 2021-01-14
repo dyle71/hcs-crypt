@@ -23,19 +23,20 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-sha256",                                    // name
-            Family::HASH,                                        // family
-            64ul,                                                // input block size
-            0ul,                                                 // output block size
-            32ul,                                                // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "OpenSSL SHA256.",                                   // description (short/left and long/below)
+            "openssl-sha256",         // name
+            Family::HASH,             // family
+            "OpenSSL SHA256.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 2 variant 256 as defined by the NSA. The SHA-2 family introduced "
             "signifcant changes to SHA-1. See: https://en.wikipedia.org/wiki/SHA-2.",
 
-            OPENSSL_VERSION_TEXT        // provider
+            OPENSSL_VERSION_TEXT,                     // provider
+            64ul,                                     // input block size
+            0ul,                                      // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
+            32ul,                                     // result size
+            {},                                       // initial data
+            {}                                        // finalization data
     };
 
     return description;
@@ -70,9 +71,9 @@ OpenSSLSHA256::OpenSSLSHA256() {
 }
 
 
-int OpenSSLSHA256::Add_(char const * block_incoming,
+int OpenSSLSHA256::Add_(unsigned char const * block_incoming,
                         std::uint64_t size_incoming,
-                        char *,
+                        unsigned char *,
                         std::uint64_t & size_outgoing) {
 
     size_outgoing = GetDescription().block_size_outgoing_;
@@ -80,8 +81,10 @@ int OpenSSLSHA256::Add_(char const * block_incoming,
 }
 
 
-int OpenSSLSHA256::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
-    return SHA256_Final(reinterpret_cast<unsigned char *>(result), &sha_ctx_) == 1 ? 0 : 1;
+int OpenSSLSHA256::Finalize_(unsigned char * result,
+                             std::uint64_t,
+                             std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
+    return SHA256_Final(result, &sha_ctx_) == 1 ? 0 : 1;
 }
 
 
@@ -90,7 +93,7 @@ Algorithm::Description const & OpenSSLSHA256::GetDescription_() const {
 }
 
 
-int OpenSSLSHA256::Initialize_(char const *, std::uint64_t) {
+int OpenSSLSHA256::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return SHA256_Init(&sha_ctx_) == 1 ? 0 : 1;
 }
 

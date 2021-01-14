@@ -21,18 +21,19 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "nohash",                                            // name
-            Family::HASH,                                        // family
-            0ul,                                                 // input block size
-            0ul,                                                 // output block size
-            0ul,                                                 // result size
-            {0ul, "No initial data needed.", false},             // initial data
-            {0ul, "No finalization data needed.", false},        // finalization data
-            "NOHASH: not a real hash, always return 0.",         // description (short/left and long/below)
+            "nohash",                                           // name
+            Family::HASH,                                       // family
+            "NOHASH: not a real hash, always return 0.",        // description (short/left and long/below)
 
             "This a No-Operation dummy hash algorithm.",
 
-            std::string{"hcs-crypt v"} + VERSION        // provider
+            std::string{"hcs-crypt v"} + VERSION,        // provider
+            0ul,                                         // input block size
+            0ul,                                         // output block size
+            PaddingStrategy::PADDING_NONE,               // default padding strategy
+            0ul,                                         // result size
+            {},                                          // initial data
+            {}                                           // finalization data
     };
 
     return description;
@@ -62,13 +63,15 @@ public:
 };
 
 
-int NoHash::Add_(char const *, std::uint64_t, char *, std::uint64_t & size_outgoing) {
+int NoHash::Add_(unsigned char const *, std::uint64_t, unsigned char *, std::uint64_t & size_outgoing) {
     size_outgoing = GetDescription().block_size_outgoing_;
     return 0;
 }
 
 
-int NoHash::Finalize_(char * result, std::uint64_t, char const * , std::uint64_t) {
+int NoHash::Finalize_(unsigned char * result,
+                      std::uint64_t,
+                      std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     if (result != nullptr) {
         *result = 0;
     }
@@ -81,7 +84,7 @@ Algorithm::Description const & NoHash::GetDescription_() const {
 }
 
 
-int NoHash::Initialize_(char const *, std::uint64_t) {
+int NoHash::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return 0;
 }
 
