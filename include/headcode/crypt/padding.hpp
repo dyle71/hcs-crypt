@@ -62,7 +62,7 @@ enum class PaddingStrategy {
 /**
  * @brief   Perform padding on the given block.
  * @param   block                   the block to be padded.
- * @param   size                    the desired size
+ * @param   size                    the desired size (must not exceed 255).
  * @param   padding_strategy        The padding strategy applied.
  */
 void Pad(std::vector<std::byte> & block, std::uint64_t size, PaddingStrategy padding_strategy);

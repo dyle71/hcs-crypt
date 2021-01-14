@@ -40,7 +40,7 @@ TEST(SymmetricCipher_Copy, simple) {
     ASSERT_NE(algo.get(), nullptr);
 
     auto text = std::string{"The quick brown fox jumps over the lazy dog"};
-    std::vector<std::byte> cipher;
+    std::vector<std::byte> cipher{text.size()};
     algo->Add(text, cipher);
 
     // COPY: copies from input to output
@@ -65,7 +65,7 @@ TEST(SymmetricCipher_Copy, regular) {
 
     // COPY: copies from input to output
 
-    std::vector<std::byte> cipher;
+    std::vector<std::byte> cipher{IPSUM_LOREM_TEXT.size()};
     algo->Add(IPSUM_LOREM_TEXT, cipher);
     EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
 
@@ -102,7 +102,7 @@ TEST(SymmetricCipher_Copy, noinit) {
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
 
-    std::vector<std::byte> cipher;
+    std::vector<std::byte> cipher{IPSUM_LOREM_TEXT.size()};
     algo->Add(IPSUM_LOREM_TEXT, cipher);
     EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
 

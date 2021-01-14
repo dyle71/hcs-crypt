@@ -61,7 +61,7 @@ TEST(Benchmark_OPENSSLSHA512, OPENSSLSHA512CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
-        algo->Add(block_incoming, size_incoming, nullptr, size_outgoing);
+        algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);

@@ -75,6 +75,7 @@ public:
 
 int OpenSSLAES192ECBEncrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
     // TODO
+    return 0;
 }
 
 

@@ -101,6 +101,11 @@ int Algorithm::Finalize(
         std::vector<std::byte> & result,
         std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) {
 
+    auto result_size = GetDescription().result_size_;
+    if (result_size > 0) {
+        result.resize(result_size);
+    }
+
     // In here we do the padding of the finalization data.
 
     // padded_data is the holder we pass on to the next level deep down
@@ -224,7 +229,7 @@ int Algorithm::Initialize(
     if (!IsInitialized()) {
         res = Initialize_(initialization_data);
         if (res == 0) {
-            finalized_ = true;
+            initialized_ = true;
         }
     }
 
