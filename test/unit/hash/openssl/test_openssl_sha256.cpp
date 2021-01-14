@@ -46,7 +46,7 @@ TEST(Hash_OPENSSLSHA256, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c"};
+    auto expected = std::string{"a83e558088b4bc88bf3bbdaf6d0bb98ef2291288c12f1f5289d6f9f82d03f4ec"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_OPENSSLSHA256, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"6f6947ec4504572a380d45199cf1478ccf8709e2ed106d1029f4f851a9345e7d"};
+    auto expected = std::string{"8372e8dc1413d0636d8db66e5f8f4f885e703e67c736aa80a881ac400dc8613b"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_OPENSSLSHA256, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"6f6947ec4504572a380d45199cf1478ccf8709e2ed106d1029f4f851a9345e7d"};
+    auto expected = std::string{"8372e8dc1413d0636d8db66e5f8f4f885e703e67c736aa80a881ac400dc8613b"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

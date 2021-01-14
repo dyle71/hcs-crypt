@@ -29,6 +29,7 @@ TEST(Benchmark_LTCMD5, LTCMD5StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -38,7 +39,7 @@ TEST(Benchmark_LTCMD5, LTCMD5StdString) {
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCMD5::LTCMD5StdString ");
 
-    auto expected = std::string{"f6600c29b8b7b51b104c6536ab9764a4"};
+    auto expected = std::string{"e4c88e4f741434e1f25a12f3e0a9451c"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -57,6 +58,7 @@ TEST(Benchmark_LTCMD5, LTCMD5CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

@@ -29,6 +29,7 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -38,7 +39,7 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192StdString) {
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCTIGER192::LTCTIGER192StdString ");
 
-    auto expected = std::string{"abd09dd41fe994a53b3367eb336a37e0435df3d189beee88"};
+    auto expected = std::string{"e7cc79344b25afdf39f43c468fbb123eca261a918b7cd6dc"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -57,6 +58,7 @@ TEST(Benchmark_LTCTIGER192, LTCTIGER192CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

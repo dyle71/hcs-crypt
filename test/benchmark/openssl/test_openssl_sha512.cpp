@@ -29,6 +29,7 @@ TEST(Benchmark_OPENSSLSHA512, OPENSSLSHA512StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -39,10 +40,10 @@ TEST(Benchmark_OPENSSLSHA512, OPENSSLSHA512StdString) {
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA512::OPENSSLSHA512StdString ");
 
     auto expected = std::string{
-            "bd6ee03900f6b3f946c54a810bfe9fe5"
-            "c269859d87d66149a9936d08a74cd7d1"
-            "cc569914480870fbfa8e23937193fa1f"
-            "4680505c6484a42c55d96a1053688529"};
+            "2debfe2de82fea9c4186950a632533e5"
+            "64167ae88b81d8c3217b508a1c5169dc"
+            "e43aeaa226843a80f5bf2e6d95eee73b"
+            "fb64d1f5deb75003ceca40610bb4de94"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -61,6 +62,7 @@ TEST(Benchmark_OPENSSLSHA512, OPENSSLSHA512CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

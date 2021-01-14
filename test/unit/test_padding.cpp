@@ -111,6 +111,9 @@ TEST_P(TestPadding, padding_paramterized) {
                 break;
         }
     }
+
+    std::cout << "checked" << std::endl;
+
 }
 
 

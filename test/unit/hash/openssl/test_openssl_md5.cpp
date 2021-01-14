@@ -46,7 +46,7 @@ TEST(Hash_OpenSSLMD5, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"e4d909c290d0fb1ca068ffaddf22cbd0"};
+    auto expected = std::string{"e4f1e39926d8e3696d7c8ae8b3aed280"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_OpenSSLMD5, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"c9f9e773953864f55f1681d00783b10f"};
+    auto expected = std::string{"6f5c39772d5ca9d889e1a62d0e650bfd"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_OpenSSLMD5, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"c9f9e773953864f55f1681d00783b10f"};
+    auto expected = std::string{"6f5c39772d5ca9d889e1a62d0e650bfd"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

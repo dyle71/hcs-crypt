@@ -46,7 +46,7 @@ TEST(Hash_LTCSHA224, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"619cba8e8e05826e9b8c519c0a5c68f4fb653e8a3d8aa04bb2c8cd4c"};
+    auto expected = std::string{"9ab9ea9b927fe3317c4d16f9a06aa452fe7587339e383fff46997341"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_LTCSHA224, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"a0ef72c0affa8f7f94a284a6bd6f602058bd6d6d3ea3d52bf3c95e82"};
+    auto expected = std::string{"a446cb8d8d4461be1ff5c179f888605dbef9be00b0fd840f52af97f9"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_LTCSHA224, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"a0ef72c0affa8f7f94a284a6bd6f602058bd6d6d3ea3d52bf3c95e82"};
+    auto expected = std::string{"a446cb8d8d4461be1ff5c179f888605dbef9be00b0fd840f52af97f9"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

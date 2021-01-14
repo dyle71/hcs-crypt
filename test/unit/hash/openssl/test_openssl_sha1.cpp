@@ -46,7 +46,7 @@ TEST(Hash_OPENSSLSHA1, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"408d94384216f890ff7a0c3528e8bed1e0b01621"};
+    auto expected = std::string{"627fc7a1afda64d792a264db058f2d2af4b1f55a"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_OPENSSLSHA1, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"f007c893d4e963c53109debcb2e0d7abdeff7466"};
+    auto expected = std::string{"90ad14798b19175b03ffa6b54e60de67813876df"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_OPENSSLSHA1, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"f007c893d4e963c53109debcb2e0d7abdeff7466"};
+    auto expected = std::string{"90ad14798b19175b03ffa6b54e60de67813876df"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

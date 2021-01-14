@@ -47,10 +47,10 @@ TEST(Hash_OPENSSLSHA512, simple) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "91ea1245f20d46ae9a037a989f54f1f7"
-            "90f0a47607eeb8a14d12890cea77a1bb"
-            "c6c7ed9cf205e67b7f2b8fd4c7dfd3a7"
-            "a8617e45f3c463d481c7e586c39ac1ed"};
+            "b8b31b9af416031e07c293bf1716e383"
+            "df4e5c57670d593636a1bf7a88ac8f66"
+            "abf4f64cedd7b0c2db069d3ccf9cf58c"
+            "975c51df84c9dc3bfe58e15fa24be14c"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -70,10 +70,10 @@ TEST(Hash_OPENSSLSHA512, regular) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "b5c0b147b533b9923fe7531d692f55e1"
-            "26314038c6bb0a17daf65439b9958265"
-            "33376a22adff9cba88fb5fe316e2ae7d"
-            "d461f525b0f538a4aef6ba0931257d4a"};
+            "3a25bf52049f192e80b7197afba62ea6"
+            "0c03792725497b01ae459e8d868997b9"
+            "e4f6697cf0d106c910958770217d449d"
+            "1995b4a842ad1a613ef2636ffba675b5"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -113,10 +113,10 @@ TEST(Hash_OPENSSLSHA512, noinit) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "b5c0b147b533b9923fe7531d692f55e1"
-            "26314038c6bb0a17daf65439b9958265"
-            "33376a22adff9cba88fb5fe316e2ae7d"
-            "d461f525b0f538a4aef6ba0931257d4a"};
+            "3a25bf52049f192e80b7197afba62ea6"
+            "0c03792725497b01ae459e8d868997b9"
+            "e4f6697cf0d106c910958770217d449d"
+            "1995b4a842ad1a613ef2636ffba675b5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

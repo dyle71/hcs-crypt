@@ -46,7 +46,7 @@ TEST(Hash_LTCRIPEMD128, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"f39288a385e5996c6fb2c01f7f8fbf2f"};
+    auto expected = std::string{"721a9d47411a9167534756c5cca4d0e5"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_LTCRIPEMD128, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"9a5bfb7a4c8f16487a4711bedbbd80a5"};
+    auto expected = std::string{"461938ebed5b4f57f6126c86ae12214b"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_LTCRIPEMD128, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"9a5bfb7a4c8f16487a4711bedbbd80a5"};
+    auto expected = std::string{"461938ebed5b4f57f6126c86ae12214b"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

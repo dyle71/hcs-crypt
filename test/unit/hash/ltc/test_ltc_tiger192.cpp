@@ -46,7 +46,7 @@ TEST(Hash_LTCTIGER192, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"0bf46f237681b35301d46aa08d43c449643408521a263929"};
+    auto expected = std::string{"8c1bd802cdbcf0c36783a4f95d75306458a288f778522ff3"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_LTCTIGER192, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"eafd96d4d67afa8a8b2d4c703afc3e7064e0fc711c459003"};
+    auto expected = std::string{"ddcc048191f385a1e93e2467f6a7566f3fd63e35db669794"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_LTCTIGER192, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"eafd96d4d67afa8a8b2d4c703afc3e7064e0fc711c459003"};
+    auto expected = std::string{"ddcc048191f385a1e93e2467f6a7566f3fd63e35db669794"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

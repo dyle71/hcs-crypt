@@ -29,6 +29,7 @@ TEST(Benchmark_LTCSHA256, LTCSHA256StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -38,7 +39,7 @@ TEST(Benchmark_LTCSHA256, LTCSHA256StdString) {
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA256::LTCSHA256StdString ");
 
-    auto expected = std::string{"1ea8106595cc961d258251ad51613694c625c080e1103f1b8c5c5ed411b70de5"};
+    auto expected = std::string{"987471f3d737a2a78c6e30d15e1ee304d15c3103f5035083484bb47e60962682"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -57,6 +58,7 @@ TEST(Benchmark_LTCSHA256, LTCSHA256CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

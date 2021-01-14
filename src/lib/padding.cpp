@@ -72,6 +72,7 @@ void headcode::crypt::Pad(std::vector<std::byte> & block, std::uint64_t size, Pa
             // is the number of pad bytes. All other bytes of the padding are some random data.
             while (padded_byte != padded_end - 1) {
                 *padded_byte = RandomChar();
+                padded_byte++;
             }
             *padded_byte = padded_size;
             break;

@@ -29,6 +29,7 @@ TEST(Benchmark_LTCSHA384, LTCSHA384StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -39,9 +40,9 @@ TEST(Benchmark_LTCSHA384, LTCSHA384StdString) {
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCSHA384::LTCSHA384StdString ");
 
     auto expected = std::string{
-            "814421785ab423b48d9eac99e1a5a075"
-            "36eda562e063b91c1452c22ae0e0c79f"
-            "ca3747d569091ca4890da01db32b0c71"};
+            "8f3936492400727b3b05bdcd2256d0a0"
+            "337c0c2acc55d9da3a51d089cfabe93f"
+            "61a80a61fee9937ae6f5ea1547dc899e"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -60,6 +61,7 @@ TEST(Benchmark_LTCSHA384, LTCSHA384CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

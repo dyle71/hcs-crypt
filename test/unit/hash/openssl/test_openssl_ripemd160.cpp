@@ -46,7 +46,7 @@ TEST(Hash_OPENSSLRIPEMD160, simple) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"fc850169b1f2ce72e3f8aa0aeb5ca87d6f8519c6"};
+    auto expected = std::string{"18b06b8dba026202bc46712c2534db4840634a52"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -65,7 +65,7 @@ TEST(Hash_OPENSSLRIPEMD160, regular) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"2b36bbecf930806c5858790afb92fc70b119a4e5"};
+    auto expected = std::string{"3726da4a1e0d315569b3b1977bcfa2cac022f0c0"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -100,7 +100,7 @@ TEST(Hash_OPENSSLRIPEMD160, noinit) {
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
-    auto expected = std::string{"2b36bbecf930806c5858790afb92fc70b119a4e5"};
+    auto expected = std::string{"3726da4a1e0d315569b3b1977bcfa2cac022f0c0"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());

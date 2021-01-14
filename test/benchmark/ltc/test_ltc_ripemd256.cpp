@@ -29,6 +29,7 @@ TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256StdString) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is with padding
         algo->Add(IPSUM_LOREM_TEXT);
     }
     std::vector<std::byte> result;
@@ -38,7 +39,7 @@ TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256StdString) {
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark LTCRIPEMD256::LTCRIPEMD256StdString ");
 
-    auto expected = std::string{"4202b1d23944bc07ec1eaf09bf3a600b9734ea484725827f4ee7abf0d8522ddd"};
+    auto expected = std::string{"baa2bfafa991548084d0f5ce313e4d2a21164bbc11906e5c70bf9ee1f8389a13"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(result).c_str(), expected.c_str());
 }
 
@@ -57,6 +58,7 @@ TEST(Benchmark_LTCRIPEMD256, LTCRIPEMD256CArray) {
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
+        // this is without padding
         algo->Add(reinterpret_cast<unsigned char const *>(block_incoming), size_incoming, nullptr, size_outgoing);
     }
     std::vector<std::byte> result;

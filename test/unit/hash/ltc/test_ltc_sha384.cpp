@@ -47,8 +47,9 @@ TEST(Hash_LTCSHA384, simple) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "ed892481d8272ca6df370bf706e4d7bc1b5739fa2177aae6"
-            "c50e946678718fc67a7af2819a021c2fc34e91bdb63409d7"};
+            "8549bef9c0fb9cde8edcc87b8fba76ff"
+            "5b7acd3a9ef8291bcbd9bcfa092b2f5b"
+            "6c8b5bfe94071af0c64288b9d1dbf127"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -68,8 +69,9 @@ TEST(Hash_LTCSHA384, regular) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "37fb5f101139c74c4bb2518108c6bf4c0b28e848db65b8ea"
-            "d94245818c3265ab4c385add4a1c071468453ab66a07fff1"};
+            "3684988b349f5116652c9eacce66ff91"
+            "b57d7f92e8d9b40a4ae8f8ac8db96076"
+            "e0560db656924f8c187cd7e0a15c035d"};
     auto result = headcode::mem::MemoryToHex(hash);
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
@@ -89,8 +91,9 @@ TEST(Hash_LTCSHA384, empty) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "38b060a751ac96384cd9327eb1b1e36a21fdb71114be0743"
-            "4c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b"};
+            "38b060a751ac96384cd9327eb1b1e36a"
+            "21fdb71114be07434c0cc7bf63f6e1da"
+            "274edebfe76f65fbd51ad2f14898b95b"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 }
 
@@ -107,8 +110,9 @@ TEST(Hash_LTCSHA384, noinit) {
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
 
     auto expected = std::string{
-            "37fb5f101139c74c4bb2518108c6bf4c0b28e848db65b8ea"
-            "d94245818c3265ab4c385add4a1c071468453ab66a07fff1"};
+            "3684988b349f5116652c9eacce66ff91"
+            "b57d7f92e8d9b40a4ae8f8ac8db96076"
+            "e0560db656924f8c187cd7e0a15c035d"};
     EXPECT_STREQ(headcode::mem::MemoryToHex(hash).c_str(), expected.c_str());
 
     EXPECT_FALSE(algo->IsInitialized());
