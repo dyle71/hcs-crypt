@@ -10,18 +10,20 @@
 #define HEADCODE_SPACE_CRYPT_ALGORITHM_HPP
 
 #include <cstddef>
+#include <map>
 #include <string>
 #include <vector>
 #include <utility>
 
 #include "family.hpp"
+#include "padding.hpp"
 
 
 namespace headcode::crypt {
 
 
 /**
- * @brief   The Algorithm class is the abstract class for any crypto-algorithm.
+ * @brief   The Algorithm class is the abstract class for any crypto-algorithm. This is it.
  *
  * Hashes, encryptor and decrypter are all algorithms in this sense:
  * - an algorithm instance is created. This may or may not use an initial key.
@@ -60,16 +62,32 @@ public:
      * The output block size is different to the result size. The result size constitutes to
      * the final value of an algorithm, e.g. the size of the message digest of hash algorithms.
      *
-     * Example for a scenario with AES 128 ECB is:
+     * The "Hello World!" example for a scenario with AES 256 CBC is:
      * @code
-     *      std::vector<std::byte> key = ....;              // get key from somewhere
+     *      #include <cstddef>
+     *      #include <iostream>
+     *      #include <vector>
      *
-     *      auto algorithm = headcode::crypt::Factory::Create("openssl-aes-128-ecb encryptor");
-     *      algorithm->Initialize(key.data(), key.size());
+     *      #include <headcode/mem/mem.hpp>
+     *      #include <headcode/crypt/crypt.hpp>
      *
-     *      std::vector<std::byte> plain = ....;            // get the plain input data
-     *      std::vector<std::byte> cipher{plain.size()};    // this will hold the final cihper
-     *      algorithm->Add(plain, cipher);
+     *      int main(int argc, char ** argv) {
+     *
+     *          auto key = headcode::mem::StringToMemory("This is my secret key.");
+     *          auto iv = headcode::mem::StringToMemory("This is an initialization vector.");
+     *
+     *          // grab an AES 256 CBC Encryptor
+     *          auto algorithm = headcode::crypt::Factory::Create("aes-256-cbc encryptor");
+     *          algorithm->Initialize({'key', key}, {'iv', iv});
+     *
+     *          // encrypt some data (note: the input will be padded!)
+     *          std::vector<std::byte> cipher;
+     *          algorithm->Add("Hello World!", cipher);
+     *
+     *          // show the cipher
+     *          std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
+     *          return 0;
+     *      }
      * @endcode
      *
      * To list all available algorithms see the Factory::GetAlgorithmDescriptions method.
@@ -89,34 +107,56 @@ public:
          */
         struct ArgumentDefinition {
 
-            std::uint64_t size_;        //!< @brief Defines the size in bytes of the key (special meaning for value 0).
-            std::string description_;        //!< @brief A description of this input data.
-            bool needed_ = false;            //!< @brief States that this key is needed.
+            std::uint64_t size_;                      //!< @brief Defines the required size of the data.
+            PaddingStrategy padding_strategy_;        //!< @brief The preferred padding strategy.
+            std::string description_;                 //!< @brief A description of this input data.
+            bool optional_ = false;        //!< @brief If true, this is an optional and not mandatory data element.
 
-        } __attribute__((aligned(64)));
+        };
 
-        std::string name_;                           //!< @brief The name of this algorithm.
-        Family family_;                              //!< @brief The family of the algorithm.
-        std::uint64_t block_size_incoming_;          //!< @brief Size of each input block in bytes.
-        std::uint64_t block_size_outgoing_;          //!< @brief Size of each output block in bytes.
-        std::uint64_t result_size_;                  //!< @brief Size of the final result in bytes.
-        ArgumentDefinition initial_argument_;        //!< @brief The requirements of the initial key used.
-        ArgumentDefinition final_argument_;          //!< @brief The requirements of the final key used.
-        std::string description_short_;              //!< @brief A human readable short description of the algorithm.
-        std::string description_long_;               //!< @brief A human readable long description of the algorithm.
-        std::string provider_;                       //!< @brief Names the provider of the algorithm.
+        std::string name_;                     //!< @brief The name of this algorithm.
+        Family family_;                        //!< @brief The family of the algorithm.
+        std::string description_short_;        //!< @brief A human readable short description of the algorithm.
+        std::string description_long_;         //!< @brief A human readable long description of the algorithm.
+        std::string provider_;                 //!< @brief Names the provider of the algorithm.
 
-    } __attribute__((aligned(128)));
+        std::uint64_t block_size_incoming_;             //!< @brief Size of each input block in bytes.
+        std::uint64_t block_size_outgoing_;             //!< @brief Size of each output block in bytes.
+        PaddingStrategy block_padding_strategy_;        //!< @brief The preferred padding strategy for blocks.
+        std::uint64_t result_size_;                     //!< @brief Size of the final result in bytes.
+
+        /**
+         * @brief   The needed initialization arguments, identified by name.
+         * Hashes most likely do not have any initial arguments. Symmetric ciphers usually
+         * need some 'key' and/or 'iv' argument with some defined size.
+         */
+        std::map<std::string, ArgumentDefinition> initialization_argument_;
+
+        /**
+         * @brief   The needed finalization arguments, identified by name.
+         * Some algorithms may need a argument for the final computation.
+         */
+        std::map<std::string, ArgumentDefinition> finalization_argument_;
+
+    };
 
 private:
     bool finalized_ = false;          //!< @brief Finalized flag.
     bool initialized_ = false;        //!< @brief Initialized flag.
 
+    /**
+     * @brief   Padding strategy applied to blocks at the Add(...) methods.
+     */
+    PaddingStrategy block_padding_strategy_ = PaddingStrategy::PADDING_PKCS_5_7;
+
 public:
     /**
      * @brief   Constructor.
+     * @param   block_padding_strategy      The padding stragegy used for blocks at the Add(...) method.
      */
-    Algorithm() = default;
+    explicit Algorithm(PaddingStrategy block_padding_strategy = PaddingStrategy::PADDING_PKCS_5_7)
+            : block_padding_strategy_{block_padding_strategy} {
+    }
 
     /**
      * @brief   Copy Constructor.
@@ -159,6 +199,11 @@ public:
      * to a non-zero value, then it is highly recommended that the length of
      * the input (text) is a multiple of this incoming block size.
      *
+     * Padding will be applied as necessary. Padding is expensive though.
+     * Check the algorithm's description (call to GetDescription()) about the
+     * the incoming block size (block_size_incoming_) and prepare your input
+     * data accordingly.
+     *
      * @param   text                the text to add.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
@@ -180,6 +225,11 @@ public:
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
      *
+     * Padding will be applied as necessary. Padding is expensive though.
+     * Check the algorithm's description (call to GetDescription()) about the
+     * the incoming block size (block_size_incoming_) and prepare your input
+     * data accordingly.
+     *
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -199,6 +249,11 @@ public:
      * If the block_size_incoming_ value in the algorithm's description is set
      * to a non-zero value, then it is highly recommended that the length of
      * the input (block_incoming) is a multiple of this incoming block size.
+     *
+     * Padding will be applied as necessary. Padding is expensive though.
+     * Check the algorithm's description (call to GetDescription()) about the
+     * the incoming block size (block_size_incoming_) and prepare your input
+     * data accordingly.
      *
      * @param   block_incoming      incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -221,6 +276,11 @@ public:
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
      *
+     * Padding will be applied as necessary. Padding is expensive though.
+     * Check the algorithm's description (call to GetDescription()) about the
+     * the incoming block size (block_size_incoming_) and prepare your input
+     * data accordingly.
+     *
      * @param   block_incoming      incoming data block.
      * @param   block_outgoing      the outgoing data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -242,18 +302,30 @@ public:
      * to a non-zero value, then it is highly recommended that the length of
      * the output (block_outgoing) is a multiple of this outgoing block size.
      *
+     * The data will **not be** padded and will given to the algorithm instance as-is.
+     * This method expects the data in the proper format and size suitable for the
+     * algorithm.
+     *
      * @param   block_incoming      incoming data block.
      * @param   size_incoming       size of the incoming data block.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Add(char const * block_incoming,
+    int Add(unsigned char const * block_incoming,
             std::uint64_t size_incoming,
-            char * block_outgoing,
+            unsigned char * block_outgoing,
             std::uint64_t & size_outgoing);
 
     /**
+     * @brief   Returns the padding strategy used for blocks at the Add(...) method.
+     * @return  The padding strategy used for in/out blocks.
+     */
+    PaddingStrategy GetBlockPaddingStrategy() const {
+        return block_padding_strategy_;
+    }
+
+    /**
      * @brief   Finalizes this object instance.
      *
      * The concrete implementation of the algorithm may report any error value.
@@ -263,12 +335,37 @@ public:
      * You may Finalize the object multiple times.
      *
      * Check the algorithms details/description of what constitutes a good finalization data.
+     * Finalization data will be padded (though as this is expensive this should be avoided).
+     * Please ensure proper size of finalization data according to algorithm description.
      *
-     * @param   result      the result of the algorithm.
-     * @param   data        the final data (== final key) to use, if any
+     * @param   result                  the result of the algorithm.
+     * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize(std::vector<std::byte> & result, std::vector<std::byte> const & data = {});
+    int Finalize(std::vector<std::byte> & result,
+                 std::map<std::string, std::vector<std::byte>> const & finalization_data = {});
+
+    /**
+     * @brief   Finalizes this object instance.
+     *
+     * The concrete implementation of the algorithm may report any error value.
+     *
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     *
+     * You may Finalize the object multiple times.
+     *
+     * Check the algorithms details/description of what constitutes a good finalization data.
+     * Finalization data will be padded (though as this is expensive this should be avoided).
+     * Please ensure proper size of finalization data according to algorithm description.
+     *
+     * @param   result                  the result of the algorithm.
+     * @param   finalization_data       the final data (== final key) to use, if any.
+     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     */
+    int Finalize(
+            std::vector<std::byte> & result,
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data = {});
 
     /**
      * @brief   Finalizes this object instance.
@@ -282,32 +379,18 @@ public:
      *
      * Check the algorithms details/description of what constitutes a good finalization data.
      *
-     * @param   result          the result of the algorithm.
-     * @param   data            the finalization data (== final key) to use, if any
-     * @param   data_size       size of the data used for finalization.
+     * There will be NO padding of the finalization data here, but this data will be passed on
+     * as-is to the algorithm.
+     *
+     * @param   result                  the result of the algorithm.
+     * @param   result_size             size of the result for finalization.
+     * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Finalize(std::vector<std::byte> & result, char const * data, std::uint64_t data_size);
-
-    /**
-     * @brief   Finalizes this object instance.
-     *
-     * The concrete implementation of the algorithm may report any error value.
-     *
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
-     * be examined in the context of the algorithm.
-     *
-     * You may Finalize the object multiple times.
-     *
-     * Check the algorithms details/description of what constitutes a good finalization data.
-     *
-     * @param   result          the result of the algorithm.
-     * @param   result_size     size of the result for finalization.
-     * @param   data            the finalization data (== final key) to use, if any
-     * @param   data_size       size of the data used for finalization.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
-     */
-    int Finalize(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size);
+    int Finalize(
+            unsigned char * result,
+            std::uint64_t result_size,
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data = {});
 
     /**
      * @brief   Gets the algorithm description.
@@ -316,16 +399,21 @@ public:
     Description const & GetDescription() const;
 
     /**
-     * @brief   Returns a block to be fitted as within a block size.
+     * @brief   Initialize this object instance.
      *
-     * This prepares a memory area to be a multiple of the given block_size.
-     * The given text is copied into the block. Any remainder is padded with 0.
+     * The concrete implementation of the algorithm may report any error value.
      *
-     * @param   text            Some text.
-     * @param   block_size      The block size.
-     * @return  a vector with the size of a multiple of block_size.
+     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * be examined in the context of the algorithm.
+     *
+     * The object **WILL NOT** be initialized twice.
+     *
+     * Check the algorithms details/description of what constitutes a good init data.
+     *
+     * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
+     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    static std::vector<std::byte> GrowToBlockSize(std::string const & text, std::uint64_t block_size);
+    int Initialize(std::map<std::string, std::vector<std::byte>> const & initialization_data = {});
 
     /**
      * @brief   Initialize this object instance.
@@ -339,28 +427,11 @@ public:
      *
      * Check the algorithms details/description of what constitutes a good init data.
      *
-     * @param   data        the initial data (== initial key) to use, if any
+     * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    int Initialize(std::vector<std::byte> const & data = {});
-
-    /**
-     * @brief   Initialize this object instance.
-     *
-     * The concrete implementation of the algorithm may report any error value.
-     *
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
-     * be examined in the context of the algorithm.
-     *
-     * The object **WILL NOT** be initialized twice.
-     *
-     * Check the algorithms details/description of what constitutes a good init data.
-     *
-     * @param   data        the initial data (== initial key) to use, if any
-     * @param   size        size of the data used for initialization.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
-     */
-    int Initialize(char const * data, std::uint64_t size);
+    int Initialize(
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data = {});
 
     /**
      * @brief   Checks if this algorithm instance has been finalized.
@@ -378,43 +449,40 @@ public:
         return initialized_;
     }
 
+    /**
+     * @brief   Sets a new padding strategy used for blocks at the Add(...) method.
+     * This changes the padding strategy applied to blocks at the Add(...) method.
+     * @param   block_padding_strategy      the new block padding strategy.
+     */
+    void SetBlockPaddingStrategy(PaddingStrategy block_padding_strategy) {
+        block_padding_strategy_ = block_padding_strategy;
+    }
+
 private:
     /**
      * @brief   Adds data to the algorithm
-     *
-     * The concrete implementation of the algorithm may report any error value.
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
-     * be examined in the context of the algorithm.
-     *
      * @param   block_incoming      incoming data block to add.
      * @param   size_incoming       size of the incoming data to add.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error.
      */
-    virtual int Add_(char const * block_incoming,
+    virtual int Add_(unsigned char const * block_incoming,
                      std::uint64_t size_incoming,
-                     char * block_outgoing,
+                     unsigned char * block_outgoing,
                      std::uint64_t & size_outgoing) = 0;
 
     /**
      * @brief   Finalizes this object instance.
-     *
-     * The concrete implementation of the algorithm may report any error value.
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
-     * be examined in the context of the algorithm.
-     *
-     * You may Finalize the object multiple times.
-     *
-     * Check the algorithms details/description of what constitutes a good finalization data.
-     *
-     * @param   result          the result of the algorithm.
-     * @param   rtesult_size    size of the result for finalization.
-     * @param   data            the finalization data (== final key) to use, if any
-     * @param   data_size       size of the data used for finalization.
+     * @param   result                  the result of the algorithm.
+     * @param   result_size             size of the result for finalization.
+     * @param   finalization_data       the final data (== final key) to use, if any.
      * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
      */
-    virtual int Finalize_(char * result, std::uint64_t result_size, char const * data, std::uint64_t data_size) = 0;
+    virtual int Finalize_(
+            unsigned char * result,
+            std::uint64_t result_size,
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) = 0;
 
     /**
      * @brief   Gets the algorithm description.
@@ -424,16 +492,11 @@ private:
 
     /**
      * @brief   Initialize this object instance.
-     *
-     * The concrete implementation of the algorithm may report any error value.
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
-     * be examined in the context of the algorithm.
-     *
-     * @param   data        the initial data (== initial key) to use, if any
-     * @param   size        size of the data used for initialization.
+     * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
      * @return  0 if initialize was ok, else an error.
      */
-    virtual int Initialize_(char const * data, std::uint64_t size) = 0;
+    virtual int Initialize_(
+            std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) = 0;
 };
 
 

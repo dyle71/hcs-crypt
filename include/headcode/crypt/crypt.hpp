@@ -13,6 +13,7 @@
 #include "algorithm.hpp"
 #include "family.hpp"
 #include "factory.hpp"
+#include "padding.hpp"
 #include "version.hpp"
 
 
