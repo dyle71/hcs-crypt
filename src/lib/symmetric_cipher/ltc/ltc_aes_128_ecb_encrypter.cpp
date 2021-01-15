@@ -24,11 +24,6 @@ static Algorithm::Description const & GetDescription() {
     static Algorithm::Description description = {
             "ltc-aes-128-ecb encryptor",                                // name
             Family::SYMMETRIC_CIPHER,                                   // family
-            16ul,                                                       // input block size
-            16ul,                                                       // output block size
-            0ul,                                                        // result size
-            {16ul, "A secret shared key.", true},                       // initial data
-            {0ul, "No finalization data needed.", false},               // finalization data
             "LibTomCrypt AES 128 in ECB mode (encryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
@@ -36,7 +31,18 @@ static Algorithm::Description const & GetDescription() {
             "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
-            std::string{"libtomcrypt v"} + SCRYPT        // provider
+            std::string{"libtomcrypt v"} + SCRYPT,        // provider
+            16ul,                                         // input block size
+            16ul,                                         // output block size
+            PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
+            0ul,                                          // result size
+
+            // initial data
+            {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
+
+            // finalization data
+            {}
+
     };
     return description;
 }
@@ -65,9 +71,9 @@ public:
 };
 
 
-int LTCAES128ECBEncrypter::Add_(char const * block_incoming,
+int LTCAES128ECBEncrypter::Add_(unsigned char const * block_incoming,
                                 std::uint64_t size_incoming,
-                                char * block_outgoing,
+                                unsigned char * block_outgoing,
                                 std::uint64_t & size_outgoing) {
 
     size_outgoing = GetDescription().block_size_outgoing_;
@@ -78,14 +84,13 @@ int LTCAES128ECBEncrypter::Add_(char const * block_incoming,
     }
 
     symmetric_ECB * state = &GetState();
-    return ecb_encrypt(reinterpret_cast<unsigned char const *>(block_incoming),
-                       reinterpret_cast<unsigned char *>(block_outgoing),
-                       size_incoming,
-                       state);
+    return ecb_encrypt(block_incoming, block_outgoing, size_incoming, state);
 }
 
 
-int LTCAES128ECBEncrypter::Finalize_(char *, std::uint64_t, char const * , std::uint64_t) {
+int LTCAES128ECBEncrypter::Finalize_(unsigned char *,
+                                     std::uint64_t,
+                                     std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return 0;
 }
 
@@ -95,15 +100,25 @@ Algorithm::Description const & LTCAES128ECBEncrypter::GetDescription_() const {
 }
 
 
-int LTCAES128ECBEncrypter::Initialize_(char const * data, std::uint64_t size) {
+int LTCAES128ECBEncrypter::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) {
 
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {
         return -1;
     }
 
+    auto iter = initialization_data.find("key");
+    if (iter == initialization_data.end()) {
+        return -1;
+    }
+
+    auto [key_data, key_size] = (*iter).second;
+    if (key_size > 0) {
+        assert(key_data != nullptr && "Applying key which is NULL/nullptr while size is > 0.");
+    }
+
     symmetric_ECB * state = &GetState();
-    return ecb_start(cipher_index, reinterpret_cast<unsigned char const *>(data), size, 0, state);
+    return ecb_start(cipher_index, key_data, key_size, 0, state);
 }
 
 
