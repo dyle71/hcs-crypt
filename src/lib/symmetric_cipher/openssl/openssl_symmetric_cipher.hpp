@@ -93,6 +93,28 @@ private:
             unsigned char * result,
             std::uint64_t result_size,
             std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) override;
+
+    /**
+     * @brief   Initialize this object instance.
+     * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
+     * @return  0 if initialize was ok, else an error.
+     */
+    int Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data)
+            override;
+
+    /**
+     * @brief   Verifies the existance and validity of an initit data element.
+     * @param   data                    this will receive the deduced value.
+     * @param   initialization_data     the set of init data elements.
+     * @param   name                    the name of the init data element to search for.
+     * @param   EVP_GET_LENGTH          the OpenSSL function returning the length needed.
+     * @return  true, if the value is usable.
+     */
+    bool VerifyInitValue(
+            unsigned char const * & data,
+            const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data,
+            std::string const & name,
+            int (*EVP_GET_LENGTH)(EVP_CIPHER_CTX const *)) const;
 };
 
 

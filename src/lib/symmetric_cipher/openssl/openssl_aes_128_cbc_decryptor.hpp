@@ -9,11 +9,6 @@
 #ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_CBC_DECRYPTOR_HPP
 #define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_CBC_DECRYPTOR_HPP
 
-#include <cstddef>
-#include <vector>
-
-#include <headcode/crypt/algorithm.hpp>
-
 #include "openssl_symmetric_cipher.hpp"
 
 
@@ -50,14 +45,6 @@ private:
      * @return  A string describing the algorithm.
      * */
     Description const & GetDescription_() const override;
-
-    /**
-     * @brief   Initialize this object instance.
-     * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
-     * @return  0 if initialize was ok, else an error.
-     */
-    int Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data)
-    override;
 };
 
 

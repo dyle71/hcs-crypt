@@ -40,9 +40,9 @@ private:
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
      * @return  0 if add was ok, else an error.
      */
-    int Add_(char const * block_incoming,
+    int Add_(unsigned char const * block_incoming,
              std::uint64_t size_incoming,
-             char * block_outgoing,
+             unsigned char * block_outgoing,
              std::uint64_t & size_outgoing) override;
 
     /**

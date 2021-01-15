@@ -32,8 +32,8 @@
 #endif
 
 #include "symmetric_cipher/copy.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
+//#include "symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.hpp"
+//#include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
 
 #ifdef OPENSSL
 #include "symmetric_cipher/openssl/openssl_aes_128_cbc_decryptor.hpp"
@@ -65,8 +65,8 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
     Copy::Register();
 
-    LTCAES128ECBDecrypter::Register();
-    LTCAES128ECBEncrypter::Register();
+    //LTCAES128ECBDecrypter::Register();
+    //LTCAES128ECBEncrypter::Register();
 
 #ifdef OPENSSL
 

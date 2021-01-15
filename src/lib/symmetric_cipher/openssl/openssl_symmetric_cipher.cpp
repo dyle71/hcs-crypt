@@ -6,6 +6,8 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
+#include <cassert>
+
 #include "openssl_symmetric_cipher.hpp"
 
 using namespace headcode::crypt;
@@ -43,33 +45,60 @@ int OpenSSLSymmetricCipher::Finalize_(unsigned char *,
     return 0;
 }
 
-/*
-TODO
-int OpenSSLSymmetricCipher::Initialize_(char const * data, std::uint64_t size) {
+
+int OpenSSLSymmetricCipher::Initialize_(
+        const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
 
     int res = EVP_CipherInit_ex(GetCipherContext(), GetCipher(), nullptr, nullptr, nullptr, IsEncryptor() ? 1 : 0);
     if (res != 1) {
         return 1;
     }
 
-    // we assume that the key and iv are concatenated in the memory
-    std::uint64_t inner_key_size = EVP_CIPHER_CTX_key_length(GetCipherContext());
-    std::uint64_t inner_iv_size = EVP_CIPHER_CTX_iv_length(GetCipherContext());
-    auto total_init_size = inner_key_size + inner_iv_size;
-    if (total_init_size != GetDescription().initial_argument_.size_) {
-        return 1;
-    }
-    if (total_init_size != size) {
+    unsigned char const * key_data = nullptr;
+    if (!VerifyInitValue(key_data, initialization_data, "key", EVP_CIPHER_CTX_key_length)) {
         return 1;
     }
 
-    auto d = reinterpret_cast<const unsigned char *>(data);
-    res = EVP_CipherInit_ex(GetCipherContext(), nullptr, nullptr, d, d + inner_key_size, IsEncryptor() ? 1 : 0);
-
-    if (res != 1) {
+    unsigned char const * iv_data = nullptr;
+    if (!VerifyInitValue(iv_data, initialization_data, "iv", EVP_CIPHER_CTX_iv_length)) {
         return 1;
     }
 
-    return 0;
+    auto e = EVP_CipherInit_ex(GetCipherContext(), nullptr, nullptr, key_data, iv_data, IsEncryptor() ? 1 : 0);
+    return e == 1 ? 0 : 1;
 }
-*/
+
+
+bool OpenSSLSymmetricCipher::VerifyInitValue(
+        unsigned char const * & data,
+        const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data,
+        std::string const & name,
+        int (*EVP_GET_LENGTH)(EVP_CIPHER_CTX const *)) const {
+
+    data = nullptr;
+
+    auto definition_iter = GetDescription().initialization_argument_.find(name);
+    if (definition_iter == GetDescription().initialization_argument_.end()) {
+        return true;
+    }
+
+    bool mandatory = !definition_iter->second.optional_;
+    auto iter = initialization_data.find(name);
+    if (iter == initialization_data.end() && mandatory) {
+        return false;
+    }
+
+    if (iter != initialization_data.end()) {
+
+        data = std::get<0>(iter->second);
+        std::uint64_t size = std::get<1>(iter->second);
+        if (size > 0) {
+            assert(data != nullptr && "Applying data which is NULL/nullptr while size is > 0.");
+        }
+        if (static_cast<int>(size) != EVP_GET_LENGTH(GetCipherContext())) {
+            return false;
+        }
+    }
+
+    return true;
+}

@@ -21,7 +21,7 @@ set(UNIT_TEST_SRC
     cli/test_cli.cpp
 
     symmetric_cipher/test_copy.cpp
-    symmetric_cipher/ltc/test_ltc_aes_128_ecb.cpp
+    #symmetric_cipher/ltc/test_ltc_aes_128_ecb.cpp
 
     hash/test_nohash.cpp
     hash/ltc/test_ltc_md5.cpp
@@ -49,6 +49,7 @@ if (WITH_OPENSSL)
         hash/openssl/test_openssl_sha384.cpp
         hash/openssl/test_openssl_sha512.cpp
 
+        symmetric_cipher/openssl/test_openssl_aes_128_cbc.cpp
         symmetric_cipher/openssl/test_openssl_aes_128_ecb.cpp
         symmetric_cipher/openssl/test_openssl_aes_192_ecb.cpp
         symmetric_cipher/openssl/test_openssl_aes_256_ecb.cpp

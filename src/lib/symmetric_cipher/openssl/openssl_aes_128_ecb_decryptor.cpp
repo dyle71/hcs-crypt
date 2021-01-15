@@ -6,8 +6,6 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
-
 #include <openssl/opensslv.h>
 
 #include <headcode/crypt/factory.hpp>
@@ -72,12 +70,6 @@ public:
         return ::GetDescription();
     }
 };
-
-
-int OpenSSLAES128ECBDecrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
-    // TODO
-    return 0;
-}
 
 
 EVP_CIPHER const * OpenSSLAES128ECBDecrypter::GetCipher() const {

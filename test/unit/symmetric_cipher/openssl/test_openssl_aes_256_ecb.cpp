@@ -25,11 +25,11 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, encryptor_creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
-    EXPECT_EQ(description.block_size_incoming_, 32ul);
-    EXPECT_EQ(description.block_size_outgoing_, 32ul);
+    EXPECT_EQ(description.block_size_incoming_, 16ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    EXPECT_EQ(description.initialization_argument_.size(), 1ul);
     ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
     auto argument_description_key = description.initialization_argument_.at("key");
     EXPECT_EQ(argument_description_key.size_, 32ul);
@@ -50,11 +50,11 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, decryptor_creation) {
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
-    EXPECT_EQ(description.block_size_incoming_, 32ul);
-    EXPECT_EQ(description.block_size_outgoing_, 32ul);
+    EXPECT_EQ(description.block_size_incoming_, 16ul);
+    EXPECT_EQ(description.block_size_outgoing_, 16ul);
     EXPECT_EQ(description.result_size_, 0ul);
 
-    EXPECT_EQ(description.initialization_argument_.size(), 1);
+    EXPECT_EQ(description.initialization_argument_.size(), 1ul);
     ASSERT_NE(description.initialization_argument_.find("key"), description.finalization_argument_.end());
     auto argument_description_key = description.initialization_argument_.at("key");
     EXPECT_EQ(argument_description_key.size_, 32ul);
@@ -66,28 +66,33 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, decryptor_creation) {
 
 TEST(SymmetricCipher_OpenSSL_AES_256_ECB, single_block) {
 
+    auto key = headcode::mem::StringToMemory(
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious");
+
     auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-256-ecb encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
+    ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
+              algo_enc->GetDescription().finalization_argument_.end());
 
-    auto key = std::string{
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"};
-
-    // trim key to size
-    key.resize(algo_enc->GetDescription().initial_argument_.size_);
-    ASSERT_EQ(algo_enc->Initialize(key.c_str(), key.size()), 0);
+    auto key_enc = key;
+    key_enc.resize(algo_enc->GetDescription().initialization_argument_.at("key").size_);
+    ASSERT_EQ(algo_enc->Initialize({{"key", key_enc}}), 0);
 
     // --------- encrypt ---------
 
-    plain.resize(algo_enc->GetDescription().block_size_incoming_);
-    std::vector<std::byte> cipher{plain.size()};
+    auto plain = std::vector<std::byte>{algo_enc->GetDescription().block_size_incoming_};
+    std::memcpy(plain.data(), IPSUM_LOREM_TEXT.c_str(), plain.size());
+
+    std::vector<std::byte> cipher;
     EXPECT_EQ(algo_enc->Add(plain, cipher), 0);
+    EXPECT_EQ(plain.size(), cipher.size());
 
     std::vector<std::byte> result_enc;
     EXPECT_EQ(algo_enc->Finalize(result_enc), 0);
@@ -97,9 +102,13 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, single_block) {
 
     auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-256-ecb decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
-    ASSERT_EQ(algo_dec->Initialize(key.c_str(), key.size()), 0);
+    ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
+              algo_enc->GetDescription().finalization_argument_.end());
+    auto key_dec = key;
+    key_dec.resize(algo_dec->GetDescription().initialization_argument_.at("key").size_);
+    ASSERT_EQ(algo_dec->Initialize({{"key", key_dec}}), 0);
 
-    std::vector<std::byte> plain_decrypted{cipher.size()};
+    std::vector<std::byte> plain_decrypted;
     EXPECT_EQ(algo_dec->Add(cipher, plain_decrypted), 0);
 
     // --------- check ---------
@@ -109,37 +118,40 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, single_block) {
     EXPECT_NE(std::memcmp(plain.data(), cipher.data(), plain.size()), 0);
     EXPECT_NE(std::memcmp(plain_decrypted.data(), cipher.data(), plain_decrypted.size()), 0);
     EXPECT_EQ(std::memcmp(plain.data(), plain_decrypted.data(), plain.size()), 0);
-    EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(),
-                 "3031323334353637383930313233343500000000000000000000000000000000");
-    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(),
-                 "9730932c94d67db58f575cbdfb905f0599df3909cb1dbdb867a464e3017c66a4");
+    EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(), "0a4c6f72656d20697073756d20646f6c");
+    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "35dd7d6b893fe8ee9e3d12c7e2303a05");
 }
 
 
 TEST(SymmetricCipher_OpenSSL_AES_256_ECB, regular) {
 
+    auto key = headcode::mem::StringToMemory(
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious"
+            "supercalifragilisticexpialidocious");
+
     auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-256-ecb encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
+    ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
+              algo_enc->GetDescription().finalization_argument_.end());
 
-    auto key = std::string{
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"
-            "supercalifragilisticexpialidocious"};
-
-    // trim key to size
-    key.resize(algo_enc->GetDescription().initial_argument_.size_);
-    ASSERT_EQ(algo_enc->Initialize(key.c_str(), key.size()), 0);
+    auto key_enc = key;
+    key_enc.resize(algo_enc->GetDescription().initialization_argument_.at("key").size_);
+    ASSERT_EQ(algo_enc->Initialize({{"key", key_enc}}), 0);
 
     // --------- encrypt ---------
 
-    auto plain = algo_enc->GrowToBlockSize(IPSUM_LOREM_TEXT, algo_enc->GetDescription().block_size_incoming_);
-    std::vector<std::byte> cipher{plain.size()};
+    auto plain = headcode::mem::StringToMemory(IPSUM_LOREM_TEXT);
+
+    std::vector<std::byte> cipher;
     EXPECT_EQ(algo_enc->Add(plain, cipher), 0);
+    EXPECT_LE(plain.size(), cipher.size());
+    EXPECT_EQ(cipher.size() % algo_enc->GetDescription().block_size_outgoing_, 0ul);
 
     std::vector<std::byte> result_enc;
     EXPECT_EQ(algo_enc->Finalize(result_enc), 0);
@@ -149,16 +161,24 @@ TEST(SymmetricCipher_OpenSSL_AES_256_ECB, regular) {
 
     auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-256-ecb decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
-    ASSERT_EQ(algo_dec->Initialize(key.c_str(), key.size()), 0);
+    ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
+              algo_enc->GetDescription().finalization_argument_.end());
+    auto key_dec = key;
+    key_dec.resize(algo_dec->GetDescription().initialization_argument_.at("key").size_);
+    ASSERT_EQ(algo_dec->Initialize({{"key", key_dec}}), 0);
 
-    std::vector<std::byte> plain_decrypted{cipher.size()};
+    std::vector<std::byte> plain_decrypted;
     EXPECT_EQ(algo_dec->Add(cipher, plain_decrypted), 0);
+    EXPECT_EQ(plain_decrypted.size(), cipher.size());
+    EXPECT_EQ(plain_decrypted.size() % algo_enc->GetDescription().block_size_outgoing_, 0ul);
 
     // --------- check ---------
 
-    ASSERT_EQ(plain.size(), cipher.size());
-    ASSERT_EQ(plain_decrypted.size(), cipher.size());
-    EXPECT_NE(std::memcmp(plain.data(), cipher.data(), plain.size()), 0);
+    // convert back to text and cut off any added padding in the decrypted text
+    auto plain_txt = std::string{reinterpret_cast<char const *>(plain.data())};
+    auto plain_decrypted_txt = std::string{reinterpret_cast<char const *>(plain_decrypted.data())};
+    plain_decrypted_txt.resize(plain_txt.size());
+
     EXPECT_NE(std::memcmp(plain_decrypted.data(), cipher.data(), plain_decrypted.size()), 0);
-    EXPECT_EQ(std::memcmp(plain.data(), plain_decrypted.data(), plain.size()), 0);
+    EXPECT_STREQ(plain_txt.c_str(), plain_decrypted_txt.c_str());
 }

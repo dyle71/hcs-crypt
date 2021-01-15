@@ -16,9 +16,9 @@ set(CRYPT_SRC
     register.cpp
 
     symmetric_cipher/copy.cpp
-    symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.cpp
-    symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.cpp
-    symmetric_cipher/ltc/ltc_symmetric_cipher.cpp
+    #symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.cpp
+    #symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.cpp
+    #symmetric_cipher/ltc/ltc_symmetric_cipher.cpp
 
     hash/nohash.cpp
     hash/ltc/ltc_md5.cpp

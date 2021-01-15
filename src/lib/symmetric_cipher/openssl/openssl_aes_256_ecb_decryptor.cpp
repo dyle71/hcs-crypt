@@ -6,8 +6,6 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
-
 #include <openssl/opensslv.h>
 
 #include <headcode/crypt/factory.hpp>
@@ -34,8 +32,8 @@ static Algorithm::Description const & GetDescription() {
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
             OPENSSL_VERSION_TEXT,                     // provider
-            32ul,                                     // input block size
-            32ul,                                     // output block size
+            16ul,                                     // input block size
+            16ul,                                     // output block size
             PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
             0ul,                                      // result size
 
@@ -71,12 +69,6 @@ public:
         return ::GetDescription();
     }
 };
-
-
-int OpenSSLAES256ECBDecrypter::Initialize_(const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
-    // TODO
-    return 0;
-}
 
 
 EVP_CIPHER const * OpenSSLAES256ECBDecrypter::GetCipher() const {
