@@ -47,7 +47,7 @@ int OpenSSLSymmetricCipher::Finalize_(unsigned char *,
 
 
 int OpenSSLSymmetricCipher::Initialize_(
-        const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data) {
+        const std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> & initialization_data) {
 
     int res = EVP_CipherInit_ex(GetCipherContext(), GetCipher(), nullptr, nullptr, nullptr, IsEncryptor() ? 1 : 0);
     if (res != 1) {
@@ -71,7 +71,7 @@ int OpenSSLSymmetricCipher::Initialize_(
 
 bool OpenSSLSymmetricCipher::VerifyInitValue(
         unsigned char const * & data,
-        const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data,
+        const std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> & initialization_data,
         std::string const & name,
         int (*EVP_GET_LENGTH)(EVP_CIPHER_CTX const *)) const {
 

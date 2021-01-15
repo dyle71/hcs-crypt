@@ -112,7 +112,7 @@ private:
      */
     bool VerifyInitValue(
             unsigned char const * & data,
-            const std::map<std::string, std::tuple<const unsigned char *, std::uint64_t>> & initialization_data,
+            const std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> & initialization_data,
             std::string const & name,
             int (*EVP_GET_LENGTH)(EVP_CIPHER_CTX const *)) const;
 };
