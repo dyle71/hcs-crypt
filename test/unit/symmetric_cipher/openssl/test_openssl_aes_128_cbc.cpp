@@ -16,12 +16,12 @@
 
 TEST(SymmetricCipher_OpenSSL_AES_128_CBC, encryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
+    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc-encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc encryptor");
+    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc-encryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -48,12 +48,12 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, encryptor_creation) {
 
 TEST(SymmetricCipher_OpenSSL_AES_128_CBC, decryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
+    auto algo = headcode::crypt::Factory::Create("openssl-aes-128-cbc-decryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc decryptor");
+    EXPECT_STREQ(description.name_.c_str(), "openssl-aes-128-cbc-decryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -92,7 +92,7 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, single_block) {
 
     auto iv = headcode::mem::StringToMemory("This is an initialization vector.");
 
-    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc-encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
     ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());
@@ -120,7 +120,7 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, single_block) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc-decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
               algo_dec->GetDescription().finalization_argument_.end());
@@ -163,7 +163,7 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, regular) {
 
     auto iv = headcode::mem::StringToMemory("This is an initialization vector.");
 
-    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("openssl-aes-128-cbc-encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
     ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());
@@ -191,7 +191,7 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, regular) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("openssl-aes-128-cbc-decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
               algo_dec->GetDescription().finalization_argument_.end());

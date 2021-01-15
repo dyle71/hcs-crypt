@@ -22,7 +22,7 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-aes-128-ecb decryptor",                                // name
+            "ltc-aes-128-ecb-decryptor",                                // name
             Family::SYMMETRIC_CIPHER,                                   // family
             "LibTomCrypt AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
 

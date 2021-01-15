@@ -28,7 +28,7 @@ int main(int argc, char ** argv) {
     }
 
     if (config.list_algorithms_) {
-        ListAlgorithms(std::cout, config.verbose_);
+        ListAlgorithms(std::cout);
         return 0;
     }
 

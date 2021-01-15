@@ -111,6 +111,7 @@ public:
             PaddingStrategy padding_strategy_;        //!< @brief The preferred padding strategy.
             std::string description_;                 //!< @brief A description of this input data.
             bool optional_ = false;        //!< @brief If true, this is an optional and not mandatory data element.
+
         };
 
         std::string name_;                     //!< @brief The name of this algorithm.
@@ -136,6 +137,7 @@ public:
          * Some algorithms may need a argument for the final computation.
          */
         std::map<std::string, ArgumentDefinition> finalization_argument_;
+
     };
 
 private:
@@ -200,7 +202,7 @@ public:
      * Padding will be applied as necessary. Padding is expensive though.
      * Check the algorithm's description (call to GetDescription()) about the
      * the incoming block size (block_size_incoming_) and prepare your input
-     * data accordingly.
+     * data accordingly to avoid costly operations.
      *
      * @param   text                the text to add.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -226,7 +228,7 @@ public:
      * Padding will be applied as necessary. Padding is expensive though.
      * Check the algorithm's description (call to GetDescription()) about the
      * the incoming block size (block_size_incoming_) and prepare your input
-     * data accordingly.
+     * data accordingly to avoid costly operations.
      *
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
@@ -251,7 +253,7 @@ public:
      * Padding will be applied as necessary. Padding is expensive though.
      * Check the algorithm's description (call to GetDescription()) about the
      * the incoming block size (block_size_incoming_) and prepare your input
-     * data accordingly.
+     * data accordingly to avoid costly operations.
      *
      * @param   block_incoming      incoming data block.
      * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
@@ -277,7 +279,7 @@ public:
      * Padding will be applied as necessary. Padding is expensive though.
      * Check the algorithm's description (call to GetDescription()) about the
      * the incoming block size (block_size_incoming_) and prepare your input
-     * data accordingly.
+     * data accordingly to avoid costly operations.
      *
      * @param   block_incoming      incoming data block.
      * @param   block_outgoing      the outgoing data block.
@@ -302,7 +304,8 @@ public:
      *
      * The data will **not be** padded and will given to the algorithm instance as-is.
      * This method expects the data in the proper format and size suitable for the
-     * algorithm.
+     * algorithm. BEWARE: if you do not know how, use the other more convenient
+     * Add(...) methods. They do have a more elaborated input checking.
      *
      * @param   block_incoming      incoming data block.
      * @param   size_incoming       size of the incoming data block.
@@ -376,8 +379,9 @@ public:
      *
      * Check the algorithms details/description of what constitutes a good finalization data.
      *
-     * There will be NO padding of the finalization data here, but this data will be passed on
-     * as-is to the algorithm.
+     * BEWARE: There will be NO padding of the finalization data here, but this data will
+     * be passed on as-is to the algorithm, meaning result memory has to be at a proper size.
+     * If in doubt, use one of the other Finalize(...) methods.
      *
      * @param   result                  the result of the algorithm.
      * @param   result_size             size of the result for finalization.
@@ -422,6 +426,10 @@ public:
      * The object **WILL NOT** be initialized twice.
      *
      * Check the algorithms details/description of what constitutes a good init data.
+     *
+     * BEWARE: the given data will be handed out to the algorithm as-is, i.e. the memory
+     * pointers as well as the size *must* be sufficient. If in doubt, use the other
+     * Initialize(...) methods.
      *
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.

@@ -9,5 +9,4 @@
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_subdirectory(lib)
-# TODO
-#add_subdirectory(bin)
+add_subdirectory(bin)

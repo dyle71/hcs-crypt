@@ -260,7 +260,12 @@ set(CPACK_SOURCE_GENERATOR "TGZ")
 
 if ("${CPACK_GENERATOR}" STREQUAL "DEB")
 
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
+    if (WITH_OPENSSL)
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl")
+    else()
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "")
+    endif()
+
     set(PACKAGE_DEB_CONTROL_DIR "tools/package/deb")
     include(cmake/deb-package.cmake)
 
@@ -274,7 +279,12 @@ endif()
 
 if ("${CPACK_GENERATOR}" STREQUAL "RPM")
 
-    set(CPACK_RPM_PACKAGE_REQUIRES "")
+    if (WITH_OPENSSL)
+        set(CPACK_RPM_PACKAGE_REQUIRES "openssl")
+    else()
+        set(CPACK_RPM_PACKAGE_REQUIRES "")
+    endif()
+
     set(PACKAGE_RPM_CONTROL_DIR "tools/package/rpm")
     include(cmake/rpm-package.cmake)
 

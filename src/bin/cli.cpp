@@ -26,6 +26,8 @@ ALGORITHM is one of the list of known algorithms. Type --list to get the list of
 If FILE is ommited then stdin is read. If more than one FILE is processed, than the output is multilined and \
 hex.\n\
 \n\
+Note also, that depending on the algorithm the input and therefore the output may be padded to fit\
+into an algorithm block size definition.\
 OPTIONS:\n\
 "
 
@@ -66,11 +68,11 @@ struct ARGPData {
 static struct argp_option options_[] = {
 
         // list option: list all known algorithms
+        {"explain", LONG_ONLY_OPTION + 'e', 0, 0, "Explain an algorithm.", 0},
         {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
         {"multiline", LONG_ONLY_OPTION + 'm', 0, 0, "Forces multiline output.", 0},
 
         {"hex", 'h', 0, 0, "Output has hexadeciaml ASCII character string.", 0},        // hex output
-        {"verbose", 'v', 0, 0, "Be verbose.", 0},                                       // verbose mode
         {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
         {0, 0, 0, 0, 0, 0}                                                              // trailing entry
 };
@@ -89,6 +91,10 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
     switch (key) {
 
+        case LONG_ONLY_OPTION + 'e':
+            arguments->explain_algorithm_ = true;
+            break;
+
         case LONG_ONLY_OPTION + 'l':
             arguments->list_algorithms_ = true;
             break;
@@ -103,10 +109,6 @@ static error_t ParseOption(int key, char * arg, struct argp_state * state) {
 
         case 'h':
             arguments->hex_output_ = true;
-            break;
-
-        case 'v':
-            arguments->verbose_ = true;
             break;
 
         case ARGP_KEY_ARG:
@@ -141,7 +143,6 @@ CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
     if ((!res.version_) && (!res.list_algorithms_)) {
 
         if (!VerifyAlgorithm(res.algorithm_)) {
-            res.proceed_ = false;
             if (res.algorithm_.empty()) {
                 res.error_string_ = "Missing algorithm. Type --list to list all known algorithms.";
             } else {

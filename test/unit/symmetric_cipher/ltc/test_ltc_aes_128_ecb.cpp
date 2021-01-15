@@ -16,12 +16,12 @@
 
 TEST(SymmetricCipher_LTC_AES_128_ECB, encryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb encryptor");
+    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb-encryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -41,12 +41,12 @@ TEST(SymmetricCipher_LTC_AES_128_ECB, encryptor_creation) {
 
 TEST(SymmetricCipher_LTC_AES_128_ECB, decryptor_creation) {
 
-    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb decryptor");
+    auto algo = headcode::crypt::Factory::Create("ltc-aes-128-ecb-decryptor");
     ASSERT_NE(algo.get(), nullptr);
 
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
-    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb decryptor");
+    EXPECT_STREQ(description.name_.c_str(), "ltc-aes-128-ecb-decryptor");
     EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
@@ -76,7 +76,7 @@ TEST(SymmetricCipher_LTC_AES_128_ECB, single_block) {
             "supercalifragilisticexpialidocious"
             "supercalifragilisticexpialidocious");
 
-    auto algo_enc = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
     ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());
@@ -100,7 +100,7 @@ TEST(SymmetricCipher_LTC_AES_128_ECB, single_block) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("ltc-aes-128-ecb decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("ltc-aes-128-ecb-decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());
@@ -135,7 +135,7 @@ TEST(SymmetricCipher_LTC_AES_128_ECB, regular) {
             "supercalifragilisticexpialidocious"
             "supercalifragilisticexpialidocious");
 
-    auto algo_enc = headcode::crypt::Factory::Create("ltc-aes-128-ecb encryptor");
+    auto algo_enc = headcode::crypt::Factory::Create("ltc-aes-128-ecb-encryptor");
     ASSERT_NE(algo_enc.get(), nullptr);
     ASSERT_NE(algo_enc->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());
@@ -159,7 +159,7 @@ TEST(SymmetricCipher_LTC_AES_128_ECB, regular) {
 
     // --------- decrypt ---------
 
-    auto algo_dec = headcode::crypt::Factory::Create("ltc-aes-128-ecb decryptor");
+    auto algo_dec = headcode::crypt::Factory::Create("ltc-aes-128-ecb-decryptor");
     ASSERT_NE(algo_dec.get(), nullptr);
     ASSERT_NE(algo_dec->GetDescription().initialization_argument_.find("key"),
               algo_enc->GetDescription().finalization_argument_.end());

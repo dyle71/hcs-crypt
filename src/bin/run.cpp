@@ -20,16 +20,15 @@
 
 /**
  * @brief   Adds the data retrieved by a stream (until eof) to the algorithm instance.
- * @param   config          The config as requested by the user.
  * @param   algorithm       The algorithm instance.
  * @param   stream          The stream to read from.
  * @return  exit code (0 == success).
  */
-int Add(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream) {
+int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream) {
 
     std::uint64_t total_read = 0;
-    char block_incoming[64 * 1024];
-    char block_outgoing[64 * 1024];
+    unsigned char block_incoming[64 * 1024];
+    unsigned char block_outgoing[64 * 1024];
 
     while (stream && !std::feof(stream)) {
 
@@ -49,15 +48,7 @@ int Add(CryptoClientArguments const & config, std::unique_ptr<headcode::crypt::A
             // TODO: output block to stderr...
 
             total_read += read;
-
-            if (config.verbose_) {
-                std::cerr << "Read " << read << " byte of data." << std::endl;
-            }
         }
-    }
-
-    if (config.verbose_) {
-        std::cerr << "Total bytes " << total_read << " read." << std::endl;
     }
 
     return 0;
@@ -155,7 +146,7 @@ int Process(CryptoClientArguments const & config,
         return res;
     }
 
-    res = Add(config, algorithm, stream);
+    res = Add(algorithm, stream);
     if (res != 0) {
         return res;
     }
@@ -177,12 +168,6 @@ int Run(CryptoClientArguments const & config) {
     auto algorithm = headcode::crypt::Factory::Create(config.algorithm_);
     assert(algorithm != nullptr);
 
-    auto const & description = algorithm->GetDescription();
-    if (config.verbose_) {
-        std::cerr << "Picking algorithm: " << description.name_ << std::endl;
-        std::cerr << "Provider: " << description.provider_ << std::endl;
-    }
-
     int res = 0;
     if (config.input_files_.empty()) {
         res = Process(config, algorithm, "-", stdin);
@@ -196,10 +181,6 @@ int Run(CryptoClientArguments const & config) {
                           << "Failed to open file: " << std::strerror(errno) << std::endl;
                 std::cerr << "Aborted." << std::endl;
                 return 1;
-            }
-
-            if (config.verbose_) {
-                std::cerr << "Opened file: " << file_name << std::endl;
             }
 
             res = Process(config, algorithm, file_name, input);

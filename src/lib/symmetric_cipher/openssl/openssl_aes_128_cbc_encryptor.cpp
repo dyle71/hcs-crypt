@@ -22,7 +22,7 @@ using namespace headcode::crypt;
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "openssl-aes-128-cbc encryptor",                        // name
+            "openssl-aes-128-cbc-encryptor",                        // name
             Family::SYMMETRIC_CIPHER,                               // family
             "OpenSSL AES 128 in CBC mode (encryptor part).",        // description (short/left and long/below)
 
