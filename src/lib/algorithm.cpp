@@ -43,7 +43,8 @@ int Algorithm::Add(std::vector<std::byte> const & block_incoming, std::vector<st
 
     std::vector<std::byte> padded_block_incoming;
     auto const & description = GetDescription();
-    if ((GetBlockPaddingStrategy() != PaddingStrategy::PADDING_NONE) && (description.block_size_incoming_ != 0)) {
+    if ((GetBlockPaddingStrategy() != PaddingStrategy::PADDING_NONE) && (description.block_size_incoming_ != 0) &&
+        ((block_incoming_data_size % description.block_size_incoming_) != 0ul)) {
 
         // This line below is expensive.
         padded_block_incoming = block_incoming;
