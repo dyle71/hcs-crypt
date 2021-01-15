@@ -144,10 +144,6 @@ TEST(SymmetricCipher_OpenSSL_AES_128_CBC, single_block) {
     EXPECT_NE(std::memcmp(plain_decrypted.data(), cipher.data(), plain_decrypted.size()), 0);
     EXPECT_EQ(std::memcmp(plain.data(), plain_decrypted.data(), plain.size()), 0);
 
-    std::cout << headcode::mem::MemoryToHex(plain) << std::endl;
-    std::cout << headcode::mem::MemoryToHex(cipher) << std::endl;
-    std::cout << headcode::mem::MemoryToHex(plain_decrypted) << std::endl;
-
     EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(), "0a4c6f72656d20697073756d20646f6c");
     EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "bf74e84ad647315cb17cea5c50c33aee");
 }

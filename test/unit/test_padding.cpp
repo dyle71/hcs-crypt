@@ -11,8 +11,6 @@
 #include <headcode/crypt/crypt.hpp>
 #include <headcode/mem/mem.hpp>
 
-#include "shared/ipsum_lorem.hpp"
-
 
 /**
  * @param   Parameterized test fixture class.
@@ -111,9 +109,6 @@ TEST_P(TestPadding, padding_paramterized) {
                 break;
         }
     }
-
-    std::cout << "checked" << std::endl;
-
 }
 
 
