@@ -123,7 +123,7 @@ int Algorithm::Finalize(
         if (iter != description.finalization_argument_.end()) {
 
             auto const & argument_definition = (*iter).second;
-            if ((argument_definition.size_ > 0) && (argument_definition.size_ != size) &&
+            if ((argument_definition.size_ > 0) && ((size % argument_definition.size_) != 0ul) &&
                 (argument_definition.padding_strategy_ != PaddingStrategy::PADDING_NONE)) {
 
                 // the current argument needs a padding... =(
@@ -194,7 +194,7 @@ int Algorithm::Initialize(std::map<std::string, std::vector<std::byte>> const & 
         if (iter != description.initialization_argument_.end()) {
 
             auto const & argument_definition = (*iter).second;
-            if ((argument_definition.size_ > 0) && (argument_definition.size_ != size) &&
+            if ((argument_definition.size_ > 0) && ((size % argument_definition.size_) != 0ul) &&
                 (argument_definition.padding_strategy_ != PaddingStrategy::PADDING_NONE)) {
 
                 // the current argument needs a padding... =(
