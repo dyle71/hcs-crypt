@@ -72,7 +72,7 @@ static struct argp_option options_[] = {
         {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
         {"multiline", LONG_ONLY_OPTION + 'm', 0, 0, "Forces multiline output.", 0},
 
-        {"hex", 'h', 0, 0, "Output has hexadeciaml ASCII character string.", 0},        // hex output
+        {"hex", 'h', 0, 0, "Output has hexadecimal ASCII character string.", 0},        // hex output
         {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
         {0, 0, 0, 0, 0, 0}                                                              // trailing entry
 };

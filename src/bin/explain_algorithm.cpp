@@ -78,7 +78,7 @@ void ExplainAlgorithm(std::ostream & out, std::string const & name) {
         << headcode::crypt::GetPaddingStrategyText(description.block_padding_strategy_) << std::endl;
     out << "Size of final result: " << GetBlockSizeText(description.result_size_) << std::endl;
 
-    out << "Initialzing arguments: ";
+    out << "Initializing arguments: ";
     auto const & init_arguments = description.initialization_argument_;
     if (init_arguments.empty()) {
         out << "n/a" << std::endl;

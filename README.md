@@ -7,7 +7,7 @@ This library **does not** implement cryptographic algorithms on its own. Instead
 as an intermediate between different rock solid proven implementations and tries to simplify the 
 access to these different algorithms. 
 
-Also you may turn off any optional implementation but the [LibTomCrypt](https://www.libtom.net/LibTomCrypt).
+You may turn off any optional implementation but the [LibTomCrypt](https://www.libtom.net/LibTomCrypt).
 The library is build as a static library and LibTomCrypt is pulled in statically too. Therefore, if you link
 your application against these static libraries you have 0 (zero, nada) runtime dependencies.
 
@@ -67,7 +67,7 @@ Note also, that depending on the algorithm the input and therefore the output
 may be padded to fitinto an algorithm block size definition.OPTIONS:
 
       --explain              Explain an algorithm.
-  -h, --hex                  Output has hexadeciaml ASCII character string.
+  -h, --hex                  Output has hexadecimal ASCII character string.
       --list                 List all known algorithms.
       --multiline            Forces multiline output.
   -?, --help                 Give this help list
@@ -126,7 +126,7 @@ Size of each input block per round: 16 Bytes
 Size of each output block per round: 16 Bytes
 Default input padding strategy: PKCS#5, PKCS#7
 Size of final result: n/a
-Initialzing arguments:
+Initializing arguments:
     Name: iv
         Description: An initialization vector.
         Size: 16 Bytes
