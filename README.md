@@ -13,7 +13,7 @@ This C++17 library strives to be a very small and easy to use crypto library.
 This project ships also a small command line client: `crypt`:
 
 ```bash
-crypt --help
+$ crypt --help
 Usage: crypt [OPTION...] ALGORITHM [FILE]
 crypt -- a cryptography command line client.
 
