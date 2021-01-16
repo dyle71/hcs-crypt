@@ -1,4 +1,4 @@
-# crypt
+# hcs-crypt
 
 This C++17 library strives to be a very small and easy to use crypto library. The API is very,
 very small and acts as a facade for more complex crypto libraries underneath.
