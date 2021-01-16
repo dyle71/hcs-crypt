@@ -1,6 +1,21 @@
 # crypt
 
-This C++17 library strives to be a very small and easy to use crypto library.
+This C++17 library strives to be a very small and easy to use crypto library. The API is very,
+very small and acts as a facade for more complex crypto libraries underneath.
+
+This library **does not** implement cryptographic algorithms on its own. Instead the library acts 
+as an intermediate between different rock solid proven implementations and tries to simplify the 
+access to these different algorithms. 
+
+Also you may turn off any optional implementation but the [LibTomCrypt](https://www.libtom.net/LibTomCrypt).
+The library is build as a static library and LibTomCrypt is pulled in statically too. Therefore, if you link
+your application against these static libraries you have 0 (zero, nada) runtime dependencies.
+
+However, if you turn on any other algorithm providers (e.g. OpenSSL), then these are most likely linked
+dynamically. This will result in a bunch of runtime dependencies for those libraries. 
+
+
+## Usage example
 
 "Hello World!" using this library:
 ```c++
@@ -17,7 +32,7 @@ int main(int argc, char ** argv) {
     unsigned char iv[16];
     std::memcpy(iv, "This is an initialization vector.", 16);
 
-    // grab an AES 256 CBC Encryptor
+    // grab an AES 128 CBC Encryptor
     auto algorithm = headcode::crypt::Factory::Create("openssl-aes-128-cbc-encryptor");
     algorithm->Initialize({{"key", {key, 16}}, {"iv", {iv, 16}}});
 
@@ -25,32 +40,15 @@ int main(int argc, char ** argv) {
     std::vector<std::byte> cipher;
     algorithm->Add("Hello World!", cipher);
 
-    // show the cipher
+    // show the cipher, should yield: "17 15 215 94 122 117 17 83 255 1 115 21 114 219 191 177" 
     for (unsigned int i = 0; i < cipher.size(); ++i) {
         std::cout << std::to_integer<int>(cipher[i]) << " ";
     }
     std::cout << std::endl;
+    
     return 0;
 }
 ```
-
-
-This library **does not** implement cryptographic algorithms on its own. Instead the library acts 
-as an intermediate between different rock solid proven implementations and tries to simplify the 
-access to these different algorithms. 
-
-Also you may turn off any optional implementation but the [LibTomCrypt](https://www.libtom.net/LibTomCrypt).
-The library is build as a static library and LibTomCrypt is pulled in statically too. Therefore, if you link
-your application against these static libraries you have 0 (zero, nada) runtime dependencies.
-
-However, if you turn on any other algorithm providers (e.g. OpenSSL), then these are most likely linked
-dynamically. This will result in a bunch of runtime dependencies for those libraries. 
-
-
-## Usage example
-
-**TBD**
-
 
 ## Command Line Client
 
