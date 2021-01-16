@@ -176,9 +176,11 @@ Finalizing arguments: n/a
 - git
 - make
 - doxygen (with graphviz)
-- [googletest](https://github.com/google/googletest) (as submodule)
-- [hcs-mem](https://gitlab.com/headcode.space/memtool.git) (as submodule)
-- [hcs-benchmark](https://gitlab.com/headcode.space/benchmark.git) (as submodule)
+- [googletest](https://github.com/google/googletest) (as git submodule)
+- [hcs-mem](https://gitlab.com/headcode.space/memtool.git) (as git submodule)
+- [hcs-benchmark](https://gitlab.com/headcode.space/benchmark.git) (as git submodule)
+- [libtomcrypt](https://github.com/libtom/libtomcrypt.git) (as git submodule)
+- [libtommath](https://github.com/libtom/libtommath.git) (as git submodule)
 
 When cloning this project execute the following to clone submodules as well:
 
