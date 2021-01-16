@@ -14,6 +14,32 @@ your application against these static libraries you have 0 (zero, nada) runtime 
 However, if you turn on any other algorithm providers (e.g. OpenSSL), then these are most likely linked
 dynamically. This will result in a bunch of runtime dependencies for those libraries. 
 
+## The API
+
+The API (Application Programming Interface) is very, very small. Yet it manages to address all issues
+and is still extensible. If you search for common software engineering best pratices 
+(e.g. [S.O.L.I.D.](https://en.wikipedia.org/wiki/SOLIDhttps://en.wikipedia.org/wiki/SOLID)) and software pattern
+(e.g. mots notable [Facade](https://en.wikipedia.org/wiki/Facade_pattern), 
+[Factory](https://en.wikipedia.org/wiki/Factory_method_pattern) and many others) and C/C++ 
+(e.g. [Non Virtual Interface](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Non-Virtual_Interface)) idioms 
+you'll find a lot. I do not count each and everyone. Most go by unnoticed.
+
+At the very core is the [Algorithm class](include/headcode/crypt/algorithm.hpp). Object of this class
+are 
+
+* Initialized with some arbitrary data (see `Initialize()` method).
+* Process data (see `Add()` method), which might also create outgoing blocks of data on the fly.
+* And finally close or finalized creating the final result (if the algorithm produces such, see `Finalize()` method).
+
+Instances to algorithms are obtained by the [Factory class](include/headcode/crypt/factory.hpp).
+
+* `Create()` creates a particular algorithm instance.
+* `GetAlgorithmDescriptions()` lists all known algorithms.
+
+All parts of the framework, at this level, are thread-safe. _However_, the library acts simply as on 
+intermediate between an application and an implementing low-level framework. So if the low-level 
+framework is not thread-safe, than the overall threading safety is likely not given too. 
+
 
 ## Usage example
 
@@ -80,12 +106,20 @@ The tool applies the given algorithm of the input data either as files or via st
 ```bash
 $ ls *.txt
 bar.txt  foo.txt
+```
+```bash
 $ cat foo.txt 
 This is the foo file.
+```
+```bash
 $ cat bar.txt 
 ... and this is the bar file.
+```
+```bash
 $ cat foo.txt | crypt --hex ltc-sha256
 12fdff34fa1ff51a9aa7af1878f5c4fc0a9911528ce559930da04dece88c68ce
+```
+```bash
 $ crypt --hex ltc-md5 *.txt
 bar.txt: 527828bb40ef39d3f88041e432761220
 foo.txt: 0b05785be4e6b154c50c8654a851f1e8

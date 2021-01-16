@@ -97,10 +97,10 @@ public:
          * @brief   This structure defines requirements for input data (most likely the key) used.
          *
          * This structure describes the requirement for input data used in the algorithms. Some algorithms need
-         * initial key values, some need final key values, some need none, some need both. The `needed_` field
+         * initial key values, some need final key values, some need none, some need both. The `optional_` field
          * defines if the particular key is needed at all and the `size_` field holds the size in bytes of the
-         * key needed. **NOTE**: a `size_` field value of 0 with `needed_` set to true, indicates that the size
-         * of the key needed is not fixed.
+         * key needed. **NOTE**: a `size_` field value of 0 with `optional_` set to false, indicates that the data
+         * is needed is but the size is not fixed.
          *
          * The data in here is _most likely_ a key. But may also hold an input vector (IV) or any other
          * data which is needed for a particular algorithm instance.
@@ -111,7 +111,6 @@ public:
             PaddingStrategy padding_strategy_;        //!< @brief The preferred padding strategy.
             std::string description_;                 //!< @brief A description of this input data.
             bool optional_ = false;        //!< @brief If true, this is an optional and not mandatory data element.
-
         };
 
         std::string name_;                     //!< @brief The name of this algorithm.
@@ -137,7 +136,6 @@ public:
          * Some algorithms may need a argument for the final computation.
          */
         std::map<std::string, ArgumentDefinition> finalization_argument_;
-
     };
 
 private:
