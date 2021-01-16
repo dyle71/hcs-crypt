@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "cli.hpp"
+#include "explain_algorithm.hpp"
 #include "list_algorithms.hpp"
 #include "run.hpp"
 
@@ -29,6 +30,11 @@ int main(int argc, char ** argv) {
 
     if (config.list_algorithms_) {
         ListAlgorithms(std::cout);
+        return 0;
+    }
+
+    if (config.explain_algorithm_) {
+        ExplainAlgorithm(std::cout, config.algorithm_);
         return 0;
     }
 

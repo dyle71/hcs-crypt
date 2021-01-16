@@ -24,6 +24,23 @@ static unsigned char RandomChar() {
 }
 
 
+std::string const & headcode::crypt::GetPaddingStrategyText(PaddingStrategy padding_strategy) {
+
+    static std::map<headcode::crypt::PaddingStrategy, std::string> const known_padding_strategy_texts = {
+            {headcode::crypt::PaddingStrategy::PADDING_NONE, "NONE"},
+            {headcode::crypt::PaddingStrategy::PADDING_PKCS_5_7, "PKCS#5, PKCS#7"},
+            {headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4, "ISO 7816-4"},
+            {headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2, "ISO 10126-2"},
+            {headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23, "ANSI X9.23"},
+            {headcode::crypt::PaddingStrategy::PADDING_ZERO, "Zero Bytes"}
+    };
+
+    auto iter = known_padding_strategy_texts.find(padding_strategy);
+    assert(iter != known_padding_strategy_texts.end());
+    return iter->second;
+}
+
+
 void headcode::crypt::Pad(std::vector<std::byte> & block, std::uint64_t size, PaddingStrategy padding_strategy) {
 
     assert(size <= 255);

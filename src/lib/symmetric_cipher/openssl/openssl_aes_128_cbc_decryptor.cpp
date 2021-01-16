@@ -38,7 +38,7 @@ static Algorithm::Description const & GetDescription() {
 
             // initial data
             {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}},
-             {"iv", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A initialization vector.", false}}},
+             {"iv", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "An initialization vector.", false}}},
 
             // finalization data
             {}

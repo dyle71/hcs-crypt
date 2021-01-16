@@ -10,6 +10,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 set(CRYPT_SRC
     cli.cpp
+    explain_algorithm.cpp
     list_algorithms.cpp
     main.cpp
     run.cpp

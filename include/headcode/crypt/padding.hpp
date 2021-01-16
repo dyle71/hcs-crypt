@@ -60,6 +60,13 @@ enum class PaddingStrategy {
 
 
 /**
+ * @brief   Returns a human readable name for the padding strategy.
+ * @return  A text describing naming the padding strategy.
+ */
+std::string const & GetPaddingStrategyText(PaddingStrategy padding_strategy);
+
+
+/**
  * @brief   Perform padding on the given block.
  * @param   block                   the block to be padded.
  * @param   size                    the desired size (must not exceed 255).

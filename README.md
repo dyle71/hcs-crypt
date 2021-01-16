@@ -8,6 +8,96 @@ This C++17 library strives to be a very small and easy to use crypto library.
 **TBD**
 
 
+## Command Line Client
+
+This project ships also a small command line client: `crypt`:
+
+```bash
+crypt --help
+Usage: crypt [OPTION...] ALGORITHM [FILE]
+crypt -- a cryptography command line client.
+
+ALGORITHM is one of the list of known algorithms. Type --list to get the list
+of known algorithms supported. If FILE is ommited then stdin is read. If more
+than one FILE is processed, than the output is multilined and hex.
+
+Note also, that depending on the algorithm the input and therefore the output
+may be padded to fitinto an algorithm block size definition.OPTIONS:
+
+      --explain              Explain an algorithm.
+  -h, --hex                  Output has hexadeciaml ASCII character string.
+      --list                 List all known algorithms.
+      --multiline            Forces multiline output.
+  -?, --help                 Give this help list
+      --usage                Give a short usage message
+      --version              Show version.
+```
+
+The tool applies the given algorithm of the input data either as files or via stdin:
+
+```bash
+$ ls *.txt
+bar.txt  foo.txt
+$ cat foo.txt 
+This is the foo file.
+$ cat bar.txt 
+... and this is the bar file.
+$ cat foo.txt | crypt --hex ltc-sha256
+12fdff34fa1ff51a9aa7af1878f5c4fc0a9911528ce559930da04dece88c68ce
+$ crypt --hex ltc-md5 *.txt
+bar.txt: 527828bb40ef39d3f88041e432761220
+foo.txt: 0b05785be4e6b154c50c8654a851f1e8
+```
+
+To see which algorithms are supported issue the `--list` option:
+
+```bash
+$ crypt --list
+Symmetric Ciphers
+    ...
+    openssl-aes-128-cbc-decryptor
+    openssl-aes-128-cbc-encryptor
+    openssl-aes-128-ecb-decryptor
+    openssl-aes-128-ecb-encryptor
+    ...
+
+Hashes
+    ltc-md5
+    ltc-ripemd128
+    ltc-ripemd160
+    ltc-ripemd256
+    ltc-ripemd320
+    ltc-sha1
+    ...
+```
+
+And let them have explained to you:
+
+```bash
+$ crypt --explain openssl-aes-128-cbc-encryptor
+Name: openssl-aes-128-cbc-encryptor
+Family: Symmetric Ciphers
+Brief: OpenSSL AES 128 in CBC mode (encryptor part).
+Description: This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm in CBC (cipher block chaining) mode. See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_block_chaining_(CBC).
+Provided by: OpenSSL 1.1.1f  31 Mar 2020
+Size of each input block per round: 16 Bytes
+Size of each output block per round: 16 Bytes
+Default input padding strategy: PKCS#5, PKCS#7
+Size of final result: n/a
+Initialzing arguments:
+    Name: iv
+        Description: An initialization vector.
+        Size: 16 Bytes
+        Padding strategy: PKCS#5, PKCS#7
+        Mandatory: yes
+    Name: key
+        Description: A secret shared key.
+        Size: 16 Bytes
+        Padding strategy: PKCS#5, PKCS#7
+        Mandatory: yes
+Finalizing arguments: n/a
+```
+
 
 ## Project layout
 

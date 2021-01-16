@@ -36,6 +36,8 @@ protected:
 TEST_P(TestPadding, padding_paramterized) {
 
     headcode::crypt::PaddingStrategy padding_strategy = ::testing::get<0>(GetParam());
+    ASSERT_FALSE(headcode::crypt::GetPaddingStrategyText(padding_strategy).empty());
+
     std::uint64_t size = ::testing::get<1>(GetParam());
     std::vector<std::byte> const & input = ::testing::get<2>(GetParam());
 

@@ -7,34 +7,11 @@
  */
 
 
-#include <algorithm>
-#include <iomanip>
 #include <string>
-#include <string_view>
 
 #include <headcode/crypt/crypt.hpp>
 
 #include "list_algorithms.hpp"
-
-using namespace headcode::crypt;
-
-
-/**
- * @brief   Simple, short listening of algorithms.
- * @param   out             stream to dump to.
- * @param   algorithms      name and description mapping.
- * @param   family          filter by this family.
- */
-static void ListAlgorithmsSimple(std::ostream & out,
-                                 std::map<std::string, Algorithm::Description> const & algorithms,
-                                 headcode::crypt::Family family) {
-
-    for (auto const & [name, description] : algorithms) {
-        if (description.family_ == family) {
-            out << "    " << name << "\n";
-        }
-    }
-}
 
 
 void ListAlgorithms(std::ostream & out) {
@@ -43,7 +20,11 @@ void ListAlgorithms(std::ostream & out) {
 
         out << headcode::crypt::GetFamilyText(family) << "\n";
         auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
-        ListAlgorithmsSimple(out, algorithms, family);
+        for (auto const & [name, description] : algorithms) {
+            if (description.family_ == family) {
+                out << "    " << name << "\n";
+            }
+        }
 
         out << std::endl;
     }
