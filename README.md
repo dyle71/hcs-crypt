@@ -2,6 +2,50 @@
 
 This C++17 library strives to be a very small and easy to use crypto library.
 
+"Hello World!" using this library:
+```c++
+#include <cstring>
+#include <iostream>
+
+#include <headcode/crypt/crypt.hpp>
+
+int main(int argc, char ** argv) {
+
+    unsigned char key[16];
+    std::memcpy(key, "This is my secret key.", 16);
+
+    unsigned char iv[16];
+    std::memcpy(iv, "This is an initialization vector.", 16);
+
+    // grab an AES 256 CBC Encryptor
+    auto algorithm = headcode::crypt::Factory::Create("openssl-aes-128-cbc-encryptor");
+    algorithm->Initialize({{"key", {key, 16}}, {"iv", {iv, 16}}});
+
+    // encrypt some data (note: the input will be padded!)
+    std::vector<std::byte> cipher;
+    algorithm->Add("Hello World!", cipher);
+
+    // show the cipher
+    for (unsigned int i = 0; i < cipher.size(); ++i) {
+        std::cout << std::to_integer<int>(cipher[i]) << " ";
+    }
+    std::cout << std::endl;
+    return 0;
+}
+```
+
+
+This library **does not** implement cryptographic algorithms on its own. Instead the library acts 
+as an intermediate between different rock solid proven implementations and tries to simplify the 
+access to these different algorithms. 
+
+Also you may turn off any optional implementation but the [LibTomCrypt](https://www.libtom.net/LibTomCrypt).
+The library is build as a static library and LibTomCrypt is pulled in statically too. Therefore, if you link
+your application against these static libraries you have 0 (zero, nada) runtime dependencies.
+
+However, if you turn on any other algorithm providers (e.g. OpenSSL), then these are most likely linked
+dynamically. This will result in a bunch of runtime dependencies for those libraries. 
+
 
 ## Usage example
 

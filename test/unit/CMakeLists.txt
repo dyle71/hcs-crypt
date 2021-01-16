@@ -14,6 +14,7 @@ set(UNIT_TEST_SRC
 
     test_factory.cpp
     test_family.cpp
+    test_hello_world.cpp
     test_padding.cpp
     test_version.cpp
 
