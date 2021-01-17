@@ -219,6 +219,7 @@ Finalizing arguments: n/a
 - [hcs-benchmark](https://gitlab.com/headcode.space/benchmark.git) (as git submodule)
 - [libtomcrypt](https://github.com/libtom/libtomcrypt.git) (as git submodule)
 - [libtommath](https://github.com/libtom/libtommath.git) (as git submodule)
+- OpenSSL (optional additional crypto provider)
 
 When cloning this project execute the following to clone submodules as well:
 
