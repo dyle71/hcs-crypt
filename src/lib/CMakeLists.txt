@@ -49,8 +49,12 @@ if (WITH_OPENSSL)
         symmetric_cipher/openssl/openssl_aes_128_cbc_encryptor.cpp
         symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.cpp
         symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.cpp
+        symmetric_cipher/openssl/openssl_aes_192_cbc_decryptor.cpp
+        symmetric_cipher/openssl/openssl_aes_192_cbc_encryptor.cpp
         symmetric_cipher/openssl/openssl_aes_192_ecb_decryptor.cpp
         symmetric_cipher/openssl/openssl_aes_192_ecb_encryptor.cpp
+        symmetric_cipher/openssl/openssl_aes_256_cbc_decryptor.cpp
+        symmetric_cipher/openssl/openssl_aes_256_cbc_encryptor.cpp
         symmetric_cipher/openssl/openssl_aes_256_ecb_decryptor.cpp
         symmetric_cipher/openssl/openssl_aes_256_ecb_encryptor.cpp
         symmetric_cipher/openssl/openssl_symmetric_cipher.cpp

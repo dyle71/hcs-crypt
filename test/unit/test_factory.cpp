@@ -17,7 +17,7 @@ TEST(Factory, unknown_algorithm) {
 }
 
 
-TEST(Factory, list_crypher_symmetric) {
+TEST(Factory, list_symmetric_cipher) {
 
     auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
 
@@ -30,7 +30,7 @@ TEST(Factory, list_crypher_symmetric) {
 
     std::uint64_t expected_count = 3ul;
 #ifdef OPENSSL
-    expected_count += 8ul;
+    expected_count += 12ul;
 #endif
 
     EXPECT_EQ(symmetric_cyphers_count, expected_count);
