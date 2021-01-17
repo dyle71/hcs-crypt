@@ -257,7 +257,7 @@ $ cd build
 $ make test
 ```
 
-_Note: Please check the test files for documentation. 
+_Note: Please check the [test files](test/unit/)  for documentation. 
 The tests are easy to read and tell you how the code is intended to be used._ 
 
 ### Test Coverage
