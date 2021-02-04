@@ -12,6 +12,7 @@ set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
 
 set(UNIT_TEST_SRC
 
+    test_error.cpp
     test_factory.cpp
     test_family.cpp
     test_hello_world.cpp

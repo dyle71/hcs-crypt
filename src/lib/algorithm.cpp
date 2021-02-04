@@ -11,6 +11,7 @@
 
 #include <headcode/mem/mem.hpp>
 #include <headcode/crypt/algorithm.hpp>
+#include <headcode/crypt/error.hpp>
 
 
 using namespace headcode::crypt;
@@ -72,8 +73,8 @@ int Algorithm::Add(unsigned char const * block_incoming,
                    std::uint64_t & size_outgoing) {
 
     if (size_incoming > 0) {
+        // Adding to algorithm with incoming block is NULL/nullptr while incoming size is > 0
         assert(block_incoming != nullptr &&
-               "Adding to algorithm with incoming block is NULL/nullptr while incoming size is > 0.");
     }
     if (size_outgoing > 0) {
         assert(block_outgoing != nullptr &&
@@ -160,9 +161,14 @@ int Algorithm::Finalize(
         }
     }
 
-    int res = Finalize_(result, result_size, finalization_data);
-    if (res == 0) {
-        finalized_ = true;
+    int res;
+    if (!IsFinalized()) {
+        res = Finalize_(result, result_size, finalization_data);
+        if (res == 0) {
+            finalized_ = true;
+        }
+    } else {
+        res = static_cast<int>(Error::kInvalidOperation);
     }
 
     return res;
@@ -226,12 +232,14 @@ int Algorithm::Initialize(
         }
     }
 
-    int res = 0;
+    int res;
     if (!IsInitialized()) {
         res = Initialize_(initialization_data);
         if (res == 0) {
             initialized_ = true;
         }
+    } else {
+        res = static_cast<int>(Error::kInvalidOperation);
     }
 
     return res;

@@ -42,7 +42,8 @@ And easy.
 
 All parts of the framework, at this level, are thread-safe. _However_, the library acts simply as on 
 intermediate between an application and an implementing low-level framework. So if the low-level 
-framework is not thread-safe, than the overall threading safety is likely not given too. 
+framework is not thread-safe, and is - by chance - accessing the very same state, than the overall 
+threading safety is likely not given too. 
 
 
 ## Usage example

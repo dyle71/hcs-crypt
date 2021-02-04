@@ -10,6 +10,7 @@
 set(CRYPT_SRC
 
     algorithm.cpp
+    error.cpp
     factory.cpp
     family.cpp
     padding.cpp

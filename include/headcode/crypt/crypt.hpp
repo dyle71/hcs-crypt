@@ -11,6 +11,7 @@
 
 
 #include "algorithm.hpp"
+#include "error.hpp"
 #include "family.hpp"
 #include "factory.hpp"
 #include "padding.hpp"

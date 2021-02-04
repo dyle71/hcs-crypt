@@ -19,7 +19,7 @@
 
 
 /**
- * @brief   Version check for 1.0.0
+ * @brief   Version check for 0.0.1
  * @return  A value, representing the version.
  */
 inline std::uint32_t GetHCSCryptVersion_0_0_1() {

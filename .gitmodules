@@ -16,3 +16,6 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://gitlab.com/headcode.space/cmake.git
+[submodule "3rd/hcs-logger"]
+	path = 3rd/hcs-logger
+	url = https://gitlab.com/headcode.space/logger.git

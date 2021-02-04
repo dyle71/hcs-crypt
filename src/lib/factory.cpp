@@ -20,7 +20,7 @@ using namespace headcode::crypt;
 
 /**
  * @brief   Our algorithm registry.
- * The is the "database" of all known algortihm producers.
+ * The is the "database" of all known algorithm producers.
  */
 class Registry {
 public:
@@ -86,8 +86,10 @@ static Registry & GetRegistryInstance() {
 
     static Registry registry;
 
-    // DCLP not on singleton instance (since due to C++11 static standard behavior this is thread-safe)
+    // Double Check Locking Pattern not on singleton instance
+    // (since due to C++11 static standard behavior this is thread-safe)
     // ... but on loading the registry with all known algorithms.
+    // TODO: Think of a lock-free alternative to this.
     if (!registry.initialized_) {
         static std::mutex initialize_mutex;
         std::lock_guard<std::mutex> lock(initialize_mutex);
@@ -142,6 +144,7 @@ std::map<std::string, Algorithm::Description> const & Factory::GetAlgorithmDescr
     {
         std::lock_guard<std::mutex> lock(registry.mutex_);
         if (cache.mod_counter_ != registry.mod_counter_) {
+            // re-cache algorithm data
             cache.description_.clear();
             for (auto const & p : registry.producer_registry_) {
                 std::shared_ptr<Factory::Producer> const & producer = std::get<1>(p.second);

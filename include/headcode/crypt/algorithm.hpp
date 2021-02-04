@@ -9,6 +9,7 @@
 #ifndef HEADCODE_SPACE_CRYPT_ALGORITHM_HPP
 #define HEADCODE_SPACE_CRYPT_ALGORITHM_HPP
 
+#include <atomic>
 #include <cstddef>
 #include <map>
 #include <string>
@@ -28,7 +29,7 @@ namespace headcode::crypt {
  * Hashes, encryptor and decrypter are all algorithms in this sense:
  * - an algorithm instance is created. This may or may not use an initial key.
  * - data is (repeatedly) added to the algorithm instance, which changes its inner state.
- * - at last the algorithm instance is finalized, again sometimes with a final key and sometime not.
+ * - at last the algorithm instance is finalized, again sometimes with a final key and sometimes not.
  *
  * If an initial and/or a final key is used depends on the algorithm itself and can be queried by
  * inspecting the Algorithm::Description.
@@ -37,7 +38,8 @@ namespace headcode::crypt {
  * the initial and final keys themselves are basically just memory BLOBs holding anything an
  * algorithm can interpret as initial (or final) data to process.
  *
- * There is one single limitation: an algorithm may be initialized only once but finalized multiple times.
+ * There is one single limitation: an algorithm may be initialized and finalized only once whereas data
+ * can be applied in between multiple times.
  */
 class Algorithm {
 
@@ -139,8 +141,8 @@ public:
     };
 
 private:
-    bool finalized_ = false;          //!< @brief Finalized flag.
-    bool initialized_ = false;        //!< @brief Initialized flag.
+    std::atomic<bool> finalized_ = false;          //!< @brief Finalized flag (to atomic_flag for test() in C++20)
+    std::atomic<bool> initialized_ = false;        //!< @brief Initialized flag (to atomic_flag for test() in C++20)
 
     /**
      * @brief   Padding strategy applied to blocks at the Add(...) methods.
@@ -159,12 +161,12 @@ public:
     /**
      * @brief   Copy Constructor.
      */
-    Algorithm(Algorithm const &) = default;
+    Algorithm(Algorithm const &) = delete;
 
     /**
      * @brief   Move Constructor.
      */
-    Algorithm(Algorithm &&) = default;
+    Algorithm(Algorithm &&) = delete;
 
     /**
      * @brief   Destructor.
@@ -175,20 +177,21 @@ public:
      * @brief   Assignment.
      * @return  this.
      */
-    Algorithm & operator=(Algorithm const &) = default;
+    Algorithm & operator=(Algorithm const &) = delete;
 
     /**
      * @brief   Move Assignment.
      * @return  this.
      */
-    Algorithm & operator=(Algorithm &&) = default;
+    Algorithm & operator=(Algorithm &&) = delete;
 
     /**
      * @brief   Adds text to the algorithm
      *
      * The concrete implementation of the algorithm may report any error value.
      *
-     * As a rule of thumb: returning 0 is always ok. Any other value has to
+     * As a rule of thumb: returning 0 is always ok, -1 is most likely an error
+     * with this . Any other value has to
      * be examined in the context of the algorithm.
      *
      * This variant drops any outgoing blocks the algorithm would produce.
@@ -352,7 +355,7 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      *
-     * You may Finalize the object multiple times.
+     * The object **WILL NOT** be finalized twice.
      *
      * Check the algorithms details/description of what constitutes a good finalization data.
      * Finalization data will be padded (though as this is expensive this should be avoided).
@@ -373,13 +376,13 @@ public:
      * As a rule of thumb: returning 0 is always ok. Any other value has to
      * be examined in the context of the algorithm.
      *
-     * You may Finalize the object multiple times.
+     * The object **WILL NOT** be finalized twice.
      *
      * Check the algorithms details/description of what constitutes a good finalization data.
      *
      * BEWARE: There will be NO padding of the finalization data here, but this data will
      * be passed on as-is to the algorithm, meaning result memory has to be at a proper size.
-     * If in doubt, use one of the other Finalize(...) methods.
+     * If in doubt, use one of the other Finalize(...) using byte vectors methods.
      *
      * @param   result                  the result of the algorithm.
      * @param   result_size             size of the result for finalization.
@@ -427,7 +430,7 @@ public:
      *
      * BEWARE: the given data will be handed out to the algorithm as-is, i.e. the memory
      * pointers as well as the size *must* be sufficient. If in doubt, use the other
-     * Initialize(...) methods.
+     * Initialize(...) methods using byte vectors.
      *
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
      * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
