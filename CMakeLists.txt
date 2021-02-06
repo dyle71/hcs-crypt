@@ -6,15 +6,25 @@
 # Oliver Maurhart <info@headcode.space>, https://www.headcode.space
 # ------------------------------------------------------------
 
+# ------------------------------------------------------------
+# tl;dr - How to create a package - copy-paste to a shell:
+#
+# 1. git clone --recurse-submodules https://gitlab.com/headcode.space/crypt.git
+# 2. cd crypt
+# 3. mkdir build
+# 4. cd buld
+# 5.1) cmake -D CMAKE_BUILD_TYPE=Release -D CPACK_GENERATOR=DEB ..        # for DEB packages
+# - xor -
+# 5.2) cmake -D CMAKE_BUILD_TYPE=Release -D CPACK_GENERATOR=RPM ..        # for RPM packages
+# 6. CORES=`grep 'cpu cores' /proc/cpuinfo | awk '{ print $4 }' | head -n 1` make -j $CORES
+# 7. make package
+# ------------------------------------------------------------
+
 project(hcs-crypt C CXX)
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.13.4)
 
-cmake_policy(SET CMP0057 NEW)
-if (${CMAKE_VERSION} VERSION_EQUAL "3.12.0" OR ${CMAKE_VERSION} VERSION_GREATER "3.12.0")
-    cmake_policy(SET CMP0075 NEW)
-endif (${CMAKE_VERSION} VERSION_EQUAL "3.12.0" OR ${CMAKE_VERSION} VERSION_GREATER "3.12.0")
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+cmake_policy(SET CMP0075 NEW)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${HCS_CMAKE}")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Debug")
@@ -41,40 +51,7 @@ include(CheckIncludeFileCXX)
 include(CheckIncludeFiles)
 include(CheckLibraryExists)
 
-
-# ------------------------------------------------------------
-# profiling for coverage tests
-
-option(PROFILING_MODE_ENABLED "enable profiling mode" off)
-if (PROFILING_MODE_ENABLED)
-
-    message(STATUS "Profiling mode enabled")
-
-    set(CMAKE_BUILD_TYPE "Debug")
-    set(COMPILER_FLAGS_PROFILING "-fprofile-instr-generate -fcoverage-mapping")
-
-    set(COMPILER_FLAGS_PROFILING "-pg --coverage")
-    set(LINKER_FLAGS_PROFILING "-lgcov")
-
-    set(COVERAGE_EXCLUDE_DIRS "'/usr/include/*' '/usr/lib/*' '${CMAKE_SOURCE_DIR}/3rd/*'")
-    set(COVERAGE_INFO_FILE ${CMAKE_BINARY_DIR}/gcovr-coverage.info)
-    set(COVERAGE_REPORT_FILE ${CMAKE_BINARY_DIR}/gcovr-report.xml)
-
-    add_custom_target(run-gcovr
-        COMMAND gcovr -r ${CMAKE_SOURCE_DIR} -e ${CMAKE_SOURCE_DIR}/3rd -e ${CMAKE_SOURCE_DIR}/test -x -o ${COVERAGE_REPORT_FILE}
-        COMMAND gcovr -r ${CMAKE_SOURCE_DIR} -e ${CMAKE_SOURCE_DIR}/3rd -e ${CMAKE_SOURCE_DIR}/test
-        COMMAND lcov -c --directory ${CMAKE_BINARY_DIR} --output-file ${COVERAGE_INFO_FILE}
-        COMMAND lcov --remove ${COVERAGE_INFO_FILE} '/usr/include/*' --output-file ${COVERAGE_INFO_FILE} -q
-        COMMAND lcov --remove ${COVERAGE_INFO_FILE} '/usr/lib/*' --output-file ${COVERAGE_INFO_FILE} -q
-        COMMAND lcov --remove ${COVERAGE_INFO_FILE} '${CMAKE_SOURCE_DIR}/3rd/*' --output-file ${COVERAGE_INFO_FILE} -q
-        COMMAND lcov --remove ${COVERAGE_INFO_FILE} '${CMAKE_SOURCE_DIR}/test/*' --output-file ${COVERAGE_INFO_FILE} -q
-        COMMAND genhtml ${COVERAGE_INFO_FILE} --output-directory coverage-html
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        COMMENT "Running gcovr"
-    )
-else ()
-    message(STATUS "Profiling mode disabled")
-endif ()
+include(run-gcovr)
 
 
 # ------------------------------------------------------------
@@ -87,10 +64,6 @@ add_definitions(-DVERSION=\"${VERSION}\")
 add_definitions(-D_GNU_SOURCE)
 add_definitions(-D_DEFAULT_SOURCE)
 
-# define __FILENAME__ as macro like __FILE__ but relativ to CMAKE_SOURCE_DIR
-# note: $(subst ....) and $(abspath ....) are GNU Make commands (!) passed on 1:1 by CMake
-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 # ---- fix C++ standard used ----
 
@@ -206,6 +179,10 @@ include_directories(${HCS_MEM_INCLUDE_DIR})
 include(hcs-logger)
 message(STATUS "HCS_LOGGER_INCLUDE_DIR: ${HCS_LOGGER_INCLUDE_DIR}")
 include_directories(${HCS_LOGGER_INCLUDE_DIR})
+if ("${HCS_LOGGER_LIB}" STREQUAL "")
+    message(FATAL_ERROR "Could not build or locate hcs-logger library.")
+endif ()
+set(CMAKE_REQUIRED_LIBRARIES "${HCS_LOGGER_LIB};${CMAKE_REQUIRED_LIBRARIES}")
 
 
 # ------------------------------------------------------------
