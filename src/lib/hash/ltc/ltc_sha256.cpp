@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-sha256",                 // name
-            Family::HASH,                 // family
+            Family::kHash,                // family
             "LibTomCrypt SHA256.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 2 variant 256 as defined by the NSA. The SHA-2 family introduced "

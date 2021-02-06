@@ -23,7 +23,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-aes-128-ecb-decryptor",                        // name
-            Family::SYMMETRIC_CIPHER,                               // family
+            Family::kSymmetricCipher,                               // family
             "OpenSSL AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
@@ -42,8 +42,7 @@ static Algorithm::Description const & GetDescription() {
             {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
 
             // finalization data
-            {}
-    };
+            {}};
 
     return description;
 }

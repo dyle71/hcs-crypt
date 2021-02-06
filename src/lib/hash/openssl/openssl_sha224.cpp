@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-sha224",         // name
-            Family::HASH,             // family
+            Family::kHash,            // family
             "OpenSSL SHA224.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 2 variant 224 as defined by the NSA. The SHA-2 family introduced "

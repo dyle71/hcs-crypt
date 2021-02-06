@@ -23,7 +23,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "copy",                          // name
-            Family::SYMMETRIC_CIPHER,        // family
+            Family::kSymmetricCipher,        // family
 
             "COPY: not a real cypher. Simply copies input to output.",        // description (short/left and long/below)
 

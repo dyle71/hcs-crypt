@@ -23,7 +23,7 @@ TEST(Factory, list_symmetric_cipher) {
 
     std::uint64_t symmetric_cyphers_count{0};
     for (auto const & [name, description] : algorithms) {
-        if (description.family_ == headcode::crypt::Family::SYMMETRIC_CIPHER) {
+        if (description.family_ == headcode::crypt::Family::kSymmetricCipher) {
             symmetric_cyphers_count++;
         }
     }
@@ -44,7 +44,7 @@ TEST(Factory, list_hashes) {
 
     std::uint64_t hashes_count{0};
     for (auto const & [name, description] : algorithms) {
-        if (description.family_ == headcode::crypt::Family::HASH) {
+        if (description.family_ == headcode::crypt::Family::kHash) {
             hashes_count++;
         }
     }
@@ -89,7 +89,7 @@ TEST(Factory, list_unknown) {
     // every algorithm must belong to a known family
     auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();
     auto some_unknown = std::any_of(algorithms.begin(), algorithms.end(), [](auto const & p) {
-        return p.second.family_ == headcode::crypt::Family::UNKNOWN;
+        return p.second.family_ == headcode::crypt::Family::kUnknown;
     });
 
     EXPECT_FALSE(some_unknown);

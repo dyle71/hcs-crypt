@@ -201,6 +201,14 @@ include_directories(${HCS_MEM_INCLUDE_DIR})
 
 
 # ------------------------------------------------------------
+# headcode/logger as submodule
+
+include(hcs-logger)
+message(STATUS "HCS_LOGGER_INCLUDE_DIR: ${HCS_LOGGER_INCLUDE_DIR}")
+include_directories(${HCS_LOGGER_INCLUDE_DIR})
+
+
+# ------------------------------------------------------------
 # Doxygen
 
 find_package(Doxygen)

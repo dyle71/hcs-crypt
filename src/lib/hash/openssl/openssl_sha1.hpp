@@ -41,7 +41,7 @@ private:
      * @param   size_incoming       size of the incoming data to add.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
-     * @return  0 if add was ok, else an error.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add_(unsigned char const * block_incoming,
              std::uint64_t size_incoming,
@@ -53,7 +53,7 @@ private:
      * @param   result                  the result of the algorithm.
      * @param   result_size             size of the result for finalization.
      * @param   finalization_data       the final data (== final key) to use, if any.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Finalize_(
             unsigned char * result,
@@ -69,7 +69,7 @@ private:
     /**
      * @brief   Initialize this object instance.
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
-     * @return  0 if initialize was ok, else an error.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data)
             override;

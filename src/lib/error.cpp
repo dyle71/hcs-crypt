@@ -19,7 +19,7 @@ std::string const & headcode::crypt::GetErrorText(headcode::crypt::Error error) 
             {headcode::crypt::Error::kInvalidArgument, "An argument provided by the user is invalid"},
             {headcode::crypt::Error::kInvalidOperation, "Cannot execute operation in current state"}};
 
-    auto iter = known_error_texts.find(family);
+    auto iter = known_error_texts.find(error);
     assert(iter != known_error_texts.end());
     return iter->second;
 }

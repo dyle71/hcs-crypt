@@ -22,7 +22,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "nohash",                                           // name
-            Family::HASH,                                       // family
+            Family::kHash,                                      // family
             "NOHASH: not a real hash, always return 0.",        // description (short/left and long/below)
 
             "This a No-Operation dummy hash algorithm.",

@@ -32,8 +32,7 @@ std::string const & headcode::crypt::GetPaddingStrategyText(PaddingStrategy padd
             {headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4, "ISO 7816-4"},
             {headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2, "ISO 10126-2"},
             {headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23, "ANSI X9.23"},
-            {headcode::crypt::PaddingStrategy::PADDING_ZERO, "Zero Bytes"}
-    };
+            {headcode::crypt::PaddingStrategy::PADDING_ZERO, "Zero Bytes"}};
 
     auto iter = known_padding_strategy_texts.find(padding_strategy);
     assert(iter != known_padding_strategy_texts.end());

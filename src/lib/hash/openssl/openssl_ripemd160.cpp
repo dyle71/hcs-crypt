@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-ripemd160",         // name
-            Family::HASH,                // family
+            Family::kHash,               // family
             "OpenSSL RIPEMD160.",        // description (short/left and long/below)
 
             "This is an 160Bit implementation of the RIPE Message Digest. See: https://en.wikipedia.org/wiki/RIPEMD.",

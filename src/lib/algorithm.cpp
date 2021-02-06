@@ -6,7 +6,6 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
 #include <cstring>
 
 #include <headcode/mem/mem.hpp>
@@ -72,13 +71,11 @@ int Algorithm::Add(unsigned char const * block_incoming,
                    unsigned char * block_outgoing,
                    std::uint64_t & size_outgoing) {
 
-    if (size_incoming > 0) {
-        // Adding to algorithm with incoming block is NULL/nullptr while incoming size is > 0
-        assert(block_incoming != nullptr &&
+    if ((size_incoming > 0) && (block_incoming == nullptr)) {
+        return static_cast<int>(Error::kInvalidArgument);
     }
-    if (size_outgoing > 0) {
-        assert(block_outgoing != nullptr &&
-               "Adding to algorithm with outgoing block is NULL/nullptr while outgoing size is > 0.");
+    if ((size_outgoing > 0) && (block_outgoing == nullptr)) {
+        return static_cast<int>(Error::kInvalidArgument);
     }
 
     return Add_(block_incoming, size_incoming, block_outgoing, size_outgoing);
@@ -150,14 +147,14 @@ int Algorithm::Finalize(
         std::uint64_t result_size,
         std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) {
 
-    if (result_size > 0) {
-        assert(result != nullptr && "Finalizing algorithm with result is NULL/nullptr while result size is > 0.");
+    if ((result_size > 0) && (result == nullptr)) {
+        return static_cast<int>(Error::kInvalidArgument);
     }
 
     for (auto const & [name, memory] : finalization_data) {
         auto [data, size] = memory;
-        if (size > 0) {
-            assert(data != nullptr && "Finalizing algorithm with a data part is NULL/nullptr while data size is > 0.");
+        if ((size > 0) && (data == nullptr)) {
+            return static_cast<int>(Error::kInvalidArgument);
         }
     }
 
@@ -226,9 +223,8 @@ int Algorithm::Initialize(
 
     for (auto const & [name, memory] : initialization_data) {
         auto [data, size] = memory;
-        if (size > 0) {
-            assert(data != nullptr &&
-                   "Initializing algorithm with a data part is NULL/nullptr while data size is > 0.");
+        if ((size > 0) && (data == nullptr)) {
+            return static_cast<int>(Error::kInvalidArgument);
         }
     }
 

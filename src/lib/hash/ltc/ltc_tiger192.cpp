@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-tiger192",                 // name
-            Family::HASH,                   // family
+            Family::kHash,                  // family
             "LibTomCrypt TIGER192.",        // description (short/left and long/below)
 
             "This is the 192 Bit variant of the TIGER hash algorithm created by Ross Anderson and Eli Biham. "

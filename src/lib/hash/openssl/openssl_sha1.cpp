@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-sha1",         // name
-            Family::HASH,           // family
+            Family::kHash,          // family
             "OpenSSL SHA1.",        // description (short/left and long/below)
 
             "This is the Secure Hash Algorithm 1 as defined by the NSA. The NIST formaly deprecated the use of "

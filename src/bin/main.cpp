@@ -15,7 +15,7 @@
 
 
 int main(int argc, char ** argv) {
-    
+
     // TODO: Drop to seccomp: https://en.wikipedia.org/wiki/Seccomp
 
     auto config = ParseCommandLine(argc, argv);

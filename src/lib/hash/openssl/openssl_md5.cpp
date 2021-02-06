@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-md5",         // name
-            Family::HASH,          // family
+            Family::kHash,         // family
             "OpenSSL MD5.",        // description (short/left and long/below)
 
             "This is the MD5 message digest algorithm by Ronald Rivest. Originally intended to be a secure "

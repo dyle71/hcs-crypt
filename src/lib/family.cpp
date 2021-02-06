@@ -15,9 +15,9 @@
 std::string const & headcode::crypt::GetFamilyText(headcode::crypt::Family family) {
 
     static std::map<headcode::crypt::Family, std::string> const known_family_texts = {
-            {headcode::crypt::Family::SYMMETRIC_CIPHER, "Symmetric Ciphers"},
-            {headcode::crypt::Family::HASH, "Hashes"},
-            {headcode::crypt::Family::UNKNOWN, "Unknown Family"}};
+            {headcode::crypt::Family::kSymmetricCipher, "Symmetric Ciphers"},
+            {headcode::crypt::Family::kHash, "Hashes"},
+            {headcode::crypt::Family::kUnknown, "Unknown Family"}};
 
     auto iter = known_family_texts.find(family);
     assert(iter != known_family_texts.end());

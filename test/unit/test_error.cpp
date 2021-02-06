@@ -18,12 +18,12 @@ TEST(Error, text_no_error) {
 
 
 TEST(Error, text_invalid_argument) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Error::kInvalidArgument);
+    auto text = headcode::crypt::GetErrorText(headcode::crypt::Error::kInvalidArgument);
     EXPECT_FALSE(text.empty());
 }
 
 
 TEST(Error, text_invalid_operation) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Error::kInvalidOperation);
+    auto text = headcode::crypt::GetErrorText(headcode::crypt::Error::kInvalidOperation);
     EXPECT_FALSE(text.empty());
 }

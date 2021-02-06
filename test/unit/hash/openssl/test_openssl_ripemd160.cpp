@@ -23,7 +23,7 @@ TEST(Hash_OPENSSLRIPEMD160, creation) {
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "openssl-ripemd160");
-    EXPECT_EQ(description.family_, headcode::crypt::Family::HASH);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::kHash);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
     EXPECT_EQ(description.block_size_incoming_, 64ul);

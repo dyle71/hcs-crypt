@@ -24,7 +24,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-ripemd128",                 // name
-            Family::HASH,                    // family
+            Family::kHash,                   // family
             "LibTomCrypt RIPEMD128.",        // description (short/left and long/below)
 
             "This is an 128Bit implementation of the RIPE Message Digest. This 128Bit variant is not "

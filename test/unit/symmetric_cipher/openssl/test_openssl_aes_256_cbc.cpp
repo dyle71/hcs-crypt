@@ -22,7 +22,7 @@ TEST(SymmetricCipher_OpenSSL_AES_256_CBC, encryptor_creation) {
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "openssl-aes-256-cbc-encryptor");
-    EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::kSymmetricCipher);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
     EXPECT_EQ(description.block_size_incoming_, 16ul);
@@ -54,7 +54,7 @@ TEST(SymmetricCipher_OpenSSL_AES_256_CBC, decryptor_creation) {
     headcode::crypt::Algorithm::Description const & description = algo->GetDescription();
 
     EXPECT_STREQ(description.name_.c_str(), "openssl-aes-256-cbc-decryptor");
-    EXPECT_EQ(description.family_, headcode::crypt::Family::SYMMETRIC_CIPHER);
+    EXPECT_EQ(description.family_, headcode::crypt::Family::kSymmetricCipher);
     EXPECT_FALSE(description.description_short_.empty());
     EXPECT_FALSE(description.description_long_.empty());
     EXPECT_EQ(description.block_size_incoming_, 16ul);

@@ -23,7 +23,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-aes-128-ecb-encryptor",                                // name
-            Family::SYMMETRIC_CIPHER,                                   // family
+            Family::kSymmetricCipher,                                   // family
             "LibTomCrypt AES 128 in ECB mode (encryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
@@ -100,7 +100,8 @@ Algorithm::Description const & LTCAES128ECBEncrypter::GetDescription_() const {
 }
 
 
-int LTCAES128ECBEncrypter::Initialize_(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) {
+int LTCAES128ECBEncrypter::Initialize_(
+        std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) {
 
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {

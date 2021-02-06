@@ -12,18 +12,18 @@
 
 
 TEST(Family, text_symmetric_cypher) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::SYMMETRIC_CIPHER);
+    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::kSymmetricCipher);
     EXPECT_FALSE(text.empty());
 }
 
 
 TEST(Family, text_hash) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::HASH);
+    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::kHash);
     EXPECT_FALSE(text.empty());
 }
 
 
 TEST(Family, text_unknown) {
-    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::UNKNOWN);
+    auto text = headcode::crypt::GetFamilyText(headcode::crypt::Family::kUnknown);
     EXPECT_FALSE(text.empty());
 }

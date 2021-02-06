@@ -206,7 +206,7 @@ public:
      * data accordingly to avoid costly operations.
      *
      * @param   text                the text to add.
-     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add(std::string const & text);
 
@@ -233,7 +233,7 @@ public:
      *
      * @param   text                the text to add.
      * @param   block_outgoing      the outgoing data block.
-     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add(std::string const & text, std::vector<std::byte> & block_outgoing);
 
@@ -257,7 +257,7 @@ public:
      * data accordingly to avoid costly operations.
      *
      * @param   block_incoming      incoming data block.
-     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add(std::vector<std::byte> const & block_incoming);
 
@@ -284,7 +284,7 @@ public:
      *
      * @param   block_incoming      incoming data block.
      * @param   block_outgoing      the outgoing data block.
-     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add(std::vector<std::byte> const & block_incoming, std::vector<std::byte> & block_outgoing);
 
@@ -312,7 +312,7 @@ public:
      * @param   size_incoming       size of the incoming data block.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
-     * @return  0 if add was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Add(unsigned char const * block_incoming,
             std::uint64_t size_incoming,
@@ -342,7 +342,7 @@ public:
      *
      * @param   result                  the result of the algorithm.
      * @param   finalization_data       the final data (== final key) to use, if any.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Finalize(std::vector<std::byte> & result,
                  std::map<std::string, std::vector<std::byte>> const & finalization_data = {});
@@ -363,7 +363,7 @@ public:
      *
      * @param   result                  the result of the algorithm.
      * @param   finalization_data       the final data (== final key) to use, if any.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Finalize(std::vector<std::byte> & result,
                  std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data);
@@ -387,7 +387,7 @@ public:
      * @param   result                  the result of the algorithm.
      * @param   result_size             size of the result for finalization.
      * @param   finalization_data       the final data (== final key) to use, if any.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Finalize(unsigned char * result,
                  std::uint64_t result_size,
@@ -412,7 +412,7 @@ public:
      * Check the algorithms details/description of what constitutes a good init data.
      *
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Initialize(std::map<std::string, std::vector<std::byte>> const & initialization_data = {});
 
@@ -433,7 +433,7 @@ public:
      * Initialize(...) methods using byte vectors.
      *
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
-     * @return  0 if initialize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     int Initialize(std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data);
 
@@ -469,7 +469,7 @@ private:
      * @param   size_incoming       size of the incoming data to add.
      * @param   block_outgoing      outgoing data block.
      * @param   size_outgoing       size of the outgoing data block (will be adjusted).
-     * @return  0 if add was ok, else an error.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     virtual int Add_(unsigned char const * block_incoming,
                      std::uint64_t size_incoming,
@@ -481,7 +481,7 @@ private:
      * @param   result                  the result of the algorithm.
      * @param   result_size             size of the result for finalization.
      * @param   finalization_data       the final data (== final key) to use, if any.
-     * @return  0 if finalize was ok, else an error in the context of the concrete algorithm implementation.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     virtual int Finalize_(
             unsigned char * result,
@@ -497,7 +497,7 @@ private:
     /**
      * @brief   Initialize this object instance.
      * @param   initialization_data     the initial data (== initial key, IV, ...) to use, if any.
-     * @return  0 if initialize was ok, else an error.
+     * @return  Error enum value if negativ (0 == ok), else something in the context of the algorithm provider.
      */
     virtual int Initialize_(
             std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) = 0;

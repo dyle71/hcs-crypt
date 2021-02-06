@@ -16,7 +16,7 @@
 
 void ListAlgorithms(std::ostream & out) {
 
-    for (auto family : {headcode::crypt::Family::SYMMETRIC_CIPHER, headcode::crypt::Family::HASH}) {
+    for (auto family : {headcode::crypt::Family::kSymmetricCipher, headcode::crypt::Family::kHash}) {
 
         out << headcode::crypt::GetFamilyText(family) << "\n";
         auto algorithms = headcode::crypt::Factory::GetAlgorithmDescriptions();

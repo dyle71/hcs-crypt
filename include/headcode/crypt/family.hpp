@@ -18,9 +18,9 @@ namespace headcode::crypt {
  * @brief   Different types of algorithms we know of.
  */
 enum class Family {
-    SYMMETRIC_CIPHER = 0x0000,        //!< @brief An symmetric algorithm used to encrypt and/or decrypt data.
-    HASH = 0x1000,                    //!< @brief An algorithm which produces hash-sums of data.
-    UNKNOWN = 0xffff                  //!< @brief An unknown or error like family.
+    kSymmetricCipher = 0x0000,        //!< @brief An symmetric algorithm used to encrypt and/or decrypt data.
+    kHash = 0x1000,                   //!< @brief An algorithm which produces hash-sums of data.
+    kUnknown = 0xffff                 //!< @brief An unknown or error like family.
 };
 
 

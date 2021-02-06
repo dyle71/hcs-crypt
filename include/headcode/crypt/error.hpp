@@ -16,13 +16,12 @@ namespace headcode::crypt {
 
 
 /**
- * @brief   Different errors we as a framework will report.
+ * @brief   Different errors the framework will report.
  */
 enum class Error {
     kNoError = 0,                 //!< @brief No error occurred, all good.
     kInvalidArgument = -1,        //!< @brief An argument provided by the user is invalid/unexpected.
-    kInvalidOperation = -2        //!< @brief An operation issued by the user is invalid (target object is not in a
-                                  //!< state accepting operation).
+    kInvalidOperation = -2        //!< @brief An operation is invalid (target object is not in propber state).
 };
 
 

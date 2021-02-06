@@ -23,7 +23,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "openssl-aes-256-cbc-encryptor",                        // name
-            Family::SYMMETRIC_CIPHER,                               // family
+            Family::kSymmetricCipher,                               // family
             "OpenSSL AES 256 in CBC mode (encryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 256 Bit encryption algorithm "
@@ -41,8 +41,7 @@ static Algorithm::Description const & GetDescription() {
              {"iv", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "An initialization vector.", false}}},
 
             // finalization data
-            {}
-    };
+            {}};
 
     return description;
 }

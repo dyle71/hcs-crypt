@@ -23,7 +23,7 @@ static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
             "ltc-aes-128-ecb-decryptor",                                // name
-            Family::SYMMETRIC_CIPHER,                                   // family
+            Family::kSymmetricCipher,                                   // family
             "LibTomCrypt AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
 
             "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
