@@ -26,7 +26,7 @@ All `headcode.space` software follows these directives:
 
 3. Provide software with **super minimal public interfaces**. I try to really provide the absolute
    minimum without any bloat. The users of the software should only include the main header file
-   (e.g. `#include <headcode/logger/logger.hpp>`) and nothing else. These are self-contained and
+   (e.g. `#include <headcode/crypt/crypt.hpp>`) and nothing else. These are self-contained and
    rely only on C++ standard headers. No additional 3rd party headers required. Third goal.
 
 4. Provide libraries and binaries with **little to no runtime dependencies**. Yet, linkage might
