@@ -75,7 +75,7 @@ int LTCAES256ECBDecrypter::Add_(unsigned char const * block_incoming,
                                 unsigned char * block_outgoing,
                                 std::uint64_t & size_outgoing) {
 
-    size_outgoing = GetDescription().block_size_outgoing_;
+    size_outgoing = size_incoming;
 
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {

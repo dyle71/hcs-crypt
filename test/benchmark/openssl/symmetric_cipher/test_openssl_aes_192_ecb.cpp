@@ -45,12 +45,12 @@ TEST(Benchmark_OPENSSLAES192ECB, OPENSSLAES192ECBString) {
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
         // this is with padding but reusing the ciper everytime.
-        ASSERT_EQ(algo->Add(IPSUM_LOREM_TEXT, cipher), 0);
+        ASSERT_EQ(algo->Add(kIpsumLoremText, cipher), 0);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * IPSUM_LOREM_TEXT.size()};
+                                               loop_count * kIpsumLoremText.size()};
 
     std::cout << StreamPerformanceIndicators(throughput,
                                              "Benchmark Benchmark_OPENSSLAES192ECB::OPENSSLAES192ECBString ");
@@ -79,7 +79,7 @@ TEST(Benchmark_OPENSSLAES192ECB, OPENSSLAES192ECBCArray) {
     key_enc.resize(algo->GetDescription().initialization_argument_.at("key").size_);
     ASSERT_EQ(algo->Initialize({{"key", key_enc}}), 0);
 
-    auto block_incoming = IPSUM_LOREM_TEXT.c_str();
+    auto block_incoming = kIpsumLoremText.c_str();
     auto size_incoming = std::strlen(block_incoming);
 
     // makes rounds up the cipher size with a multiple of 192 bit

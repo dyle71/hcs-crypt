@@ -108,7 +108,7 @@ TEST(SymmetricCipher_LTC_AES_192_CBC, single_block) {
     // --------- encrypt ---------
 
     auto plain = std::vector<std::byte>{algo_enc->GetDescription().block_size_incoming_};
-    std::memcpy(plain.data(), IPSUM_LOREM_TEXT.c_str(), plain.size());
+    std::memcpy(plain.data(), kIpsumLoremText.c_str(), plain.size());
 
     std::vector<std::byte> cipher;
     EXPECT_EQ(algo_enc->Add(plain, cipher), 0);
@@ -178,7 +178,7 @@ TEST(SymmetricCipher_LTC_AES_192_CBC, regular) {
 
     // --------- encrypt ---------
 
-    auto plain = headcode::mem::StringToMemory(IPSUM_LOREM_TEXT);
+    auto plain = headcode::mem::StringToMemory(kIpsumLoremText);
 
     std::vector<std::byte> cipher;
     EXPECT_EQ(algo_enc->Add(plain, cipher), 0);

@@ -65,9 +65,9 @@ TEST(SymmetricCipher_Copy, regular) {
 
     // COPY: copies from input to output
 
-    std::vector<std::byte> cipher{IPSUM_LOREM_TEXT.size()};
-    algo->Add(IPSUM_LOREM_TEXT, cipher);
-    EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
+    std::vector<std::byte> cipher{kIpsumLoremText.size()};
+    algo->Add(kIpsumLoremText, cipher);
+    EXPECT_EQ(std::memcmp(kIpsumLoremText.c_str(), cipher.data(), kIpsumLoremText.size()), 0);
 
     std::vector<std::byte> result;
     algo->Finalize(result);
@@ -102,9 +102,9 @@ TEST(SymmetricCipher_Copy, noinit) {
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "copy");
 
-    std::vector<std::byte> cipher{IPSUM_LOREM_TEXT.size()};
-    algo->Add(IPSUM_LOREM_TEXT, cipher);
-    EXPECT_EQ(std::memcmp(IPSUM_LOREM_TEXT.c_str(), cipher.data(), IPSUM_LOREM_TEXT.size()), 0);
+    std::vector<std::byte> cipher{kIpsumLoremText.size()};
+    algo->Add(kIpsumLoremText, cipher);
+    EXPECT_EQ(std::memcmp(kIpsumLoremText.c_str(), cipher.data(), kIpsumLoremText.size()), 0);
 
     std::vector<std::byte> result;
     algo->Finalize(result);

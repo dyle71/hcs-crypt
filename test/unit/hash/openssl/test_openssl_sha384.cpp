@@ -63,7 +63,7 @@ TEST(Hash_OPENSSLSHA384, regular) {
     EXPECT_TRUE(algo->IsInitialized());
     EXPECT_FALSE(algo->IsFinalized());
 
-    algo->Add(IPSUM_LOREM_TEXT);
+    algo->Add(kIpsumLoremText);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);
@@ -104,7 +104,7 @@ TEST(Hash_OPENSSLSHA384, noinit) {
     ASSERT_NE(algo.get(), nullptr);
     ASSERT_STREQ(algo->GetDescription().name_.c_str(), "openssl-sha384");
 
-    algo->Add(IPSUM_LOREM_TEXT);
+    algo->Add(kIpsumLoremText);
     std::vector<std::byte> hash;
     EXPECT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), algo->GetDescription().result_size_);

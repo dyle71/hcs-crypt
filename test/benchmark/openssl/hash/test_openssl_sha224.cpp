@@ -30,12 +30,12 @@ TEST(Benchmark_OPENSSLSHA224, OPENSSLSHA224StdString) {
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
         // this is with padding
-        algo->Add(IPSUM_LOREM_TEXT);
+        algo->Add(kIpsumLoremText);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * IPSUM_LOREM_TEXT.size()};
+                                               loop_count * kIpsumLoremText.size()};
 
     std::cout << StreamPerformanceIndicators(throughput, "Benchmark OpenSSLSHA224::OPENSSLSHA224StdString ");
 
@@ -52,7 +52,7 @@ TEST(Benchmark_OPENSSLSHA224, OPENSSLSHA224CArray) {
     ASSERT_NE(algo.get(), nullptr);
     EXPECT_STREQ(algo->GetDescription().name_.c_str(), "openssl-sha224");
 
-    auto block_incoming = IPSUM_LOREM_TEXT.c_str();
+    auto block_incoming = kIpsumLoremText.c_str();
     auto size_incoming = std::strlen(block_incoming);
     std::uint64_t size_outgoing = 0ul;
 

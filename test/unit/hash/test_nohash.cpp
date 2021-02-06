@@ -60,7 +60,7 @@ TEST(Hash_NoHash, regular) {
 
     // NOHASH: always returns empty value.
 
-    EXPECT_EQ(algo->Add(IPSUM_LOREM_TEXT), 0);
+    EXPECT_EQ(algo->Add(kIpsumLoremText), 0);
     std::vector<std::byte> hash;
     ASSERT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), 0ul);
@@ -89,7 +89,7 @@ TEST(Hash_NoHash, noinit) {
 
     // NOHASH: always returns empty value.
 
-    EXPECT_EQ(algo->Add(IPSUM_LOREM_TEXT), 0);
+    EXPECT_EQ(algo->Add(kIpsumLoremText), 0);
     std::vector<std::byte> hash;
     ASSERT_EQ(algo->Finalize(hash), 0);
     EXPECT_EQ(hash.size(), 0ul);

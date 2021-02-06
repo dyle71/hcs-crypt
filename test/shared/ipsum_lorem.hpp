@@ -12,7 +12,7 @@
 #include <string>
 
 
-std::string const IPSUM_LOREM_TEXT{
+std::string const kIpsumLoremText{
         "\n\
 Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod \n\
 tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, \n\

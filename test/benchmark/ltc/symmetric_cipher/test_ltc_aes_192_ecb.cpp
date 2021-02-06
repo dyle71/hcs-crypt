@@ -45,12 +45,12 @@ TEST(Benchmark_LTCAES192ECB, LTCAES192ECBString) {
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
         // this is with padding but reusing the ciper everytime.
-        ASSERT_EQ(algo->Add(IPSUM_LOREM_TEXT, cipher), 0);
+        ASSERT_EQ(algo->Add(kIpsumLoremText, cipher), 0);
     }
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * IPSUM_LOREM_TEXT.size()};
+                                               loop_count * kIpsumLoremText.size()};
 
     std::cout << StreamPerformanceIndicators(throughput,
                                              "Benchmark Benchmark_LTCAES192ECB::LTCAES192ECBString ");
@@ -79,29 +79,39 @@ TEST(Benchmark_LTCAES192ECB, LTCAES192ECBCArray) {
     key_enc.resize(algo->GetDescription().initialization_argument_.at("key").size_);
     ASSERT_EQ(algo->Initialize({{"key", key_enc}}), 0);
 
-    auto block_incoming = IPSUM_LOREM_TEXT.c_str();
-    auto size_incoming = std::strlen(block_incoming);
+    auto block_incoming = kIpsumLoremText.c_str();
+    auto current_size = std::strlen(block_incoming);
+    auto total_size = current_size;
 
-    // makes rounds up the cipher size with a multiple of 192 bit
-    std::vector<std::byte> cipher;
-    auto cipher_size = size_incoming >> 7;
-    cipher_size++;
-    cipher_size <<= 7;
-    cipher.resize(cipher_size);
+    ASSERT_GT(current_size, 0ul);
+    auto block_size = algo->GetDescription().block_size_incoming_;
+    ASSERT_GT(block_size, 0ul);
+    if ((current_size % block_size) != 0) {
+        total_size = current_size + (block_size - (current_size % block_size));
+    }
+    auto block = new unsigned char[total_size];
+    std::memcpy(block, block_incoming, current_size);
+    headcode::crypt::Pad(block,
+                         total_size,
+                         current_size,
+                         algo->GetDescription().block_size_incoming_,
+                         algo->GetDescription().block_padding_strategy_);
+
+    auto cipher = new unsigned char[total_size];
+    std::uint64_t cipher_size;
 
     auto time_start = std::chrono::high_resolution_clock::now();
     for (std::uint64_t i = 0; i < loop_count; ++i) {
         // this is without padding
-        ASSERT_EQ(algo->Add(reinterpret_cast<unsigned char const *>(block_incoming),
-                            size_incoming,
-                            reinterpret_cast<unsigned char *>(cipher.data()),
-                            cipher_size),
-                  0);
+        ASSERT_EQ(algo->Add(block, total_size, cipher, cipher_size), 0);
     }
+
     std::vector<std::byte> result;
     algo->Finalize(result);
     headcode::benchmark::Throughput throughput{headcode::benchmark::GetElapsedMicroSeconds(time_start),
-                                               loop_count * size_incoming};
+                                               loop_count * total_size};
+    delete [] cipher;
+    delete [] block;
 
     std::cout << StreamPerformanceIndicators(throughput,
                                              "Benchmark Benchmark_LTCAES192ECB::LTCAES192ECBCArray ");
