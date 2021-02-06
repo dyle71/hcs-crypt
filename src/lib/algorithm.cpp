@@ -8,6 +8,7 @@
 
 #include <cstring>
 
+#include <headcode/logger/logger.hpp>
 #include <headcode/mem/mem.hpp>
 #include <headcode/crypt/algorithm.hpp>
 #include <headcode/crypt/error.hpp>
@@ -72,9 +73,13 @@ int Algorithm::Add(unsigned char const * block_incoming,
                    std::uint64_t & size_outgoing) {
 
     if ((size_incoming > 0) && (block_incoming == nullptr)) {
+        headcode::logger::Warning{"headcode.crypt"}
+                << "Applying incoming data which is NULL/nullptr while size is > 0.";
         return static_cast<int>(Error::kInvalidArgument);
     }
     if ((size_outgoing > 0) && (block_outgoing == nullptr)) {
+        headcode::logger::Warning{"headcode.crypt"}
+                << "Applying outgoing data which is NULL/nullptr while size is > 0.";
         return static_cast<int>(Error::kInvalidArgument);
     }
 
@@ -148,12 +153,15 @@ int Algorithm::Finalize(
         std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & finalization_data) {
 
     if ((result_size > 0) && (result == nullptr)) {
+        headcode::logger::Warning{"headcode.crypt"} << "Applying result data which is NULL/nullptr while size is > 0.";
         return static_cast<int>(Error::kInvalidArgument);
     }
 
     for (auto const & [name, memory] : finalization_data) {
         auto [data, size] = memory;
         if ((size > 0) && (data == nullptr)) {
+            headcode::logger::Warning{"headcode.crypt"}
+                    << "Applying finalization data which is NULL/nullptr while size is > 0.";
             return static_cast<int>(Error::kInvalidArgument);
         }
     }
@@ -165,6 +173,7 @@ int Algorithm::Finalize(
             finalized_ = true;
         }
     } else {
+        headcode::logger::Warning{"headcode.crypt"} << "Already finalized; refusing to finalize again.";
         res = static_cast<int>(Error::kInvalidOperation);
     }
 
@@ -224,6 +233,8 @@ int Algorithm::Initialize(
     for (auto const & [name, memory] : initialization_data) {
         auto [data, size] = memory;
         if ((size > 0) && (data == nullptr)) {
+            headcode::logger::Warning{"headcode.crypt"}
+                    << "Applying inititalization data which is NULL/nullptr while size is > 0.";
             return static_cast<int>(Error::kInvalidArgument);
         }
     }
@@ -235,6 +246,7 @@ int Algorithm::Initialize(
             initialized_ = true;
         }
     } else {
+        headcode::logger::Warning{"headcode.crypt"} << "Already initialized; refusing to initialize again.";
         res = static_cast<int>(Error::kInvalidOperation);
     }
 

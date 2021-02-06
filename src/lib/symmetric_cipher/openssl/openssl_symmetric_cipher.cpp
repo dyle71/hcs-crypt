@@ -8,6 +8,9 @@
 
 #include <cassert>
 
+#include <headcode/logger/logger.hpp>
+#include <headcode/crypt/error.hpp>
+
 #include "openssl_symmetric_cipher.hpp"
 
 using namespace headcode::crypt;
@@ -35,14 +38,15 @@ int OpenSSLSymmetricCipher::Add_(unsigned char const * block_incoming,
         return 1;
     }
 
-    return 0;
+    return static_cast<int>(Error::kNoError);
 }
 
 
 int OpenSSLSymmetricCipher::Finalize_(unsigned char *,
                                       std::uint64_t,
                                       std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
-    return 0;
+
+    return static_cast<int>(Error::kNoError);
 }
 
 
@@ -65,7 +69,7 @@ int OpenSSLSymmetricCipher::Initialize_(
     }
 
     auto e = EVP_CipherInit_ex(GetCipherContext(), nullptr, nullptr, key_data, iv_data, IsEncryptor() ? 1 : 0);
-    return e == 1 ? 0 : 1;
+    return e == 1 ? static_cast<int>(Error::kNoError) : 1;
 }
 
 
@@ -92,8 +96,9 @@ bool OpenSSLSymmetricCipher::VerifyInitValue(
 
         data = std::get<0>(iter->second);
         std::uint64_t size = std::get<1>(iter->second);
-        if (size > 0) {
-            assert(data != nullptr && "Applying data which is NULL/nullptr while size is > 0.");
+        if ((size > 0) && (data == nullptr)) {
+            headcode::logger::Warning{"headcode.crypt"} << "Applying data which is NULL/nullptr while size is > 0.";
+            return false;
         }
         if (static_cast<int>(size) != EVP_GET_LENGTH(GetCipherContext())) {
             return false;
