@@ -52,8 +52,8 @@ public:
      * @brief   Constructor.
      */
     Registry() {
-        // enforce birth of logger subsystem
-        headcode::logger::Logger::GetLogger();
+        auto logger = headcode::logger::Logger::GetLogger("headcode.crypt");
+        logger->SetBarrier(headcode::logger::Level::kWarning);
     }
 
     /**

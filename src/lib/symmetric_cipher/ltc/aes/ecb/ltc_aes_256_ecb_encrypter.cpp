@@ -32,13 +32,13 @@ static Algorithm::Description const & GetDescription() {
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
             std::string{"libtomcrypt v"} + SCRYPT,        // provider
-            32ul,                                         // input block size
-            32ul,                                         // output block size
+            16ul,                                         // input block size
+            16ul,                                         // output block size
             PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
             0ul,                                          // result size
 
             // initial data
-            {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
+            {{"key", {32ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
 
             // finalization data
             {}

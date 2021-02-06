@@ -119,7 +119,7 @@ TEST(SymmetricCipher_LTC_AES_256_ECB, single_block) {
     EXPECT_NE(std::memcmp(plain_decrypted.data(), cipher.data(), plain_decrypted.size()), 0);
     EXPECT_EQ(std::memcmp(plain.data(), plain_decrypted.data(), plain.size()), 0);
     EXPECT_STREQ(headcode::mem::MemoryToHex(plain).c_str(), "0a4c6f72656d20697073756d20646f6c");
-    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "7ae7e5abac048295b9fc47f9f5df9fe1");
+    EXPECT_STREQ(headcode::mem::MemoryToHex(cipher).c_str(), "35dd7d6b893fe8ee9e3d12c7e2303a05");
 }
 
 

@@ -6,9 +6,9 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
 #include <map>
 
+#include <headcode/logger/logger.hpp>
 #include <headcode/crypt/family.hpp>
 
 
@@ -20,6 +20,11 @@ std::string const & headcode::crypt::GetFamilyText(headcode::crypt::Family famil
             {headcode::crypt::Family::kUnknown, "Unknown Family"}};
 
     auto iter = known_family_texts.find(family);
-    assert(iter != known_family_texts.end());
+    if (iter == known_family_texts.end()) {
+        headcode::logger::Warning{"headcode.crypt"} << "Unknown family code.";
+        static std::string const null_string;
+        return null_string;
+    }
+
     return iter->second;
 }

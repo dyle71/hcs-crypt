@@ -6,8 +6,6 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
-
 #include <headcode/logger/logger.hpp>
 #include <headcode/crypt/error.hpp>
 

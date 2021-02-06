@@ -6,11 +6,11 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
 #include <cstring>
 #include <map>
 #include <random>
 
+#include <headcode/logger/logger.hpp>
 #include <headcode/crypt/padding.hpp>
 
 
@@ -35,14 +35,22 @@ std::string const & headcode::crypt::GetPaddingStrategyText(PaddingStrategy padd
             {headcode::crypt::PaddingStrategy::PADDING_ZERO, "Zero Bytes"}};
 
     auto iter = known_padding_strategy_texts.find(padding_strategy);
-    assert(iter != known_padding_strategy_texts.end());
+
+    if (iter == known_padding_strategy_texts.end()) {
+        headcode::logger::Warning{"headcode.crypt"} << "Unknown padding strategy.";
+        static std::string const null_string;
+        return null_string;
+    }
     return iter->second;
 }
 
 
 void headcode::crypt::Pad(std::vector<std::byte> & block, std::uint64_t size, PaddingStrategy padding_strategy) {
 
-    assert(size <= 255);
+    if (size > 255) {
+        headcode::logger::Warning{"headcode.crypt"} << "Size if out of range for padding.";
+        return;
+    }
     if (size == 0) {
         return;
     }

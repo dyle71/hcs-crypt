@@ -24,6 +24,8 @@ set(UNIT_TEST_SRC
 
     symmetric_cipher/test_copy.cpp
     symmetric_cipher/ltc/test_ltc_aes_128_ecb.cpp
+    symmetric_cipher/ltc/test_ltc_aes_192_ecb.cpp
+    symmetric_cipher/ltc/test_ltc_aes_256_ecb.cpp
 
     hash/test_nohash.cpp
     hash/ltc/test_ltc_md5.cpp
