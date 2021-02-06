@@ -6,34 +6,34 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <cassert>
-
+#include <headcode/logger/logger.hpp>
+#include <headcode/crypt/error.hpp>
 #include <headcode/crypt/factory.hpp>
 
-#include "ltc_aes_128_ecb_decrypter.hpp"
+#include "ltc_aes_256_ecb_encrypter.hpp"
 
 using namespace headcode::crypt;
 
 
 /**
- * @brief   The LibTomCrypt AES 128 ECB algorithm (decryptor) description.
+ * @brief   The LibTomCrypt AES 256 ECB algorithm (encryptor) description.
  * @return  The description of this algorithm.
  */
 static Algorithm::Description const & GetDescription() {
 
     static Algorithm::Description description = {
-            "ltc-aes-128-ecb-decryptor",                                // name
+            "ltc-aes-256-ecb-encryptor",                                // name
             Family::kSymmetricCipher,                                   // family
-            "LibTomCrypt AES 128 in ECB mode (decryptor part).",        // description (short/left and long/below)
+            "LibTomCrypt AES 256 in ECB mode (encryptor part).",        // description (short/left and long/below)
 
-            "This is the Advanced Encryption Standard AES (also known as Rijndael) 128 Bit encryption algorithm "
+            "This is the Advanced Encryption Standard AES (also known as Rijndael) 256 Bit encryption algorithm "
             "in ECB (electronic codebook) mode. Note that ECB bears some weaknesses and should be avoided. "
             "See: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard and "
             "https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB.",
 
             std::string{"libtomcrypt v"} + SCRYPT,        // provider
-            16ul,                                         // input block size
-            16ul,                                         // output block size
+            32ul,                                         // input block size
+            32ul,                                         // output block size
             PaddingStrategy::PADDING_PKCS_5_7,            // default padding strategy
             0ul,                                          // result size
 
@@ -41,8 +41,9 @@ static Algorithm::Description const & GetDescription() {
             {{"key", {16ul, PaddingStrategy::PADDING_PKCS_5_7, "A secret shared key.", false}}},
 
             // finalization data
-            {}};
+            {}
 
+    };
     return description;
 }
 
@@ -50,14 +51,14 @@ static Algorithm::Description const & GetDescription() {
 /**
  * @brief   Produces instances of the algorithm.
  */
-class LTCAES128ECBDecryptorProducer : public Factory::Producer {
+class LTCAES256ECBEncryptorProducer : public Factory::Producer {
 public:
     /**
      * @brief   Call operator - creates the algorithm.
      * @return  A new algorithm instance.
      */
     std::unique_ptr<Algorithm> operator()() const override {
-        return std::make_unique<LTCAES128ECBDecrypter>();
+        return std::make_unique<LTCAES256ECBEncrypter>();
     }
 
     /**
@@ -70,7 +71,7 @@ public:
 };
 
 
-int LTCAES128ECBDecrypter::Add_(unsigned char const * block_incoming,
+int LTCAES256ECBEncrypter::Add_(unsigned char const * block_incoming,
                                 std::uint64_t size_incoming,
                                 unsigned char * block_outgoing,
                                 std::uint64_t & size_outgoing) {
@@ -83,23 +84,23 @@ int LTCAES128ECBDecrypter::Add_(unsigned char const * block_incoming,
     }
 
     symmetric_ECB * state = &GetState();
-    return ecb_decrypt(block_incoming, block_outgoing, size_incoming, state);
+    return ecb_encrypt(block_incoming, block_outgoing, size_incoming, state);
 }
 
 
-int LTCAES128ECBDecrypter::Finalize_(unsigned char *,
+int LTCAES256ECBEncrypter::Finalize_(unsigned char *,
                                      std::uint64_t,
                                      std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
     return 0;
 }
 
 
-Algorithm::Description const & LTCAES128ECBDecrypter::GetDescription_() const {
+Algorithm::Description const & LTCAES256ECBEncrypter::GetDescription_() const {
     return ::GetDescription();
 }
 
 
-int LTCAES128ECBDecrypter::Initialize_(
+int LTCAES256ECBEncrypter::Initialize_(
         std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const & initialization_data) {
 
     auto cipher_index = SetDescriptor(&aes_desc);
@@ -113,8 +114,9 @@ int LTCAES128ECBDecrypter::Initialize_(
     }
 
     auto [key_data, key_size] = (*iter).second;
-    if (key_size > 0) {
-        assert(key_data != nullptr && "Applying key which is NULL/nullptr while size is > 0.");
+    if ((key_size > 0) && (key_data == nullptr)) {
+        headcode::logger::Warning{"headcode.crypt"} << "Applying key which is NULL/nullptr while size is > 0.";
+        return static_cast<int>(Error::kInvalidArgument);
     }
 
     symmetric_ECB * state = &GetState();
@@ -122,7 +124,7 @@ int LTCAES128ECBDecrypter::Initialize_(
 }
 
 
-void LTCAES128ECBDecrypter::Register() {
+void LTCAES256ECBEncrypter::Register() {
     auto const & description = ::GetDescription();
-    Factory::Register(description.name_, description.family_, std::make_shared<LTCAES128ECBDecryptorProducer>());
+    Factory::Register(description.name_, description.family_, std::make_shared<LTCAES256ECBEncryptorProducer>());
 }

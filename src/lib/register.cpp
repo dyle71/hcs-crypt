@@ -32,8 +32,8 @@
 #endif
 
 #include "symmetric_cipher/copy.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_decrypter.hpp"
-#include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
+#include "symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_decrypter.hpp"
+#include "symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_encrypter.hpp"
 
 #ifdef OPENSSL
 #include "symmetric_cipher/openssl/aes/cbc/openssl_aes_128_cbc_decryptor.hpp"
