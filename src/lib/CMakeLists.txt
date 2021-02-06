@@ -6,6 +6,7 @@
 # Oliver Maurhart <info@headcode.space>, https://www.headcode.space
 # ------------------------------------------------------------
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CRYPT_SRC
 
@@ -46,18 +47,18 @@ if (WITH_OPENSSL)
         hash/openssl/openssl_sha384.cpp
         hash/openssl/openssl_sha512.cpp
 
-        symmetric_cipher/openssl/openssl_aes_128_cbc_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_128_cbc_encryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_192_cbc_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_192_cbc_encryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_192_ecb_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_192_ecb_encryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_256_cbc_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_256_cbc_encryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_256_ecb_decryptor.cpp
-        symmetric_cipher/openssl/openssl_aes_256_ecb_encryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_128_cbc_decryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_128_cbc_encryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_128_ecb_decryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_128_ecb_encryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_192_cbc_decryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_192_cbc_encryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_192_ecb_decryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_192_ecb_encryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_256_cbc_decryptor.cpp
+        symmetric_cipher/openssl/aes/cbc/openssl_aes_256_cbc_encryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_256_ecb_decryptor.cpp
+        symmetric_cipher/openssl/aes/ecb/openssl_aes_256_ecb_encryptor.cpp
         symmetric_cipher/openssl/openssl_symmetric_cipher.cpp
     )
 endif ()

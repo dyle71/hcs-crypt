@@ -36,18 +36,18 @@
 #include "symmetric_cipher/ltc/ltc_aes_128_ecb_encrypter.hpp"
 
 #ifdef OPENSSL
-#include "symmetric_cipher/openssl/openssl_aes_128_cbc_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_128_cbc_encryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_128_ecb_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_128_ecb_encryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_192_cbc_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_192_cbc_encryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_192_ecb_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_192_ecb_encryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_256_cbc_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_256_cbc_encryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_256_ecb_decryptor.hpp"
-#include "symmetric_cipher/openssl/openssl_aes_256_ecb_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_128_cbc_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_128_cbc_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_128_ecb_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_128_ecb_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_192_cbc_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_192_cbc_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_192_ecb_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_192_ecb_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_256_cbc_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/cbc/openssl_aes_256_cbc_encryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_256_ecb_decryptor.hpp"
+#include "symmetric_cipher/openssl/aes/ecb/openssl_aes_256_ecb_encryptor.hpp"
 #endif
 
 

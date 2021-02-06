@@ -6,25 +6,25 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_192_ECB_DECRYPTOR_HPP
-#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_192_ECB_DECRYPTOR_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_CBC_DECRYPTOR_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_OPENSSL_AES_128_CBC_DECRYPTOR_HPP
 
-#include "openssl_symmetric_cipher.hpp"
+#include "symmetric_cipher/openssl/openssl_symmetric_cipher.hpp"
 
 
 namespace headcode::crypt {
 
 
 /**
- * @brief   The OpenSSL AES 192 Bit Cypher ECB Decryptor.
+ * @brief   The OpenSSL AES 128 Bit Cypher CBC Decryptor.
  */
-class OpenSSLAES192ECBDecrypter : public OpenSSLSymmetricCipher {
+class OpenSSLAES128CBCDecrypter : public OpenSSLSymmetricCipher {
 
 public:
     /**
      * @brief   Constructor
      */
-    OpenSSLAES192ECBDecrypter() : OpenSSLSymmetricCipher(false) {
+    OpenSSLAES128CBCDecrypter() : OpenSSLSymmetricCipher(false) {
     }
 
     /**
