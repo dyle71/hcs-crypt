@@ -11,11 +11,15 @@
 #include <memory>
 #include <mutex>
 
+#include <headcode/logger/logger.hpp>
 #include <headcode/crypt/factory.hpp>
 
 #include "register.hpp"
 
 using namespace headcode::crypt;
+
+
+namespace headcode::crypt {
 
 
 /**
@@ -47,7 +51,10 @@ public:
     /**
      * @brief   Constructor.
      */
-    Registry() = default;
+    Registry() {
+        // enforce birth of logger subsystem
+        headcode::logger::Logger::GetLogger();
+    }
 
     /**
      * @brief   Copy Constructor.
@@ -78,13 +85,16 @@ public:
 };
 
 
+}
+
+
 /**
  * @brief   Returns the Registry singleton.
  * @return  The one and only registry instance.
  */
 static Registry & GetRegistryInstance() {
 
-    static Registry registry;
+    static headcode::crypt::Registry registry;
 
     // Double Check Locking Pattern not on singleton instance
     // (since due to C++11 static standard behavior this is thread-safe)
@@ -163,4 +173,5 @@ void Factory::Register(std::string const & name, Family family, std::shared_ptr<
     std::lock_guard<std::mutex> lock(registry.mutex_);
     registry.producer_registry_[name] = std::make_tuple(family, std::move(producer));
     registry.mod_counter_++;
+    headcode::logger::Debug{"headcode.crypt"} << "Registered algorithm: " << name;
 }
