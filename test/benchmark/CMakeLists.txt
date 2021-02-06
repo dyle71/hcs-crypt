@@ -25,11 +25,16 @@ set(BENCHMARK_TEST_SRC
     ltc/hash/test_ltc_sha384.cpp
     ltc/hash/test_ltc_sha512.cpp
     ltc/hash/test_ltc_tiger192.cpp
+
+    ltc/symmetric_cipher/test_ltc_aes_128_ecb.cpp
+    ltc/symmetric_cipher/test_ltc_aes_192_ecb.cpp
+    ltc/symmetric_cipher/test_ltc_aes_256_ecb.cpp
 )
 
 
 if (WITH_OPENSSL)
     set(BENCHMARK_TEST_OPENSSL_SRC
+
         openssl/hash/test_openssl_md5.cpp
         openssl/hash/test_openssl_ripemd160.cpp
         openssl/hash/test_openssl_sha1.cpp
@@ -37,6 +42,10 @@ if (WITH_OPENSSL)
         openssl/hash/test_openssl_sha256.cpp
         openssl/hash/test_openssl_sha384.cpp
         openssl/hash/test_openssl_sha512.cpp
+
+        openssl/symmetric_cipher/test_openssl_aes_128_ecb.cpp
+        openssl/symmetric_cipher/test_openssl_aes_192_ecb.cpp
+        openssl/symmetric_cipher/test_openssl_aes_256_ecb.cpp
     )
 endif()
 
