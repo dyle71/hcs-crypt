@@ -14,6 +14,32 @@ your application against these static libraries you have 0 (zero, nada) runtime 
 However, if you turn on any other algorithm providers (e.g. OpenSSL), then these are most likely linked
 dynamically. This will result in a bunch of runtime dependencies for those libraries. 
 
+
+## Philosophy
+
+All `headcode.space` software follows these directives:
+
+1. Provide very **high quality** C++ software. That's the topmost goal.
+
+2. Provide appealing C++ software, i.e. software which is **easily read and understood**.
+   Second goal.
+
+3. Provide software with **super minimal public interfaces**. I try to really provide the absolute
+   minimum without any bloat. The users of the software should only include the main header file
+   (e.g. `#include <headcode/logger/logger.hpp>`) and nothing else. These are self-contained and
+   rely only on C++ standard headers. No additional 3rd party headers required. Third goal.
+
+4. Provide libraries and binaries with **little to no runtime dependencies**. Yet, linkage might
+   require additional libraries (sometimes from `headcode.space` sometimes else, like OpenSSL here). 
+   Whenever possible I strive to go for the *static libraries*, because a) the resulting binaries 
+   when linked against these libraries have little to no runtime dependency and can be installed
+   directly with a mere `copy` and b) they are smaller too, since the linkers tend to strip off
+   stuff which is not needed.
+
+I'm by no means perfect. There's always room for improvements and there are sure still bugs.
+If you have any suggestions please drop in an email at https://gitlab.com/headcode.space/crypt/-/issues.
+
+
 ## The API
 
 The API (Application Programming Interface) is very, very small. Yet it manages to address all issues
@@ -188,7 +214,7 @@ Finalizing arguments: n/a
 ├── cmake                       CMake additional files.
 ├── include                     Public header files. Add the path to this folder to your C++ search path.
 │   └── headcode                
-│       └── crypt               Include this: <headcode/crypt/crypt.hpp>
+│       └── crypt               Here is the main include: <headcode/crypt/crypt.hpp>
 ├── src                         Main sources.
 │   ├── bin                     Binary "crypt" sources, the command line client.
 │   └── lib                     Static libhcs-crypt.a sources.
@@ -218,6 +244,7 @@ Finalizing arguments: n/a
 - [googletest](https://github.com/google/googletest) (as git submodule)
 - [hcs-mem](https://gitlab.com/headcode.space/memtool.git) (as git submodule)
 - [hcs-benchmark](https://gitlab.com/headcode.space/benchmark.git) (as git submodule)
+- [hcs-logger](https://gitlab.com/headcode.space/logger.git) (as git submodule)
 - [libtomcrypt](https://github.com/libtom/libtomcrypt.git) (as git submodule)
 - [libtommath](https://github.com/libtom/libtommath.git) (as git submodule)
 - OpenSSL (optional additional crypto provider)
