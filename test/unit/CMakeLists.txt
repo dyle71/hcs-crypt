@@ -23,8 +23,11 @@ set(UNIT_TEST_SRC
     cli/test_cli.cpp
 
     symmetric_cipher/test_copy.cpp
+    symmetric_cipher/ltc/test_ltc_aes_128_cbc.cpp
     symmetric_cipher/ltc/test_ltc_aes_128_ecb.cpp
+    symmetric_cipher/ltc/test_ltc_aes_192_cbc.cpp
     symmetric_cipher/ltc/test_ltc_aes_192_ecb.cpp
+    symmetric_cipher/ltc/test_ltc_aes_256_cbc.cpp
     symmetric_cipher/ltc/test_ltc_aes_256_ecb.cpp
 
     hash/test_nohash.cpp

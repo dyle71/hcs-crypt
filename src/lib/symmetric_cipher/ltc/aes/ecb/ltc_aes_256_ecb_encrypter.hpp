@@ -14,7 +14,7 @@
 
 #include <headcode/crypt/algorithm.hpp>
 
-#include "symmetric_cipher/ltc/ltc_symmetric_ecb_cipher.hpp"
+#include "ltc_symmetric_ecb_cipher.hpp"
 
 
 namespace headcode::crypt {

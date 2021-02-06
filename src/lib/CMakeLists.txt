@@ -18,6 +18,12 @@ set(CRYPT_SRC
     register.cpp
 
     symmetric_cipher/copy.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_128_cbc_decrypter.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_128_cbc_encrypter.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_192_cbc_decrypter.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_192_cbc_encrypter.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_256_cbc_decrypter.cpp
+    symmetric_cipher/ltc/aes/cbc/ltc_aes_256_cbc_encrypter.cpp
     symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_decrypter.cpp
     symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_encrypter.cpp
     symmetric_cipher/ltc/aes/ecb/ltc_aes_192_ecb_decrypter.cpp

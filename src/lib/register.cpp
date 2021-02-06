@@ -32,6 +32,12 @@
 #endif
 
 #include "symmetric_cipher/copy.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_128_cbc_decrypter.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_128_cbc_encrypter.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_192_cbc_decrypter.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_192_cbc_encrypter.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_256_cbc_decrypter.hpp"
+#include "symmetric_cipher/ltc/aes/cbc/ltc_aes_256_cbc_encrypter.hpp"
 #include "symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_decrypter.hpp"
 #include "symmetric_cipher/ltc/aes/ecb/ltc_aes_128_ecb_encrypter.hpp"
 #include "symmetric_cipher/ltc/aes/ecb/ltc_aes_192_ecb_decrypter.hpp"
@@ -73,6 +79,12 @@ void headcode::crypt::RegisterKnownAlgorithms() {
 
     Copy::Register();
 
+    LTCAES128CBCDecrypter::Register();
+    LTCAES128CBCEncrypter::Register();
+    LTCAES192CBCDecrypter::Register();
+    LTCAES192CBCEncrypter::Register();
+    LTCAES256CBCDecrypter::Register();
+    LTCAES256CBCEncrypter::Register();
     LTCAES128ECBDecrypter::Register();
     LTCAES128ECBEncrypter::Register();
     LTCAES192ECBDecrypter::Register();

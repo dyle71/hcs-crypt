@@ -6,24 +6,24 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_192_ECB_DECRYPTOR_HPP
-#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_192_ECB_DECRYPTOR_HPP
+#ifndef HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_128_CBC_ENCRYPTOR_HPP
+#define HEADCODE_SPACE_CRYPT_CYPHER_SYMMTERIC_LTC_AES_128_CBC_ENCRYPTOR_HPP
 
 #include <cstddef>
 #include <vector>
 
 #include <headcode/crypt/algorithm.hpp>
 
-#include "ltc_symmetric_ecb_cipher.hpp"
+#include "ltc_symmetric_cbc_cipher.hpp"
 
 
 namespace headcode::crypt {
 
 
 /**
- * @brief   The LibTomCrypt AES 192 Bit Cypher ECB Decryptor.
+ * @brief   The LibTomCrypt AES 128 Bit Cypher CBC Encryptor.
  */
-class LTCAES192ECBDecrypter : public LTCSymmetricECBCipher {
+class LTCAES128CBCEncrypter : public LTCSymmetricCBCCipher {
 
 public:
     /**

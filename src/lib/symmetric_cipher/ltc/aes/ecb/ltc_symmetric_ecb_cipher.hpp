@@ -13,7 +13,7 @@
 
 #include <headcode/crypt/algorithm.hpp>
 
-#include "ltc_symmetric_cipher.hpp"
+#include "symmetric_cipher/ltc/ltc_symmetric_cipher.hpp"
 
 
 namespace headcode::crypt {
