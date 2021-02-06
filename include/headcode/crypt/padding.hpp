@@ -75,6 +75,21 @@ std::string const & GetPaddingStrategyText(PaddingStrategy padding_strategy);
 void Pad(std::vector<std::byte> & block, std::uint64_t size, PaddingStrategy padding_strategy);
 
 
+/**
+ * @brief   Perform padding on the given block.
+ * @param   block                   the block memory to be padded.
+ * @param   total_size              the total size of block (all what is allocated [total_size >= current_size]).
+ * @param   current_size            the current size of block data (up to which point do we have data).
+ * @param   padding_size            the desired padding size (must not exceed 255).
+ * @param   padding_strategy        The padding strategy applied.
+ */
+void Pad(unsigned char * block,
+         std::uint64_t total_size,
+         std::uint64_t current_size,
+         std::uint64_t padding_size,
+         PaddingStrategy padding_strategy);
+
+
 }
 
 

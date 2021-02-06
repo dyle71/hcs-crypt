@@ -15,8 +15,9 @@
 /**
  * @param   Parameterized test fixture class.
  */
-class TestPadding : public testing::TestWithParam<
-                            ::testing::tuple<headcode::crypt::PaddingStrategy, std::uint64_t, std::vector<std::byte>>> {
+class TestPaddingVector
+        : public testing::TestWithParam<
+                  ::testing::tuple<headcode::crypt::PaddingStrategy, std::uint64_t, std::vector<std::byte>>> {
 
 protected:
     /**
@@ -33,7 +34,7 @@ protected:
 };
 
 
-TEST_P(TestPadding, padding_paramterized) {
+TEST_P(TestPaddingVector, padding_paramterized) {
 
     headcode::crypt::PaddingStrategy padding_strategy = ::testing::get<0>(GetParam());
     ASSERT_FALSE(headcode::crypt::GetPaddingStrategyText(padding_strategy).empty());
@@ -114,27 +115,140 @@ TEST_P(TestPadding, padding_paramterized) {
 }
 
 
-static std::string const IPSUM_LOREM_10 = "Lorem ipsu";
+/**
+ * @param   Parameterized test fixture class.
+ */
+class TestPaddingCArray
+        : public testing::TestWithParam<
+                  ::testing::tuple<headcode::crypt::PaddingStrategy, std::uint64_t, std::vector<std::byte>>> {
 
-static std::string const IPSUM_LOREM_15 = "Lorem ipsum dol";
+protected:
+    /**
+     * @brief   Setup the paramterized tests.
+     */
+    void SetUp() override {
+    }
 
-static std::string const IPSUM_LOREM_16 = "Lorem ipsum dolo";
+    /**
+     * @brief   Wind down the paramterized tests.
+     */
+    void TearDown() override {
+    }
+};
 
-static std::string const IPSUM_LOREM_17 = "Lorem ipsum dolor";
 
-static std::string const IPSUM_LOREM_27 = "Lorem ipsum dolor sit amet,";
+TEST_P(TestPaddingCArray, padding_paramterized) {
 
-static std::string const IPSUM_LOREM_32 = "Lorem ipsum dolor sit amet, cons";
+    headcode::crypt::PaddingStrategy padding_strategy = ::testing::get<0>(GetParam());
+    ASSERT_FALSE(headcode::crypt::GetPaddingStrategyText(padding_strategy).empty());
 
-static std::string const IPSUM_LOREM_33 = "Lorem ipsum dolor sit amet, conse";
+    std::uint64_t padding_size = ::testing::get<1>(GetParam());
+    std::vector<std::byte> const & input = ::testing::get<2>(GetParam());
 
-static std::string const IPSUM_LOREM_60 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed ";
+    std::uint64_t current_size = input.size();
+    std::uint64_t total_size = current_size;
 
-static std::string const IPSUM_LOREM_64 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eius";
+    if ((padding_size > 0) && ((total_size % padding_size) != 0)) {
+        total_size += padding_size - (total_size % padding_size);
+    }
 
-static std::string const IPSUM_LOREM_65 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusm";
+    auto block = new unsigned char[total_size];
+    std::memcpy(block, input.data(), current_size);
+    headcode::crypt::Pad(block, total_size, current_size, padding_size, padding_strategy);
 
-static std::string const IPSUM_LOREM_LONG =
+    if ((total_size == input.size()) || (padding_strategy == headcode::crypt::PaddingStrategy::PADDING_NONE)) {
+
+        // no padding ==> no change and block size is a multiple of size
+        if ((padding_size != 0) && (padding_strategy != headcode::crypt::PaddingStrategy::PADDING_NONE)) {
+            EXPECT_EQ(input.size() % padding_size, 0ul);
+        }
+        EXPECT_EQ(std::memcmp(block, input.data(), current_size), 0);
+
+    } else {
+
+        auto padded_size = total_size - input.size();
+        EXPECT_TRUE(padded_size > 0);
+        EXPECT_EQ(total_size % padding_size, 0u);
+        ASSERT_EQ(std::memcmp(block, input.data(), input.size()), 0);
+        auto padded_start = reinterpret_cast<unsigned char *>(block + input.size());
+        auto padded_end = reinterpret_cast<unsigned char *>(block + total_size);
+        auto padded_byte = padded_start;
+
+        switch (padding_strategy) {
+
+            case headcode::crypt::PaddingStrategy::PADDING_PKCS_5_7:
+                // PADDING_PKCS_5_7: The value of each pad byte is the total number of bytes that are added.
+                while (padded_byte != padded_end) {
+                    EXPECT_EQ(*padded_byte, padded_size);
+                    padded_byte++;
+                }
+                break;
+
+            case headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23:
+                // PADDING_ANSI_X9_23: The last byte of the padding (thus, the last byte of the block) is the
+                // number of pad bytes. All other bytes of the padding are zeros.
+                while (padded_byte != padded_end - 1) {
+                    EXPECT_EQ(*padded_byte, 0);
+                    padded_byte++;
+                }
+                EXPECT_EQ(*padded_byte, padded_size);
+                break;
+
+            case headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4:
+                // PADDING_ISO_7816_4: The first byte of the padding is 0x80. All other bytes of the padding
+                // are zeros.
+                EXPECT_EQ(*padded_byte, 0x80u);
+                padded_byte++;
+                while (padded_byte != padded_end) {
+                    EXPECT_EQ(*padded_byte, 0);
+                    padded_byte++;
+                }
+                break;
+
+            case headcode::crypt::PaddingStrategy::PADDING_ZERO:
+                // PADDING_ZERO: All padding bytes are zeros.
+                while (padded_byte != padded_end) {
+                    EXPECT_EQ(*padded_byte, 0u);
+                    padded_byte++;
+                }
+                break;
+
+            case headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2:
+                // PADDING_ISO_10126_2: The last byte of the padding (thus, the last byte of the block)
+                // is the number of pad bytes. All other bytes of the padding are some random data.
+                EXPECT_EQ(*(padded_end - 1), padded_size);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    delete[] block;
+}
+
+
+static std::string const kIpsumLorem10 = "Lorem ipsu";
+
+static std::string const kIpsumLorem15 = "Lorem ipsum dol";
+
+static std::string const kIpsumLorem16 = "Lorem ipsum dolo";
+
+static std::string const kIpsumLorem17 = "Lorem ipsum dolor";
+
+static std::string const kIpsumLorem27 = "Lorem ipsum dolor sit amet,";
+
+static std::string const kIpsumLorem32 = "Lorem ipsum dolor sit amet, cons";
+
+static std::string const kIpsumLorem33 = "Lorem ipsum dolor sit amet, conse";
+
+static std::string const kIpsumLorem60 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed ";
+
+static std::string const kIpsumLorem64 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eius";
+
+static std::string const kIpsumLorem65 = "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusm";
+
+static std::string const kIpsumLoremLong =
         "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eius"
         "mod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad"
         "minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
@@ -151,27 +265,34 @@ static std::string const IPSUM_LOREM_LONG =
         "volutpat.";
 
 
-static auto INPUT_PADDING_STRATEGIES = ::testing::Values(headcode::crypt::PaddingStrategy::PADDING_NONE,
-                                                         headcode::crypt::PaddingStrategy::PADDING_PKCS_5_7,
-                                                         headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4,
-                                                         headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2,
-                                                         headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23,
-                                                         headcode::crypt::PaddingStrategy::PADDING_ZERO);
+static auto kInputPaddingStrategies = ::testing::Values(headcode::crypt::PaddingStrategy::PADDING_NONE,
+                                                        headcode::crypt::PaddingStrategy::PADDING_PKCS_5_7,
+                                                        headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4,
+                                                        headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2,
+                                                        headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23,
+                                                        headcode::crypt::PaddingStrategy::PADDING_ZERO);
 
-static auto INPUT_SIZES = ::testing::Values(0, 16, 32, 64);
-
-
-static auto INPUT_VALUES = ::testing::Values(headcode::mem::StringToMemory(IPSUM_LOREM_10),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_15),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_16),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_17),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_27),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_32),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_33),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_60),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_64),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_65),
-                                             headcode::mem::StringToMemory(IPSUM_LOREM_LONG));
+static auto kInputSize = ::testing::Values(0, 16, 32, 64);
 
 
-INSTANTIATE_TEST_SUITE_P(padding, TestPadding, ::testing::Combine(INPUT_PADDING_STRATEGIES, INPUT_SIZES, INPUT_VALUES));
+static auto kInputValues = ::testing::Values(headcode::mem::StringToMemory(kIpsumLorem10),
+                                             headcode::mem::StringToMemory(kIpsumLorem15),
+                                             headcode::mem::StringToMemory(kIpsumLorem16),
+                                             headcode::mem::StringToMemory(kIpsumLorem17),
+                                             headcode::mem::StringToMemory(kIpsumLorem27),
+                                             headcode::mem::StringToMemory(kIpsumLorem32),
+                                             headcode::mem::StringToMemory(kIpsumLorem33),
+                                             headcode::mem::StringToMemory(kIpsumLorem60),
+                                             headcode::mem::StringToMemory(kIpsumLorem64),
+                                             headcode::mem::StringToMemory(kIpsumLorem65),
+                                             headcode::mem::StringToMemory(kIpsumLoremLong));
+
+
+INSTANTIATE_TEST_SUITE_P(padding,
+                         TestPaddingVector,
+                         ::testing::Combine(kInputPaddingStrategies, kInputSize, kInputValues));
+
+
+INSTANTIATE_TEST_SUITE_P(padding,
+                         TestPaddingCArray,
+                         ::testing::Combine(kInputPaddingStrategies, kInputSize, kInputValues));
