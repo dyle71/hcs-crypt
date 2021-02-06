@@ -14,29 +14,29 @@ set(BENCHMARK_TEST_SRC
     test_copy.cpp
     test_nohash.cpp
 
-    ltc/test_ltc_md5.cpp
-    ltc/test_ltc_ripemd128.cpp
-    ltc/test_ltc_ripemd160.cpp
-    ltc/test_ltc_ripemd256.cpp
-    ltc/test_ltc_ripemd320.cpp
-    ltc/test_ltc_sha1.cpp
-    ltc/test_ltc_sha224.cpp
-    ltc/test_ltc_sha256.cpp
-    ltc/test_ltc_sha384.cpp
-    ltc/test_ltc_sha512.cpp
-    ltc/test_ltc_tiger192.cpp
+    ltc/hash/test_ltc_md5.cpp
+    ltc/hash/test_ltc_ripemd128.cpp
+    ltc/hash/test_ltc_ripemd160.cpp
+    ltc/hash/test_ltc_ripemd256.cpp
+    ltc/hash/test_ltc_ripemd320.cpp
+    ltc/hash/test_ltc_sha1.cpp
+    ltc/hash/test_ltc_sha224.cpp
+    ltc/hash/test_ltc_sha256.cpp
+    ltc/hash/test_ltc_sha384.cpp
+    ltc/hash/test_ltc_sha512.cpp
+    ltc/hash/test_ltc_tiger192.cpp
 )
 
 
 if (WITH_OPENSSL)
     set(BENCHMARK_TEST_OPENSSL_SRC
-        openssl/test_openssl_md5.cpp
-        openssl/test_openssl_ripemd160.cpp
-        openssl/test_openssl_sha1.cpp
-        openssl/test_openssl_sha224.cpp
-        openssl/test_openssl_sha256.cpp
-        openssl/test_openssl_sha384.cpp
-        openssl/test_openssl_sha512.cpp
+        openssl/hash/test_openssl_md5.cpp
+        openssl/hash/test_openssl_ripemd160.cpp
+        openssl/hash/test_openssl_sha1.cpp
+        openssl/hash/test_openssl_sha224.cpp
+        openssl/hash/test_openssl_sha256.cpp
+        openssl/hash/test_openssl_sha384.cpp
+        openssl/hash/test_openssl_sha512.cpp
     )
 endif()
 

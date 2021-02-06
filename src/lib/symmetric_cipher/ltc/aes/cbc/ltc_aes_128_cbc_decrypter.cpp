@@ -105,7 +105,6 @@ int LTCAES128CBCDecrypter::Initialize_(
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {
         return static_cast<int>(Error::kInvalidArgument);
-
     }
 
     auto iter = initialization_data.find("key");
