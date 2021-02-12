@@ -77,6 +77,11 @@ void Pad(std::vector<std::byte> & block, std::uint64_t size, PaddingStrategy pad
 
 /**
  * @brief   Perform padding on the given block.
+ *
+ * This is the "low level" padding function operating on C arrays.
+ * Avoid this and use the byte-vector function instead, unless you know exactly what you are doing.
+ * total_size must be greater than current_size by a padding_size max.
+ *
  * @param   block                   the block memory to be padded.
  * @param   total_size              the total size of block (all what is allocated [total_size >= current_size]).
  * @param   current_size            the current size of block data (up to which point do we have data).

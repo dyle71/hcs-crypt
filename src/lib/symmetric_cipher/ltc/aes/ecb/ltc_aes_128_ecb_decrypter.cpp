@@ -21,6 +21,7 @@ using namespace headcode::crypt;
  */
 static Algorithm::Description const & GetDescription() {
 
+    // TODO: make const
     static Algorithm::Description description = {
             "ltc-aes-128-ecb-decryptor",                                // name
             Family::kSymmetricCipher,                                   // family
@@ -75,15 +76,19 @@ int LTCAES128ECBDecrypter::Add_(unsigned char const * block_incoming,
                                 unsigned char * block_outgoing,
                                 std::uint64_t & size_outgoing) {
 
-    size_outgoing = size_incoming;
-
     auto cipher_index = SetDescriptor(&aes_desc);
     if (cipher_index == -1) {
         return -1;
     }
 
+    // TODO: reduce duplicate and set the outgoing size
+
     symmetric_ECB * state = &GetState();
-    return ecb_decrypt(block_incoming, block_outgoing, size_incoming, state);
+    int res = ecb_decrypt(block_incoming, block_outgoing, size_incoming, state);
+    if (!res) {
+        size_outgoing = size_incoming;
+    }
+    return res;
 }
 
 
