@@ -20,7 +20,9 @@ set(UNIT_TEST_SRC
     test_version.cpp
 
     ${CMAKE_SOURCE_DIR}/src/bin/cli.cpp
+    ${CMAKE_SOURCE_DIR}/src/bin/explain_algorithm.cpp
     cli/test_cli.cpp
+    cli/test_explain_algorithm.cpp
 
     symmetric_cipher/test_copy.cpp
     symmetric_cipher/ltc/test_ltc_aes_128_cbc.cpp
