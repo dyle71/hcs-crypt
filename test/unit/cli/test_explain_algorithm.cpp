@@ -6,7 +6,9 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
+
 #include <sstream>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -19,7 +21,7 @@
  * @param   delim           the delimiter used.
  * @return  the lines produced.
  */
-std::vector<std::string> Split(std::string const & str, char delim = '\n') {
+static std::vector<std::string> Split(std::string const & str, char delim = '\n') {
 
     std::vector<std::string> res;
     res.clear();

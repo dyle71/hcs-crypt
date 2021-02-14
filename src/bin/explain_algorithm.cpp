@@ -18,7 +18,7 @@
 /**
  * @brief   Gets a text describing the block size or "n/a" if the size is 0 or ambiguous
  * @param   size            the size of the block.
- * @return  A text describing the blokc size
+ * @return  A text describing the block size
  */
 static std::string GetBlockSizeText(std::uint64_t size) {
     if (size != 0) {
