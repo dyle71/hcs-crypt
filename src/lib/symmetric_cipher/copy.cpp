@@ -110,5 +110,3 @@ void Copy::Register() {
     Factory::Register(description.name_, description.family_, std::make_shared<CopyProducer>());
 }
 
-
-
