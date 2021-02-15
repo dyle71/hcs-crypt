@@ -52,58 +52,18 @@ void headcode::crypt::Pad(std::vector<std::byte> & block, std::uint64_t size, Pa
         return;
     }
     if (size == 0) {
+        headcode::logger::Warning{"headcode.crypt"} << "Block size of padding may not be 0.";
         return;
     }
 
-    unsigned char padded_size = block.size() % size;
-    if ((padded_size == 0) || (padding_strategy == headcode::crypt::PaddingStrategy::PADDING_NONE)) {
-        return;
+    auto current_size = block.size();
+    unsigned char padded_size = current_size % size;
+    if ((padded_size != 0) && (padding_strategy != PaddingStrategy::PADDING_NONE)) {
+        block.resize((block.size() / size + 1) * size);
     }
-    padded_size = size - padded_size;
+    auto total_size = block.size();
 
-    block.resize((block.size() / size + 1) * size);
-    auto padded_end = reinterpret_cast<unsigned char *>(block.data()) + block.size();
-    auto padded_byte = padded_end - padded_size;
-
-    switch (padding_strategy) {
-
-        case headcode::crypt::PaddingStrategy::PADDING_PKCS_5_7:
-            // PADDING_PKCS_5_7: The value of each pad byte is the total number of bytes that are added.
-            std::memset(padded_byte, padded_size, padded_size);
-            break;
-
-        case headcode::crypt::PaddingStrategy::PADDING_ANSI_X9_23:
-            // PADDING_ANSI_X9_23: The last byte of the padding (thus, the last byte of the block) is the
-            // number of pad bytes. All other bytes of the padding are zeros.
-            std::memset(padded_byte, 0, padded_size - 1);
-            padded_byte[padded_size - 1] = padded_size;
-            break;
-
-        case headcode::crypt::PaddingStrategy::PADDING_ISO_7816_4:
-            // PADDING_ISO_7816_4: The first byte of the padding is 0x80.
-            // All other bytes of the padding are zeros.
-            *padded_byte = 0x80;
-            std::memset(padded_byte + 1, 0, padded_size - 1);
-            break;
-
-        case headcode::crypt::PaddingStrategy::PADDING_ZERO:
-            // PADDING_ZERO: All padding bytes are zeros.
-            std::memset(padded_byte, 0, padded_size);
-            break;
-
-        case headcode::crypt::PaddingStrategy::PADDING_ISO_10126_2:
-            // PADDING_ISO_10126_2: The last byte of the padding (thus, the last byte of the block)
-            // is the number of pad bytes. All other bytes of the padding are some random data.
-            while (padded_byte != padded_end - 1) {
-                *padded_byte = RandomChar();
-                padded_byte++;
-            }
-            *padded_byte = padded_size;
-            break;
-
-        default:
-            break;
-    }
+    Pad(reinterpret_cast<unsigned char *>(block.data()), total_size, current_size, size, padding_strategy);
 }
 
 
@@ -122,6 +82,7 @@ void headcode::crypt::Pad(unsigned char * block,
         return;
     }
     if (padding_size == 0) {
+        headcode::logger::Warning{"headcode.crypt"} << "Block size of padding may not be 0.";
         return;
     }
     if (total_size < padding_size) {

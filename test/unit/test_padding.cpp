@@ -41,8 +41,8 @@ TEST_P(TestPaddingVector, padding_paramterized) {
 
     std::uint64_t size = ::testing::get<1>(GetParam());
     std::vector<std::byte> const & input = ::testing::get<2>(GetParam());
-
     std::vector<std::byte> block = input;
+
     headcode::crypt::Pad(block, size, padding_strategy);
 
     if ((block.size() == input.size()) || (padding_strategy == headcode::crypt::PaddingStrategy::PADDING_NONE)) {
