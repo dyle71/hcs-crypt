@@ -161,6 +161,20 @@ endif ()
 
 
 # ------------------------------------------------------------
+# cxxopts
+#
+# Download https://github.com/jarro2783/cxxopts as
+#
+#   $ git submodule add https://github.com/jarro2783/cxxopts 3rd/cxxopts
+
+if (NOT EXISTS "${CMAKE_SOURCE_DIR}/3rd/cxxopts/CMakeLists.txt")
+    message(FATAL_ERROR "The git submodule for cxxopts has not been downloaded!")
+endif ()
+message(STATUS "Found cxxopts")
+include_directories(${CMAKE_SOURCE_DIR}/3rd/cxxopts/include)
+
+
+# ------------------------------------------------------------
 # headcode/benchmark as submodule
 
 include(hcs-benchmark)

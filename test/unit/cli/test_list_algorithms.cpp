@@ -6,14 +6,17 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <regex>
 #include <set>
 #include <sstream>
 #include <string>
 
 #include <gtest/gtest.h>
 
+#include "shared/split_lines.hpp"
+#include "shared/trim_string.hpp"
+
 #include "../../../src/bin/list_algorithms.hpp"
+
 
 
 static std::set<std::string> const kAlgorithms{
@@ -62,43 +65,6 @@ static std::set<std::string> const kAlgorithms{
         "ltc-ripemd256",
         "ltc-sha1",
         "nohash"};
-
-
-/**
- * @brief   Splits the content of the given str.
- * @param   str             the string to split.
- * @param   delim           the delimiter used.
- * @return  the lines produced.
- */
-static std::vector<std::string> Split(std::string const & str, char delim = '\n') {
-
-    std::vector<std::string> res;
-    res.clear();
-
-    std::stringstream ss{str};
-    std::string line;
-    while (std::getline(ss, line, delim)) {
-        res.push_back(line);
-    }
-
-    return res;
-}
-
-
-/**
- * @brief   Strips all whitespace from start and end of a string.
- * @param   str     the string to strip
- * @return  same as str but all whitespaces removed.
- */
-static std::string Trim(std::string str) {
-
-    static std::regex const re{R"(\s*(.*)\s*)"};
-    std::smatch m;
-    if (std::regex_match(str, m, re)) {
-        str = m[1].str();
-    }
-    return str;
-}
 
 
 TEST(Crypt_list_algorithms, regular) {

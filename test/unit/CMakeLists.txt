@@ -22,9 +22,11 @@ set(UNIT_TEST_SRC
     ${CMAKE_SOURCE_DIR}/src/bin/cli.cpp
     ${CMAKE_SOURCE_DIR}/src/bin/explain_algorithm.cpp
     ${CMAKE_SOURCE_DIR}/src/bin/list_algorithms.cpp
-    cli/test_cli.cpp
+    ${CMAKE_SOURCE_DIR}/src/bin/run.cpp
+    ${CMAKE_SOURCE_DIR}/src/bin/start.cpp
     cli/test_explain_algorithm.cpp
     cli/test_list_algorithms.cpp
+    cli/test_start.cpp
 
     symmetric_cipher/test_copy.cpp
     symmetric_cipher/ltc/test_ltc_aes_128_cbc.cpp

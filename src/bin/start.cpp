@@ -14,29 +14,34 @@
 #include "run.hpp"
 
 
-int Start(int argc, char ** argv) {
+int Start(int argc, char ** argv, std::istream & in, std::ostream & out, std::ostream & err) {
 
     // TODO: Drop to seccomp: https://en.wikipedia.org/wiki/Seccomp
 
-    auto config = ParseCommandLine(argc, argv);
+    auto config = ParseCommandLine(argc, argv, in, out, err);
     if (!config.IsConfigOk()) {
-        std::cerr << "Error parsing command line: " << config.error_string_ << std::endl;
-        std::cerr << "Type -h or --help for help." << std::endl;
+        config.err_ << "Error parsing command line: " << config.error_string_ << std::endl;
+        config.err_ << "Type -h or --help for help." << std::endl;
         return 255;
     }
 
+    if (config.help_) {
+        ShowHelp(config.out_);
+        return 0;
+    }
+
     if (config.version_) {
-        ShowVersion();
+        ShowVersion(config.out_);
         return 0;
     }
 
     if (config.list_algorithms_) {
-        ListAlgorithms(std::cout);
+        ListAlgorithms(config.out_);
         return 0;
     }
 
     if (config.explain_algorithm_) {
-        ExplainAlgorithm(std::cout, config.algorithm_);
+        ExplainAlgorithm(config.out_, config.algorithm_);
         return 0;
     }
 

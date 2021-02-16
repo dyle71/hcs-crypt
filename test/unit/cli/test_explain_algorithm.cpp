@@ -12,28 +12,9 @@
 
 #include <gtest/gtest.h>
 
+#include "shared/split_lines.hpp"
+
 #include "../../../src/bin/explain_algorithm.hpp"
-
-
-/**
- * @brief   Splits the content of the given str.
- * @param   str             the string to split.
- * @param   delim           the delimiter used.
- * @return  the lines produced.
- */
-static std::vector<std::string> Split(std::string const & str, char delim = '\n') {
-
-    std::vector<std::string> res;
-    res.clear();
-
-    std::stringstream ss{str};
-    std::string line;
-    while (std::getline(ss, line, delim)) {
-        res.push_back(line);
-    }
-
-    return res;
-}
 
 
 TEST(Crypt_explain_algorithm, unknown) {

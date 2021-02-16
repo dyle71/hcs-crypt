@@ -7,12 +7,12 @@
  */
 
 #include <algorithm>
-#include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 
 #include <headcode/crypt/crypt.hpp>
+#include <headcode/logger/logger.hpp>
 #include <headcode/mem/mem.hpp>
 
 #include "run.hpp"
@@ -22,9 +22,10 @@
  * @brief   Adds the data retrieved by a stream (until eof) to the algorithm instance.
  * @param   algorithm       The algorithm instance.
  * @param   stream          The stream to read from.
+ * @param   err             The error info stream.
  * @return  exit code (0 == success).
  */
-int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream) {
+int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream, std::ostream & err) {
 
     std::uint64_t total_read = 0;
     unsigned char block_incoming[64 * 1024];
@@ -36,7 +37,7 @@ int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream) 
         try {
             read = std::fread(block_incoming, 1, sizeof(block_incoming), stream);
         } catch (std::exception & ex) {
-            std::cerr << "Failed to read data: " << ex.what();
+            err << "Failed to read data: " << ex.what();
             return 1;
         }
 
@@ -91,9 +92,9 @@ void ProcessOutputBlock(CryptoClientArguments const & config, char const * data,
 
     if (config.hex_output_ || config.multiline_output_) {
         auto hex = headcode::mem::MemoryToHex(data, size);
-        std::fprintf(config.output_, hex.c_str(), hex.size());
+        config.out_ << hex;
     } else {
-        std::fprintf(config.output_, data, size);
+        config.out_ << data;
     }
 }
 
@@ -109,7 +110,7 @@ void ProcessOutput(CryptoClientArguments const & config,
                    std::vector<std::byte> const & result) {
 
     if (config.multiline_output_) {
-        std::fprintf(config.output_, "%s: ", name.c_str());
+        config.out_ << name;
     }
 
     // do an 64K output loop -> avoid big mem operations on large result sets
@@ -123,7 +124,7 @@ void ProcessOutput(CryptoClientArguments const & config,
     }
 
     if (config.multiline_output_) {
-        std::fprintf(config.output_, "\n");
+        config.out_ << std::endl;
     }
 }
 
@@ -146,7 +147,7 @@ int Process(CryptoClientArguments const & config,
         return res;
     }
 
-    res = Add(algorithm, stream);
+    res = Add(algorithm, stream, config.err_);
     if (res != 0) {
         return res;
     }
@@ -166,7 +167,10 @@ int Process(CryptoClientArguments const & config,
 int Run(CryptoClientArguments const & config) {
 
     auto algorithm = headcode::crypt::Factory::Create(config.algorithm_);
-    assert(algorithm != nullptr);
+    if (algorithm == nullptr) {
+        headcode::logger::Critical{"headcode.crypt"} << "algorithm to use is NULL.";
+        return 1;
+    }
 
     int res = 0;
     if (config.input_files_.empty()) {
@@ -177,9 +181,9 @@ int Run(CryptoClientArguments const & config) {
 
             auto input = std::fopen(file_name.c_str(), "rb");
             if (input == nullptr) {
-                std::cerr << "Failed to open file: '" << file_name << "' - "
+                config.err_ << "Failed to open file: '" << file_name << "' - "
                           << "Failed to open file: " << std::strerror(errno) << std::endl;
-                std::cerr << "Aborted." << std::endl;
+                config.err_ << "Aborted." << std::endl;
                 return 1;
             }
 

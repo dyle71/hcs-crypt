@@ -6,141 +6,85 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
-#include <argp.h>
 
 #include <iostream>
+
+#include <cxxopts.hpp>
 
 #include <headcode/crypt/crypt.hpp>
 
 #include "cli.hpp"
 
-#define PROGRAM_NAME "crypt"
-
-#define PROGRAM_VERSION PROGRAM_NAME " v" VERSION
-
 #define PROGRAM_DOCUMENTATION \
-    PROGRAM_NAME              \
-    " -- a cryptography command line client.\n\
+"[OPTIONS] ALGORITHM [FILE...]\n\
 \n\
-ALGORITHM is one of the list of known algorithms. Type --list to get the list of known algorithms supported. \
-If FILE is ommited then stdin is read. If more than one FILE is processed, than the output is multilined and \
-hex.\n\
+ALGORITHM is one of the list of known algorithms. Type --list \n\
+to get the list of known algorithms supported. \n\
+If FILE is ommited then stdin is read. If more than one FILE is \n\
+processed, than the output is multilined and hex.\n\
 \n\
-Note also, that depending on the algorithm the input and therefore the output may be padded to fit\
-into an algorithm block size definition.\
-OPTIONS:\n\
+Note also, that depending on the algorithm the input and therefore \n\
+the output may be padded to fit into an algorithm block size definition.\n\
+\n\
+Call '--explain' with an algorithm to check the details.\n\n\
 "
 
-#define LONG_ONLY_OPTION 1000
-
 
 /**
- * @brief   All essential ARGP data.
+ * @brief   Creates the command line options.
+ * @return  the command line options.
  */
-struct ARGPData {
+static cxxopts::Options CreateCommandLineOptions() {
 
-    /**
-     * @brief   ARGP: well known program version string.
-     */
-    char const * argp_program_version = PROGRAM_VERSION;
+    cxxopts::Options options("crypt", "A cryptography command line client");
 
-    /**
-     * @brief   ARGP: well known bug email address.
-     */
-    char const * argp_program_bug_address = "https://gitlab.com/headcode.space/crypt/-/issues";
+    options.add_options()
+            ("explain", "Explain an algorithm.")
+            ("list", "List all known algorithms.")
+            ("h,help", "Show help.")
+            ("x,hex", "Output has hexadecimal ASCII character string.")
+            ("multiline", "Forces multiline output.")
+            ("version", "Show version.")
+            ("a,algorithm", "Algorithm to use.", cxxopts::value<std::string>())
+            ("f,files", "Files to process.", cxxopts::value<std::vector<std::string>>());
+    options.parse_positional({"algorithm", "files"});
+    options.custom_help(PROGRAM_DOCUMENTATION);
+    options.positional_help("Options:");
 
-    /**
-     * @brief   ARGP: documentation.
-     */
-    char const * argp_documentation = PROGRAM_DOCUMENTATION;
-
-    /**
-     * @brief   ARGP: arguments.
-     */
-    char const * argp_arguments = "ALGORITHM [FILE]";
-
-} argp_data_;
-
-
-/**
- * @brief   ARGP: options.
- */
-static struct argp_option options_[] = {
-
-        // list option: list all known algorithms
-        {"explain", LONG_ONLY_OPTION + 'e', 0, 0, "Explain an algorithm.", 0},
-        {"list", LONG_ONLY_OPTION + 'l', 0, 0, "List all known algorithms.", 0},
-        {"multiline", LONG_ONLY_OPTION + 'm', 0, 0, "Forces multiline output.", 0},
-
-        {"hex", 'h', 0, 0, "Output has hexadecimal ASCII character string.", 0},        // hex output
-        {"version", LONG_ONLY_OPTION + 'v', 0, 0, "Show version.", 0},                  // show version and exit
-        {0, 0, 0, 0, 0, 0}                                                              // trailing entry
-};
-
-
-/**
- * @brief   ARGP: parse a single option callback.
- * @param   key     current key.
- * @param   arg     argument to the key.
- * @param   state   argp parser state.
- * @return  0 if ok, ARGP_ERROR_* else.
- */
-static error_t ParseOption(int key, char * arg, struct argp_state * state) {
-
-    auto arguments = static_cast<CryptoClientArguments *>(state->input);
-
-    switch (key) {
-
-        case LONG_ONLY_OPTION + 'e':
-            arguments->explain_algorithm_ = true;
-            break;
-
-        case LONG_ONLY_OPTION + 'l':
-            arguments->list_algorithms_ = true;
-            break;
-
-        case LONG_ONLY_OPTION + 'm':
-            arguments->multiline_output_ = true;
-            break;
-
-        case LONG_ONLY_OPTION + 'v':
-            arguments->version_ = true;
-            break;
-
-        case 'h':
-            arguments->hex_output_ = true;
-            break;
-
-        case ARGP_KEY_ARG:
-            if (state->arg_num == 0) {
-                arguments->algorithm_ = arg;
-            } else {
-                arguments->input_files_.emplace_back(arg);
-            }
-            break;
-
-        case ARGP_KEY_NO_ARGS:
-        case ARGP_KEY_INIT:
-        case ARGP_KEY_END:
-            break;
-
-        default:
-            return ARGP_ERR_UNKNOWN;
-    }
-
-    return 0;
+    return options;
 }
 
 
-CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
+CryptoClientArguments ParseCommandLine(
+        int argc, char ** argv, std::istream & in, std::ostream & out, std::ostream & err) {
 
-    argp argp_configuration = {
-            options_, ParseOption, argp_data_.argp_arguments, argp_data_.argp_documentation, 0, 0, 0};
+    CryptoClientArguments res{in, out, err};
 
-    CryptoClientArguments res;
-    argp_parse(&argp_configuration, argc, argv, 0, 0, &res);
+    auto options = CreateCommandLineOptions();
+    cxxopts::ParseResult command_line;
+    try {
+        command_line = options.parse(argc, argv);
+    } catch (std::exception & ex) {
+        res.error_string_ = ex.what();
+        return res;
+    }
 
-    if ((!res.version_) && (!res.list_algorithms_)) {
+    res.explain_algorithm_ = command_line.count("explain") > 0;
+    res.list_algorithms_ = command_line.count("list") > 0;
+    res.multiline_output_ = command_line.count("multiline") > 0;
+    res.hex_output_ = command_line.count("hex") > 0;
+    res.help_ = command_line.count("help") > 0;
+    res.version_ = command_line.count("version") > 0;
+
+    if (command_line.count("algorithm") == 1) {
+        res.algorithm_ = command_line["algorithm"].as<std::string>();
+    }
+    if (command_line.count("files") > 0) {
+        res.input_files_ = command_line["files"].as<std::vector<std::string>>();
+    }
+
+    bool need_algorithm = !res.version_ && !res.help_ && !res.list_algorithms_;
+    if (need_algorithm) {
 
         if (!VerifyAlgorithm(res.algorithm_)) {
             if (res.algorithm_.empty()) {
@@ -157,8 +101,14 @@ CryptoClientArguments ParseCommandLine(int argc, char ** argv) {
 }
 
 
+void ShowHelp(std::ostream & out) {
+    auto options = CreateCommandLineOptions();
+    out << options.help() << std::endl;
+}
+
+
 void ShowVersion(std::ostream & out) {
-    out << PROGRAM_VERSION << std::endl;
+    out << "crypt v" << VERSION << std::endl;
 }
 
 

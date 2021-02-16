@@ -19,3 +19,6 @@
 [submodule "3rd/hcs-logger"]
 	path = 3rd/hcs-logger
 	url = https://gitlab.com/headcode.space/logger.git
+[submodule "3rd/cxxopts"]
+	path = 3rd/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git

@@ -6,10 +6,12 @@
  * Oliver Maurhart <info@headcode.space>, https://www.headcode.space
  */
 
+#include <iostream>
+
 #include "start.hpp"
 
 
 int main(int argc, char ** argv) {
     // defer to enable unit testing of alpha.
-    return Start(argc, argv);
+    return Start(argc, argv, std::cin, std::cout, std::cerr);
 }
