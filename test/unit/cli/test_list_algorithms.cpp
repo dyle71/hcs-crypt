@@ -18,7 +18,6 @@
 #include "../../../src/bin/list_algorithms.hpp"
 
 
-
 static std::set<std::string> const kAlgorithms{
 
         "openssl-aes-192-ecb-encryptor",

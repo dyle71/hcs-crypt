@@ -182,7 +182,7 @@ int Run(CryptoClientArguments const & config) {
             auto input = std::fopen(file_name.c_str(), "rb");
             if (input == nullptr) {
                 config.err_ << "Failed to open file: '" << file_name << "' - "
-                          << "Failed to open file: " << std::strerror(errno) << std::endl;
+                            << "Failed to open file: " << std::strerror(errno) << std::endl;
                 config.err_ << "Aborted." << std::endl;
                 return 1;
             }

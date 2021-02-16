@@ -16,7 +16,7 @@
 #include "cli.hpp"
 
 #define PROGRAM_DOCUMENTATION \
-"[OPTIONS] ALGORITHM [FILE...]\n\
+    "[OPTIONS] ALGORITHM [FILE...]\n\
 \n\
 ALGORITHM is one of the list of known algorithms. Type --list \n\
 to get the list of known algorithms supported. \n\
@@ -38,15 +38,11 @@ static cxxopts::Options CreateCommandLineOptions() {
 
     cxxopts::Options options("crypt", "A cryptography command line client");
 
-    options.add_options()
-            ("explain", "Explain an algorithm.")
-            ("list", "List all known algorithms.")
-            ("h,help", "Show help.")
-            ("x,hex", "Output has hexadecimal ASCII character string.")
-            ("multiline", "Forces multiline output.")
-            ("version", "Show version.")
-            ("a,algorithm", "Algorithm to use.", cxxopts::value<std::string>())
-            ("f,files", "Files to process.", cxxopts::value<std::vector<std::string>>());
+    options.add_options()("explain", "Explain an algorithm.")("list", "List all known algorithms.")(
+            "h,help", "Show help.")("x,hex", "Output has hexadecimal ASCII character string.")(
+            "multiline", "Forces multiline output.")("version", "Show version.")(
+            "a,algorithm", "Algorithm to use.", cxxopts::value<std::string>())(
+            "f,files", "Files to process.", cxxopts::value<std::vector<std::string>>());
     options.parse_positional({"algorithm", "files"});
     options.custom_help(PROGRAM_DOCUMENTATION);
     options.positional_help("Options:");
