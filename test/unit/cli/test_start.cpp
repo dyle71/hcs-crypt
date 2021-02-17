@@ -38,6 +38,24 @@ TEST(Crypt_start, version) {
 }
 
 
+TEST(Crypt_start, help) {
+
+    std::stringstream ss_in;
+    std::stringstream ss_out;
+    std::stringstream ss_err;
+
+    std::vector<char *> argv = {strdup("test"), strdup("--help")};
+    ASSERT_EQ(Start(argv.size(), argv.data(), ss_in, ss_out, ss_err), 0);
+
+    auto result = Split(ss_out.str());
+    ASSERT_GE(result.size(), 1ul);
+
+    for (auto arg : argv) {
+        free(arg);
+    }
+}
+
+
 TEST(Crypt_start, unknown_option) {
 
     std::stringstream ss_in;
