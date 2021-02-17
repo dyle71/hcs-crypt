@@ -10,4 +10,6 @@
 # ------------------------------------------------------------
 # Workload
 
+add_subdirectory(help)
+add_subdirectory(list)
 add_subdirectory(version)
