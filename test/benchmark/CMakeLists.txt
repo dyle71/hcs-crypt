@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# This file is the main CMakeLists of crypt of headcode.space
+# This file is part of hcs-crypt of headcode.space
 #
 # The 'LICENSE.txt' file in the project root holds the software license.
 # Copyright (C) 2020-2021 headcode.space e.U.  
