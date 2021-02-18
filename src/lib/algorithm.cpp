@@ -55,9 +55,18 @@ int Algorithm::Add(std::vector<std::byte> const & block_incoming, std::vector<st
         block_incoming_data_size = padded_block_incoming.size();
     }
 
-    if (description.block_size_outgoing_ != 0) {
-        block_outgoing.resize(block_incoming_data_size);
-        Pad(block_outgoing, description.block_size_outgoing_, GetBlockPaddingStrategy());
+    switch (description.processing_block_size) {
+
+        case ProcessingBlockSize::kEmpty:
+            block_outgoing.clear();
+            break;
+
+        case ProcessingBlockSize::kSame:
+            block_outgoing.resize(block_incoming_data_size);
+            break;
+
+        default:
+            block_outgoing.resize(description.block_size_outgoing_);
     }
 
     auto block_outgoing_data = reinterpret_cast<unsigned char *>(block_outgoing.data());

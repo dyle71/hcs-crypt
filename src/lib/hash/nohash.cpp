@@ -29,7 +29,8 @@ static Algorithm::Description const & GetDescription() {
 
             std::string{"hcs-crypt v"} + VERSION,        // provider
             0ul,                                         // input block size
-            0ul,                                         // output block size
+            ProcessingBlockSize::kEmpty,                 // output block size behaviour
+            0ul,                                         // output block size (if changing)
             PaddingStrategy::PADDING_NONE,               // default padding strategy
             0ul,                                         // result size
             {},                                          // initial data

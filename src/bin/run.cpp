@@ -22,20 +22,25 @@
  * @brief   Adds the data retrieved by a stream (until eof) to the algorithm instance.
  * @param   algorithm       The algorithm instance.
  * @param   stream          The stream to read from.
+ * @param   result          The (increasing) output when Add of the algorithm returns data.
  * @param   err             The error info stream.
  * @return  exit code (0 == success).
  */
-int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream, std::ostream & err) {
+int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm,
+        FILE * stream,
+        std::vector<std::byte> & result,
+        std::ostream & err) {
 
     std::uint64_t total_read = 0;
-    unsigned char block_incoming[64 * 1024];
-    unsigned char block_outgoing[64 * 1024];
+    std::vector<std::byte> incoming;
+    incoming.resize(64 * 1024);
 
     while (stream && !std::feof(stream)) {
 
         std::uint64_t read = 0;
         try {
-            read = std::fread(block_incoming, 1, sizeof(block_incoming), stream);
+            read = std::fread(incoming.data(), 1, incoming.size(), stream);
+            incoming.resize(read);
         } catch (std::exception & ex) {
             err << "Failed to read data: " << ex.what();
             return 1;
@@ -43,10 +48,14 @@ int Add(std::unique_ptr<headcode::crypt::Algorithm> & algorithm, FILE * stream, 
 
         if (read > 0) {
 
-            std::uint64_t size_outgoing = sizeof(block_outgoing);
-            algorithm->Add(block_incoming, read, block_outgoing, size_outgoing);
+            std::vector<std::byte> outgoing;
+            outgoing.resize(64 * 1024);
 
-            // TODO: output block to stderr...
+            algorithm->Add(incoming, outgoing);
+            if (!outgoing.empty()) {
+                result.resize(result.size() + outgoing.size());
+                std::memcpy(result.data() + result.size() - outgoing.size(), outgoing.data(), outgoing.size());
+            }
 
             total_read += read;
         }
@@ -94,7 +103,11 @@ void ProcessOutputBlock(CryptoClientArguments const & config, char const * data,
         auto hex = headcode::mem::MemoryToHex(data, size);
         config.out_ << hex;
     } else {
-        config.out_ << data;
+        try {
+            config.out_.write(data, size);
+        } catch (std::exception & ex) {
+            config.err_ << "Failed to write output: " << ex.what() << std::endl;
+        }
     }
 }
 
@@ -147,12 +160,12 @@ int Process(CryptoClientArguments const & config,
         return res;
     }
 
-    res = Add(algorithm, stream, config.err_);
+    std::vector<std::byte> result;
+    res = Add(algorithm, stream, result, config.err_);
     if (res != 0) {
         return res;
     }
 
-    std::vector<std::byte> result;
     res = Finalize(result, config, algorithm);
     if (res != 0) {
         return res;

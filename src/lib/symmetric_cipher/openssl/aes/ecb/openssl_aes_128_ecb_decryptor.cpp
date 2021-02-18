@@ -34,7 +34,8 @@ static Algorithm::Description const & GetDescription() {
             OPENSSL_VERSION_TEXT,        // provider
 
             16ul,                                     // input block size
-            16ul,                                     // output block size
+            ProcessingBlockSize::kSame,               // output block size behaviour
+            16ul,                                     // output block size (if changing)
             PaddingStrategy::PADDING_PKCS_5_7,        // default padding strategy
             0ul,                                      // result size
 

@@ -31,7 +31,8 @@ static Algorithm::Description const & GetDescription() {
 
             std::string{"hcs-crypt v"} + VERSION,        // provider
             0ul,                                         // input block size
-            0ul,                                         // output block size
+            ProcessingBlockSize::kSame,                  // output block size behaviour
+            0ul,                                         // output block size (if changing)
             PaddingStrategy::PADDING_NONE,               // default padding strategy
             0ul,                                         // result size
             {},                                          // initial data
@@ -69,11 +70,6 @@ int Copy::Add_(unsigned char const * block_incoming,
                std::uint64_t size_incoming,
                unsigned char * block_outgoing,
                std::uint64_t & size_outgoing) {
-
-    if (size_outgoing < GetDescription().block_size_outgoing_) {
-        // We need at least block_size_outgoing space in the target
-        return 1;
-    }
 
     auto copy_size = std::min(size_incoming, size_outgoing);
     std::memcpy(block_outgoing, block_incoming, copy_size);

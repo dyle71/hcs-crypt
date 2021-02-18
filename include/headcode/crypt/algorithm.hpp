@@ -18,6 +18,7 @@
 
 #include "family.hpp"
 #include "padding.hpp"
+#include "processing_block_size.hpp"
 
 
 namespace headcode::crypt {
@@ -121,10 +122,11 @@ public:
         std::string description_long_;         //!< @brief A human readable long description of the algorithm.
         std::string provider_;                 //!< @brief Names the provider of the algorithm.
 
-        std::uint64_t block_size_incoming_;             //!< @brief Size of each input block in bytes.
-        std::uint64_t block_size_outgoing_;             //!< @brief Size of each output block in bytes.
-        PaddingStrategy block_padding_strategy_;        //!< @brief The preferred padding strategy for blocks.
-        std::uint64_t result_size_;                     //!< @brief Size of the final result in bytes.
+        std::uint64_t block_size_incoming_;               //!< @brief Size of each input block in bytes.
+        ProcessingBlockSize processing_block_size;        //!< @brief Output sizing of each processed output block.
+        std::uint64_t block_size_outgoing_;               //!< @brief Size of each output block in bytes.
+        PaddingStrategy block_padding_strategy_;          //!< @brief The preferred padding strategy for blocks.
+        std::uint64_t result_size_;                       //!< @brief Size of the final result in bytes.
 
         /**
          * @brief   The needed initialization arguments, identified by name.
