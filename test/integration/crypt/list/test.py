@@ -112,9 +112,6 @@ def verify(out_name: str, err_name: str) -> bool:
         sys.stderr.write('Failed to examine error info: ' + str(e) + '\n')
         return False
 
-    # optimistic
-    res = True
-
     known_algorithms = []
     pattern = re.compile(r'^\s\s*(..*)')
     line = out.readline()

@@ -81,12 +81,9 @@ int Copy::Add_(unsigned char const * block_incoming,
 }
 
 
-int Copy::Finalize_(unsigned char * result,
+int Copy::Finalize_(unsigned char *,
                     std::uint64_t,
                     std::map<std::string, std::tuple<unsigned char const *, std::uint64_t>> const &) {
-    if (result != nullptr) {
-        *result = 0;
-    }
     return 0;
 }
 

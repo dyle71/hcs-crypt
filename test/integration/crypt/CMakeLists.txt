@@ -12,4 +12,5 @@
 
 add_subdirectory(help)
 add_subdirectory(list)
+add_subdirectory(run)
 add_subdirectory(version)
